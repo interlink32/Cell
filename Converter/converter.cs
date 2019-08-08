@@ -1,4 +1,5 @@
 ﻿using Dna;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,11 +10,18 @@ namespace Converter
     {
         public byte[] change(gene gene)
         {
-            return null;
+            var dv = JsonConvert.SerializeObject(gene);
+            var dv2 = Encoding.UTF8.GetBytes(dv);
+            return dv2;
         }
+
         public gene change(byte[] data)
         {
-            return null;
+            var dv = Encoding.UTF8.GetString(data);
+            var dv2 = JsonConvert.DeserializeObject<gene>(dv);
+            var t = get_type.GetType(dv2.chromosome, dv2.id);
+            dv2 = JsonConvert.DeserializeObject(dv, t) as gene;
+            return dv2;
         }
     }
 }
