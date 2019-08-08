@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Cell
+namespace Dna
 {
     public abstract class response : gene
     {
