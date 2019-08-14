@@ -1,17 +1,35 @@
 ﻿using Converter;
 using Dna;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace Connection
 {
     public class client
     {
-        public static converter converter = new converter();
-        public Task<response> question(request request)
+        public event Action<string> notify_e;
+        List<client_base> list = new List<client_base>();
+        public client()
         {
-            var dv = converter.change(request);
-            return null;
+            client_base cb;
+            foreach (var i in reference.get())
+            {
+                cb = new client_base(i.chromosome, i.ip);
+                cb.notify_e += Cb_notify_e;
+                list.Add(cb);
+            }
+        }
+        private void Cb_notify_e(string obj)
+        {
+            notify_e?.Invoke(obj);
+        }
+        public async Task<response> question(request request)
+        {
+            var dv = list.First(i => i.chromosome == request.z_chromosome);
+            return await dv.question(request);
         }
     }
 }

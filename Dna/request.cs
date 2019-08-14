@@ -6,6 +6,8 @@ namespace Dna
 {
     public abstract class request : gene
     {
-        public long user = 0;
+        public long z_user = 0;
+        public long z_app = 0;
+        public long z_platform = 0;
     }
 }

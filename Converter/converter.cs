@@ -19,7 +19,7 @@ namespace Converter
         {
             var dv = Encoding.UTF8.GetString(data);
             var dv2 = JsonConvert.DeserializeObject<gene>(dv);
-            var t = get_type.GetType(dv2.chromosome, dv2.id);
+            var t = get_type.GetType(dv2.z_chromosome, dv2.z_id);
             dv2 = JsonConvert.DeserializeObject(dv, t) as gene;
             return dv2;
         }
