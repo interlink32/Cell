@@ -41,9 +41,11 @@ namespace Connection
                 if (sent == null)
                     throw new Exception("lgjfjbjdfjbhhfhvhc");
                 sent.task.SetResult(dv as response);
+                sent = null;
                 send();
                 locking.Release();
             }
+            reading();
         }
         class request_task
         {
@@ -59,6 +61,8 @@ namespace Connection
                 request = request,
             };
             await locking.WaitAsync();
+            if (tcp == null)
+                await connect();
             list.Add(dv);
             send();
             locking.Release();

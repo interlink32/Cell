@@ -4,20 +4,21 @@ using System.Text;
 
 namespace Dna
 {
-    public abstract class gene
+    public class gene
     {
-        public string z_id { get; }
-        public string z_chromosome { get; }
+        public string z_gene = null;
+        public string z_chromosome = null;
         public gene()
         {
             var dv = get(GetType());
-            z_id = dv.gene;
+            z_gene = dv.gene;
             z_chromosome = dv.chromosom;
         }
         public static (string chromosom, string gene) get(Type type)
         {
             var full_name = type.FullName;
-            full_name = full_name.Replace("DNA.", "");
+            if (full_name != "Dna.gene")
+                full_name = full_name.Replace("Dna.", "");
             var dv = full_name.Split('.');
             return (dv[0], dv[1]);
         }

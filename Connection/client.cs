@@ -15,7 +15,8 @@ namespace Connection
         public client()
         {
             client_base cb;
-            foreach (var i in reference.get())
+            var dv = reference.get();
+            foreach (var i in dv)
             {
                 cb = new client_base(i.chromosome, i.ip);
                 cb.notify_e += Cb_notify_e;
