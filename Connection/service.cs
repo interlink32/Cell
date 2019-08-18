@@ -5,25 +5,31 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Connection
 {
     public abstract class service : client
     {
-        public abstract service_element[] elements { get; }
+        public abstract service_gene[] elements { get; }
         TcpListener listener;
         public service(IPEndPoint endPoint)
         {
+            elementsF = elements;
             listener = new TcpListener(endPoint);
             listener.Start();
             listen();
         }
-        service_element[] elementsF = null;
+        service_gene[] elementsF = null;
         async void listen()
         {
             var dv = await listener.AcceptTcpClientAsync();
-            elementsF = elements;
+            Thread thread = new Thread((o) =>
+            {
+                server_side dv2 = new server_side(dv, get_answer);
+            });
+            listen();
         }
         async Task<response> get_answer(request request)
         {

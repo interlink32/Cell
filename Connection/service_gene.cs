@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace Connection
 {
-    public abstract class service_element
+    public abstract class service_gene
     {
+        internal service_gene() { }
         internal abstract Task<response> z_get_answer(request request);
         internal abstract string z_gene { get; }
     }
-    public abstract class service_element<T> : service_element where T : request
+    public abstract class service_gene<T> : service_gene where T : request
     {
         internal sealed override string z_gene { get; }
-        public service_element()
+        public service_gene()
         {
             z_gene = typeof(T).Name;
         }

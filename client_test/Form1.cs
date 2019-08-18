@@ -15,22 +15,10 @@ namespace client_test
 {
     public partial class Form1 : Form
     {
-        client client = new client();
+        test test = new test();
         public Form1()
         {
             InitializeComponent();
-            client.notify_e += Client_notify_e;
-            m();
-        }
-        async void m()
-        {
-            var dv = await client.question(new a_value() { value = 10 });
-            m();
-        }
-
-        private void Client_notify_e(string obj)
-        {
-
         }
     }
 }

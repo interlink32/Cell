@@ -4,12 +4,13 @@ using System.Text;
 
 namespace Dna.test
 {
-    public class a_value : request
+    public class a_subtraction : request
     {
-        public long value = 0;
+        public long a = 0;
+        public long b = 0;
         public class done : response
         {
-            public long value = 0;
+            public long result = 0;
         }
     }
 }

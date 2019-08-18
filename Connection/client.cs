@@ -11,14 +11,14 @@ namespace Connection
     public class client
     {
         public event Action<string> notify_e;
-        List<client_base> list = new List<client_base>();
+        List<client_side> list = new List<client_side>();
         public client()
         {
-            client_base cb;
+            client_side cb;
             var dv = reference.get();
             foreach (var i in dv)
             {
-                cb = new client_base(i.chromosome, i.ip);
+                cb = new client_side(i.chromosome, i.ip);
                 cb.notify_e += Cb_notify_e;
                 list.Add(cb);
             }

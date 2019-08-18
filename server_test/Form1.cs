@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Connection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,9 +14,11 @@ namespace server_test
 {
     public partial class Form1 : Form
     {
+
         public Form1()
         {
             InitializeComponent();
+            new serviece_im(new IPEndPoint(reference.GetAny(), 9090));
         }
     }
 }

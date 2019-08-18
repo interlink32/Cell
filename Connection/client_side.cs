@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Connection
 {
-    class client_base : core
+    class client_side : core
     {
         internal readonly string chromosome;
         private readonly IPEndPoint endPoint;
-        public client_base(string chromosome, IPEndPoint endPoint)
+        public client_side(string chromosome, IPEndPoint endPoint)
         {
             this.chromosome = chromosome;
             this.endPoint = endPoint;
