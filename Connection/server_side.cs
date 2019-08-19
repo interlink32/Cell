@@ -18,9 +18,24 @@ namespace Connection
         }
         async void reading()
         {
-            var dv = await read() as request;
-            var dv2 = await get_Answer(dv);
-            write(dv2);
+            request req;
+            try
+            {
+                req = await read() as request;
+            }
+            catch
+            {
+                return;
+            }
+            var res = await get_Answer(req);
+            try
+            {
+                write(res);
+            }
+            catch
+            {
+                return;
+            }
             reading();
         }
     }
