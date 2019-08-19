@@ -28,7 +28,8 @@ namespace client_test
             var rsv = await client.question(dv);
             var time = DateTime.Now - start;
             list.Add((int)time.TotalMilliseconds);
-            var check = checking(dv, rsv);
+            if (!checking(dv, rsv))
+                throw new Exception("lfpdkjbjdibkdbkdkbmdkn");
             Action();
         }
     }

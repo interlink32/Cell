@@ -61,6 +61,7 @@
     <Compile Include="gene_tester.cs" />
     <Compile Include="chromosome_tester.cs" />
     <Compile Include="subtraction.cs" />
+    <Compile Include="sum.cs" />
     <Compile Include="test.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

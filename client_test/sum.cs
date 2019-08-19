@@ -8,18 +8,22 @@ using Dna.test;
 
 namespace client_test
 {
-    class subtraction : gene_tester
+    class sum : gene_tester
     {
         public override bool checking(request request, response response)
         {
-            var req = request as a_subtraction;
-            var res = response as a_subtraction.done;
-            return req.a - req.b == res.result;
+            var req = request as a_sum;
+            var res = response as a_sum.done;
+            return req.a + req.b == res.result;
         }
         Random random = new Random();
         public override request get()
         {
-            return new a_subtraction() { a = random.Next(), b = random.Next() };
+            return new a_sum()
+            {
+                a = random.Next(),
+                b = random.Next()
+            };
         }
     }
 }

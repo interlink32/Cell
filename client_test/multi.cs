@@ -14,14 +14,16 @@ namespace client_test
         {
             var req = request as a_multiplication;
             var res = response as a_multiplication.done;
-
-            if (req.a * req.b != res.result)
-                throw new Exception("");
-            return true;
+            return req.a * req.b == res.result;
         }
+        Random random = new Random();
         public override request get()
         {
-            var gene = new a_multiplication();
+            var gene = new a_multiplication()
+            {
+                a = random.Next(1000, 2000),
+                b = random.Next(1000, 2000)
+            };
             return gene;
         }
     }

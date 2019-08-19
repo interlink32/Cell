@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace server_test
 {
-    class value_im : service_gene<a_subtraction>
+    class subtraction : service_gene<a_subtraction>
     {
         public override async Task<response> get_answer(a_subtraction request)
         {

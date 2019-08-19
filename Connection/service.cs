@@ -29,6 +29,7 @@ namespace Connection
             {
                 server_side dv2 = new server_side(dv, get_answer);
             });
+            thread.Start();
             listen();
         }
         async Task<response> get_answer(request request)

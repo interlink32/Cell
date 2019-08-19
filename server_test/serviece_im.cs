@@ -17,8 +17,9 @@ namespace server_test
             {
                 return new service_gene[]
                 {
-                    new value_im(),
-                    new string_im()
+                    new subtraction(),
+                    new sum(),
+                    new multi()
                 };
             }
         }

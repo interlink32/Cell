@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace server_test
 {
-    class string_im : service_gene<a_sum>
+    class sum : service_gene<a_sum>
     {
         public async override Task<response> get_answer(a_sum request)
         {

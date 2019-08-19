@@ -11,7 +11,8 @@ namespace client_test
         public override gene_tester[] gene_testers => new gene_tester[]
         {
             new multi(),
-            new subtraction()
+            new subtraction(),
+            new sum()
         };
         public test()
         {
