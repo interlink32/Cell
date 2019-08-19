@@ -18,7 +18,7 @@ namespace server_test
         public Form1()
         {
             InitializeComponent();
-            new serviece_im(new IPEndPoint(reference.local_ip(), 9090));
+            new serviece_im(new IPEndPoint(reference.local_ip(), 10000));
         }
     }
 }
