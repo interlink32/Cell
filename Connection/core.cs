@@ -15,9 +15,16 @@ namespace Connection
         static converter converter = new converter();
         public async void write(gene gene)
         {
-            var data = converter.change(gene);
-            var dv = Combine(BitConverter.GetBytes(data.Length), data);
-            await tcp.GetStream().WriteAsync(dv, 0, dv.Length);
+            try
+            {
+                var data = converter.change(gene);
+                var dv = Combine(BitConverter.GetBytes(data.Length), data);
+                await tcp.GetStream().WriteAsync(dv, 0, dv.Length);
+            }
+            catch
+            {
+
+            }
         }
         public async Task<gene> read()
         {
