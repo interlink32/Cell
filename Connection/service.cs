@@ -37,7 +37,8 @@ namespace Connection
             var dv = elementsF.FirstOrDefault(i => i.z_gene == request.z_gene);
             if (dv == null)
                 throw new Exception("zpjrughdwifhdksjgkfvhy");
-            return await dv.z_get_answer(request);
+            var dv2 = await dv.z_get_answer(request);
+            return dv2;
         }
     }
 }

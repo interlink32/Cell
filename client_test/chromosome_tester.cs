@@ -17,6 +17,5 @@ namespace client_test
             foreach (var i in gene_testersF)
                 i.start(client);
         }
-
     }
 }

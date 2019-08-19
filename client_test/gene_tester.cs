@@ -20,17 +20,39 @@ namespace client_test
             this.client = client;
             Action();
         }
-        List<int> list = new List<int>();
+        static SemaphoreSlim locking = new SemaphoreSlim(1, 1);
         async void Action()
         {
             var dv = get();
             DateTime start = DateTime.Now;
             var rsv = await client.question(dv);
-            var time = DateTime.Now - start;
-            list.Add((int)time.TotalMilliseconds);
+            var time = DateTime.Now - start; ;
             if (!checking(dv, rsv))
                 throw new Exception("lfpdkjbjdibkdbkdkbmdkn");
+            await locking.WaitAsync();
+            int tot = (int)time.TotalMilliseconds;
+            report.list.Add(tot);
+            report.counter++;
+            maxf = Math.Max(maxf, tot);
+            minf = Math.Min(minf, tot);
+            if (report.counter % 200 == 0)
+                reporting();
+            locking.Release();
             Action();
+        }
+
+        public static event Action report_e = null;
+        static int maxf = 0;
+        static int minf = int.MaxValue;
+        static void reporting()
+        {
+            report.max = maxf;
+            report.min = minf;
+            maxf = 0;
+            minf = int.MaxValue;
+            report.avrage = report.list.Sum(i => i) / report.list.Count;
+            report.list.Clear();
+            report_e?.Invoke();
         }
     }
 }

@@ -13,8 +13,8 @@ namespace Connection
         public server_side(TcpClient tcp, Func<request, Task<response>> get_answer)
         {
             this.tcp = tcp;
-            reading();
             get_Answer = get_answer;
+            reading();
         }
         async void reading()
         {

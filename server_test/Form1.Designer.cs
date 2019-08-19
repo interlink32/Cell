@@ -28,13 +28,32 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.lbl = new System.Windows.Forms.Label();
+            this.SuspendLayout();
+            // 
+            // lbl
+            // 
+            this.lbl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lbl.Location = new System.Drawing.Point(0, 0);
+            this.lbl.Name = "lbl";
+            this.lbl.Size = new System.Drawing.Size(226, 478);
+            this.lbl.TabIndex = 0;
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(384, 478);
+            this.Controls.Add(this.lbl);
+            this.Name = "Form1";
             this.Text = "Form1";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Label lbl;
     }
 }
 
