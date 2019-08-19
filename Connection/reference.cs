@@ -14,13 +14,19 @@ namespace Connection
         }
         internal static (string chromosome, IPEndPoint ip)[] get()
         {
-            var dv = GetAny();
+            var dv = valid_ip();
             List<(string chromosome, IPEndPoint ip)> l = new List<(string chromosome, IPEndPoint ip)>();
-            l.Add(create("test", dv, 9090));
+            l.Add(create("test", dv, 10000));
             return l.ToArray();
         }
-
-        public static IPAddress GetAny()
+        static bool local = false;
+        public static IPAddress valid_ip()
+        {
+            if (local)
+                return local_ip();
+            return IPAddress.Parse("31.184.135.138");
+        }
+        public static IPAddress local_ip()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (var ip in host.AddressList)
