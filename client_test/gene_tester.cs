@@ -12,7 +12,7 @@ namespace client_test
 {
     public abstract class gene_tester
     {
-        public abstract request get();
+        public abstract request get_request();
         public abstract bool checking(request request, response response);
         client client;
         public void start(client client)
@@ -23,12 +23,18 @@ namespace client_test
         static SemaphoreSlim locking = new SemaphoreSlim(1, 1);
         async void Action()
         {
-            var dv = get();
+            var dv = get_request();
             DateTime start = DateTime.Now;
             var rsv = await client.question(dv);
             var time = DateTime.Now - start; ;
             if (!checking(dv, rsv))
                 throw new Exception("lfpdkjbjdibkdbkdkbmdkn");
+            create_info(time);
+            Action();
+        }
+
+        static async void create_info(TimeSpan time)
+        {
             await locking.WaitAsync();
             int tot = (int)time.TotalMilliseconds;
             report.list.Add(tot);
@@ -38,7 +44,6 @@ namespace client_test
             if (report.counter % 200 == 0)
                 reporting();
             locking.Release();
-            Action();
         }
 
         public static event Action report_e = null;

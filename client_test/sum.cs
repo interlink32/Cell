@@ -12,14 +12,14 @@ namespace client_test
     {
         public override bool checking(request request, response response)
         {
-            var req = request as a_sum;
-            var res = response as a_sum.done;
+            var req = request as f_sum;
+            var res = response as f_sum.done;
             return req.a + req.b == res.result;
         }
         Random random = new Random();
-        public override request get()
+        public override request get_request()
         {
-            return new a_sum()
+            return new f_sum()
             {
                 a = random.Next(),
                 b = random.Next()

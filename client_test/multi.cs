@@ -12,14 +12,14 @@ namespace client_test
     {
         public override bool checking(request request, response response)
         {
-            var req = request as a_multiplication;
-            var res = response as a_multiplication.done;
+            var req = request as f_multiplication;
+            var res = response as f_multiplication.done;
             return req.a * req.b == res.result;
         }
         Random random = new Random();
-        public override request get()
+        public override request get_request()
         {
-            var gene = new a_multiplication()
+            var gene = new f_multiplication()
             {
                 a = random.Next(1000, 2000),
                 b = random.Next(1000, 2000)

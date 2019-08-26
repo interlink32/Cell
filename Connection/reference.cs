@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Dna;
+using Dna.central;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -8,16 +11,30 @@ namespace Connection
 {
     public class reference
     {
-        static (string chromosome, IPEndPoint ip) create(string chromosome, IPAddress iPAddress, int port)
+        public static IPEndPoint get_endpoint(string endPoint)
         {
-            return (chromosome, new IPEndPoint(iPAddress, port));
+            string[] ep = endPoint.Split(':');
+            if (ep.Length != 2) throw new FormatException("Invalid endpoint format");
+            IPAddress ip;
+            if (!IPAddress.TryParse(ep[0], out ip))
+            {
+                throw new FormatException("Invalid ip-adress");
+            }
+            int port;
+            if (!int.TryParse(ep[1], NumberStyles.None, NumberFormatInfo.CurrentInfo, out port))
+            {
+                throw new FormatException("Invalid port");
+            }
+            return new IPEndPoint(ip, port);
         }
-        internal static (string chromosome, IPEndPoint ip)[] get()
+        internal static s_chromosome_info get_central_chromosome_info()
         {
-            var dv = valid_ip();
-            List<(string chromosome, IPEndPoint ip)> l = new List<(string chromosome, IPEndPoint ip)>();
-            l.Add(create("test", dv, 10000));
-            return l.ToArray();
+            return new s_chromosome_info()
+            {
+                chromosome = chromosome.central,
+                endpoint = new IPEndPoint(valid_ip(), 10000).ToString(),
+                public_key = Resource1.public_key
+            };
         }
         static bool local = false;
         public static IPAddress valid_ip()

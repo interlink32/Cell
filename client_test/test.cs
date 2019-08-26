@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Connection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,13 +11,13 @@ namespace client_test
     {
         public override gene_tester[] gene_testers => new gene_tester[]
         {
+            new sum(),
             new multi(),
             new subtraction(),
-            new sum()
         };
         public test()
         {
-            start(new Connection.client());
+            start(new client());
         }
     }
 }

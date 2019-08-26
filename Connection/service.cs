@@ -1,4 +1,5 @@
 ﻿using Dna;
+using Dna.common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,14 @@ namespace Connection
     public abstract class service : client
     {
         public abstract service_gene[] elements { get; }
+        public abstract byte[] private_key { get; }
+        public abstract IPEndPoint endpoint { get; }
+
         TcpListener listener;
-        public service(IPEndPoint endPoint)
+        public service()
         {
             elementsF = elements;
-            listener = new TcpListener(endPoint);
+            listener = new TcpListener(endpoint);
             listener.Start();
             listen();
         }
@@ -27,7 +31,7 @@ namespace Connection
             var dv = await listener.AcceptTcpClientAsync();
             Thread thread = new Thread((o) =>
             {
-                server_side dv2 = new server_side(dv, get_answer);
+                server_side dv2 = new server_side(dv, private_key, get_answer);
             });
             thread.Start();
             listen();

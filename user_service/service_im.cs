@@ -6,22 +6,22 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace server_test
+namespace user_service
 {
-    class serviece_im : service
+    class service_im : service
     {
-        public serviece_im(IPEndPoint endPoint) : base(endPoint) { }
         public override service_gene[] elements
         {
             get
             {
                 return new service_gene[]
                 {
-                    new subtraction(),
-                    new sum(),
-                    new multi()
+                    
                 };
             }
         }
+        public override byte[] private_key => throw new NotImplementedException();
+
+        public override IPEndPoint endpoint => throw new NotImplementedException();
     }
 }

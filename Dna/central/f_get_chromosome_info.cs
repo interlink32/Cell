@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dna.test
+namespace Dna.central
 {
-    public class a_sum : request
+    public class f_get_chromosome_info : request
     {
-        public long a = 0;
-        public long b = 0;
         public class done : response
         {
-            public long result = 0;
+            public s_chromosome_info[] chromosome_infos = null;
         }
     }
 }

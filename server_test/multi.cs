@@ -9,12 +9,12 @@ using Dna.test;
 
 namespace server_test
 {
-    class multi : service_gene<a_multiplication>
+    class multi : service_gene<f_multiplication>
     {
-        public async override Task<response> get_answer(a_multiplication request)
+        public async override Task<response> get_answer(f_multiplication request)
         {
             await Task.Delay(10);
-            return new a_multiplication.done()
+            return new f_multiplication.done()
             {
                 result = request.a * request.b
             };

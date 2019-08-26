@@ -12,13 +12,12 @@ using System.Windows.Forms;
 
 namespace server_test
 {
-    public partial class Form1 : Form
+    public partial class form : Form
     {
-
-        public Form1()
+        service_im service = new service_im();
+        public form()
         {
             InitializeComponent();
-            new serviece_im(new IPEndPoint(reference.local_ip(), 10000));
         }
     }
 }

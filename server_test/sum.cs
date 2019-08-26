@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace server_test
 {
-    class sum : service_gene<a_sum>
+    class sum : service_gene<f_sum>
     {
-        public async override Task<response> get_answer(a_sum request)
+        public async override Task<response> get_answer(f_sum request)
         {
             await Task.Delay(12);
-            return new a_sum.done()
+            return new f_sum.done()
             {
                 result = request.a + request.b
             };

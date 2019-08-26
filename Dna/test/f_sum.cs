@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dna.test
 {
-    public class a_multiplication : request
+    public class f_sum : request
     {
         public long a = 0;
         public long b = 0;

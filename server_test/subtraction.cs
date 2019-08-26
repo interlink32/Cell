@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace server_test
 {
-    class subtraction : service_gene<a_subtraction>
+    class subtraction : service_gene<f_subtraction>
     {
-        public override async Task<response> get_answer(a_subtraction request)
+        public override async Task<response> get_answer(f_subtraction request)
         {
             await Task.Delay(10);
-            return new a_subtraction.done()
+            return new f_subtraction.done()
             {
                 result = request.a - request.b
             };

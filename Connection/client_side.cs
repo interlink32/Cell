@@ -1,4 +1,5 @@
 ﻿using Dna;
+using Dna.common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,9 @@ namespace Connection
 {
     class client_side : core
     {
-        internal readonly string chromosome;
+        internal readonly chromosome chromosome;
         private readonly IPEndPoint endPoint;
-        public client_side(string chromosome, IPEndPoint endPoint)
+        public client_side(chromosome chromosome, IPEndPoint endPoint, byte[] main_key) : base(main_key)
         {
             this.chromosome = chromosome;
             this.endPoint = endPoint;
@@ -23,6 +24,15 @@ namespace Connection
         {
             tcp = new TcpClient();
             await tcp.ConnectAsync(endPoint.Address, endPoint.Port);
+            var keys = crypto.create_symmetrical_keys();
+            write(new f_set_key()
+            {
+                key32 = await crypto.Encrypt(keys.key32, main_key),
+                iv16 = await crypto.Encrypt(keys.iv16, main_key)
+            });
+            var rsv = await read();
+            key32 = keys.key32;
+            iv16 = keys.iv16;
             reading();
         }
         public event Action<string> notify_e;

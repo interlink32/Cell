@@ -13,16 +13,15 @@ using System.Windows.Forms;
 
 namespace client_test
 {
-    public partial class Form1 : Form
+    public partial class form : Form
     {
-        client_pool pool = new client_pool();
-        public Form1()
+        client_pool pool = new client_pool(10);
+        //client client = new client();
+        public form()
         {
             InitializeComponent();
             gene_tester.report_e += Test_new_report;
-            pool.start();
         }
-
         private void Test_new_report()
         {
             string dv = "";
