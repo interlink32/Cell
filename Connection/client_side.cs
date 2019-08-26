@@ -30,7 +30,7 @@ namespace Connection
                 key32 = await crypto.Encrypt(keys.key32, main_key),
                 iv16 = await crypto.Encrypt(keys.iv16, main_key)
             });
-            var rsv = await read();
+            await read();
             key32 = keys.key32;
             iv16 = keys.iv16;
             reading();
@@ -40,6 +40,8 @@ namespace Connection
         async void reading()
         {
             var dv = await read();
+            if (dv == null)
+                return;
             if (dv is notify)
             {
                 var dv2 = dv as notify;

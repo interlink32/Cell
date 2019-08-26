@@ -29,20 +29,25 @@ namespace Connection
         async void listen()
         {
             var dv = await listener.AcceptTcpClientAsync();
-            Thread thread = new Thread((o) =>
-            {
-                server_side dv2 = new server_side(dv, private_key, get_answer);
-            });
-            thread.Start();
+            server_side dv2 = new server_side(dv, private_key, get_answer);
             listen();
         }
         async Task<response> get_answer(request request)
+        {
+            TaskCompletionSource<response> rt = new TaskCompletionSource<response>();
+            ThreadPool.QueueUserWorkItem((o) =>
+            {
+                run(request, rt);
+            });
+            return await rt.Task;
+        }
+        private async void run(request request, TaskCompletionSource<response> rt)
         {
             var dv = elementsF.FirstOrDefault(i => i.z_gene == request.z_gene);
             if (dv == null)
                 throw new Exception("zpjrughdwifhdksjgkfvhy");
             var dv2 = await dv.z_get_answer(request);
-            return dv2;
+            rt.SetResult(dv2);
         }
     }
 }

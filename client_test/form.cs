@@ -21,7 +21,17 @@ namespace client_test
         {
             InitializeComponent();
             gene_tester.report_e += Test_new_report;
+          //  mmm();
         }
+        //async void mmm()
+        //{
+        //    var dv = await client.question(new f_sum()
+        //    {
+        //        a = 12,
+        //        b = 3
+        //    });
+        //}
+
         private void Test_new_report()
         {
             string dv = "";

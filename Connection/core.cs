@@ -22,7 +22,7 @@ namespace Connection
         }
         
         public TcpClient tcp = null;
-
+        public event Action<string> error_e;
         public async void write(gene gene)
         {
             try
@@ -38,10 +38,9 @@ namespace Connection
                     await tcp.GetStream().WriteAsync(data, 0, data.Length);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                var dv = e.Message;
-                dv = null;
+                error_e?.Invoke("write: " + e.Message);
             }
         }
         public async Task<gene> read()
@@ -59,10 +58,9 @@ namespace Connection
                     data = await crypto.Decrypt(data, key32, iv16);
                 return converter.change(data) as gene;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                var dv = e.Message;
-                dv = null;
+                error_e?.Invoke("read: " + e.Message);
                 return null;
             }
         }
