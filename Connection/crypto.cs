@@ -26,69 +26,49 @@ namespace Connection
             random.NextBytes(key16);
             return (key32, key16);
         }
-        public static async Task<byte[]> Encrypt(byte[] data, byte[] public_key)
+        public static byte[] Encrypt(byte[] data, byte[] public_key)
         {
-            TaskCompletionSource<byte[]> rt = new TaskCompletionSource<byte[]>();
-            ThreadPool.QueueUserWorkItem((o) =>
-            {
-                byte[] encryptedData;
-                RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-                rsa.ImportCspBlob(public_key);
-                encryptedData = rsa.Encrypt(data, true);
-                rsa.Dispose();
-                rt.SetResult(encryptedData);
-            });
-            return await rt.Task;
+            byte[] encryptedData;
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            rsa.ImportCspBlob(public_key);
+            encryptedData = rsa.Encrypt(data, true);
+            rsa.Dispose();
+            return encryptedData;
         }
-        public static async Task<byte[]> Decrypt(byte[] data, byte[] private_key)
+        public static byte[] Decrypt(byte[] data, byte[] private_key)
         {
-            TaskCompletionSource<byte[]> rt = new TaskCompletionSource<byte[]>();
-            ThreadPool.QueueUserWorkItem((o) =>
-            {
-                byte[] decryptedData;
-                RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
-                rsa.ImportCspBlob(private_key);
-                decryptedData = rsa.Decrypt(data, true);
-                rsa.Dispose();
-                rt.SetResult(decryptedData);
-            });
-            return await rt.Task;
+            byte[] decryptedData;
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
+            rsa.ImportCspBlob(private_key);
+            decryptedData = rsa.Decrypt(data, true);
+            rsa.Dispose();
+            return decryptedData;
         }
-        public static async Task<byte[]> Encrypt(byte[] data, byte[] Key, byte[] IV)
+        public static byte[] Encrypt(byte[] data, byte[] Key, byte[] IV)
         {
-            TaskCompletionSource<byte[]> rt = new TaskCompletionSource<byte[]>();
-            ThreadPool.QueueUserWorkItem((o) =>
-            {
-                MemoryStream memoryStream;
-                CryptoStream cryptoStream;
-                Rijndael rijndael = Rijndael.Create();
-                rijndael.Key = Key;
-                rijndael.IV = IV;
-                memoryStream = new MemoryStream();
-                cryptoStream = new CryptoStream(memoryStream, rijndael.CreateEncryptor(), CryptoStreamMode.Write);
-                cryptoStream.Write(data, 0, data.Length);
-                cryptoStream.Close();
-                rt.SetResult(memoryStream.ToArray());
-            });
-            return await rt.Task;
+            MemoryStream memoryStream;
+            CryptoStream cryptoStream;
+            Rijndael rijndael = Rijndael.Create();
+            rijndael.Key = Key;
+            rijndael.IV = IV;
+            memoryStream = new MemoryStream();
+            cryptoStream = new CryptoStream(memoryStream, rijndael.CreateEncryptor(), CryptoStreamMode.Write);
+            cryptoStream.Write(data, 0, data.Length);
+            cryptoStream.Close();
+            return memoryStream.ToArray();
         }
-        public static async Task<byte[]> Decrypt(byte[] data, byte[] Key, byte[] IV)
+        public static byte[] Decrypt(byte[] data, byte[] Key, byte[] IV)
         {
-            TaskCompletionSource<byte[]> rt = new TaskCompletionSource<byte[]>();
-            ThreadPool.QueueUserWorkItem((o) =>
-            {
-                MemoryStream memoryStream;
-                CryptoStream cryptoStream;
-                Rijndael rijndael = Rijndael.Create();
-                rijndael.Key = Key;
-                rijndael.IV = IV;
-                memoryStream = new MemoryStream();
-                cryptoStream = new CryptoStream(memoryStream, rijndael.CreateDecryptor(), CryptoStreamMode.Write);
-                cryptoStream.Write(data, 0, data.Length);
-                cryptoStream.Close();
-                rt.SetResult(memoryStream.ToArray());
-            });
-            return await rt.Task;
+            MemoryStream memoryStream;
+            CryptoStream cryptoStream;
+            Rijndael rijndael = Rijndael.Create();
+            rijndael.Key = Key;
+            rijndael.IV = IV;
+            memoryStream = new MemoryStream();
+            cryptoStream = new CryptoStream(memoryStream, rijndael.CreateDecryptor(), CryptoStreamMode.Write);
+            cryptoStream.Write(data, 0, data.Length);
+            cryptoStream.Close();
+            return memoryStream.ToArray();
         }
     }
 }

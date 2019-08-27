@@ -26,28 +26,29 @@ namespace Connection
             listen();
         }
         service_gene[] elementsF = null;
+        List<server_side> list = new List<server_side>();
         async void listen()
         {
-            var dv = await listener.AcceptTcpClientAsync();
-            server_side dv2 = new server_side(dv, private_key, get_answer);
+            var tcp = await listener.AcceptTcpClientAsync();
+            server_side dv = new server_side(tcp, private_key, get_answer);
+            list.Add(dv);
+            dv.error_e += Dv_error_e;
             listen();
         }
-        async Task<response> get_answer(request request)
+        private void Dv_error_e(core arg1, string arg2)
         {
-            TaskCompletionSource<response> rt = new TaskCompletionSource<response>();
-            ThreadPool.QueueUserWorkItem((o) =>
-            {
-                run(request, rt);
-            });
-            return await rt.Task;
+            var dv = arg1 as server_side;
+            dv.error_e -= Dv_error_e;
+            dv.dispose();
+            list.Remove(dv);
         }
-        private async void run(request request, TaskCompletionSource<response> rt)
+        async Task<response> get_answer(request request)
         {
             var dv = elementsF.FirstOrDefault(i => i.z_gene == request.z_gene);
             if (dv == null)
                 throw new Exception("zpjrughdwifhdksjgkfvhy");
             var dv2 = await dv.z_get_answer(request);
-            rt.SetResult(dv2);
+            return dv2;
         }
     }
 }

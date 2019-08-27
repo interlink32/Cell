@@ -27,8 +27,8 @@ namespace Connection
             var keys = crypto.create_symmetrical_keys();
             write(new f_set_key()
             {
-                key32 = await crypto.Encrypt(keys.key32, main_key),
-                iv16 = await crypto.Encrypt(keys.iv16, main_key)
+                key32 = crypto.Encrypt(keys.key32, main_key),
+                iv16 = crypto.Encrypt(keys.iv16, main_key)
             });
             await read();
             key32 = keys.key32;

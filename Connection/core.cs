@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Connection
@@ -20,10 +21,10 @@ namespace Connection
         {
             this.main_key = main_key;
         }
-        
+
         public TcpClient tcp = null;
-        public event Action<string> error_e;
-        public async void write(gene gene)
+        public event Action<core, string> error_e;
+        protected async void write(gene gene)
         {
             try
             {
@@ -33,17 +34,17 @@ namespace Connection
                 {
                     var data = converter.change(gene);
                     if (key32 != null)
-                        data = await crypto.Encrypt(data, key32, iv16);
+                        data = crypto.Encrypt(data, key32, iv16);
                     data = Combine(BitConverter.GetBytes(data.Length), data);
                     await tcp.GetStream().WriteAsync(data, 0, data.Length);
                 }
             }
             catch (Exception e)
             {
-                error_e?.Invoke("write: " + e.Message);
+                error_e?.Invoke(this, "write: " + e.Message);
             }
         }
-        public async Task<gene> read()
+        protected async Task<gene> read()
         {
             try
             {
@@ -55,12 +56,12 @@ namespace Connection
                 data = new byte[len];
                 await tcp.GetStream().ReadAsync(data, 0, len);
                 if (key32 != null)
-                    data = await crypto.Decrypt(data, key32, iv16);
+                    data = crypto.Decrypt(data, key32, iv16);
                 return converter.change(data) as gene;
             }
             catch (Exception e)
             {
-                error_e?.Invoke("read: " + e.Message);
+                error_e?.Invoke(this, "read: " + e.Message);
                 return null;
             }
         }
