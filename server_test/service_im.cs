@@ -24,5 +24,9 @@ namespace server_test
         }
         public override byte[] private_key => store.test_private_key;
         public override IPEndPoint endpoint => new IPEndPoint(reference.local_ip(), 10002);
+
+        public override string userid => "3";
+
+        public override string password => "3pass";
     }
 }

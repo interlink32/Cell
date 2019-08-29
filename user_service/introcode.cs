@@ -40,7 +40,7 @@ namespace user_service
             await locking.WaitAsync();
             var dv = list.FirstOrDefault(i => i.code.SequenceEqual(introcode));
             locking.Release();
-            return dv.user;
+            return dv?.user ?? 0;
         }
     }
 }

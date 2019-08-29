@@ -27,7 +27,7 @@ namespace Connection
             }
             return new IPEndPoint(ip, port);
         }
-        internal static s_chromosome_info get_central_chromosome_info()
+        internal static s_chromosome_info get_central_info()
         {
             return new s_chromosome_info()
             {

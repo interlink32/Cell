@@ -56,9 +56,16 @@
       <DependentUpon>form.cs</DependentUpon>
     </Compile>
     <Compile Include="get_introcode.cs" />
+    <Compile Include="get_userid.cs" />
     <Compile Include="introcode.cs" />
+    <Compile Include="login.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>resource.resx</DependentUpon>
+    </Compile>
     <Compile Include="service_im.cs" />
     <EmbeddedResource Include="form.resx">
       <DependentUpon>form.cs</DependentUpon>
@@ -72,6 +79,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -82,6 +93,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Resources\user_private_key" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

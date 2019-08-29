@@ -1,4 +1,5 @@
 ﻿using Dna;
+using Dna.central;
 using Dna.common;
 using Dna.user;
 using System;
@@ -40,6 +41,14 @@ namespace Connection
                         iv16 = crypto.Decrypt(dv.iv16, main_key);
                     }
                     break;
+                case f_login dv:
+                    {
+                        var res = await get_Answer(req);
+                        if (res is f_login.done done)
+                            z_user = done.id;
+                        write(res);
+                    }
+                    break;
                 case f_set_introcode dv:
                     {
 
@@ -52,12 +61,12 @@ namespace Connection
                             case f_get_userid.done dv2:
                                 {
                                     z_user = dv2.userid;
-                                    write(null);
+                                    write(new f_set_introcode.done());
                                 }
                                 break;
                             case f_get_userid.invalidcode dv2:
                                 {
-                                    write(new f_get_introcode.login_required());
+                                    write(new developer_error(""));
                                     await Task.Delay(1000 * 5);
                                     new_error("invalid introcode");
                                 }
@@ -65,10 +74,22 @@ namespace Connection
                         }
                     }
                     break;
-                default:
+                case f_get_chromosome_info dv:
                     {
                         var res = await get_Answer(req);
                         write(res);
+                    }
+                    break;
+                default:
+                    {
+                        if (z_user == 0)
+                            write(new login_required());
+                        else
+                        {
+                            req.z_user = z_user;
+                            var res = await get_Answer(req);
+                            write(res);
+                        }
                     }
                     break;
             }

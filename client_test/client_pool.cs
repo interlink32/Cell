@@ -20,6 +20,7 @@ namespace client_test
             for (int i = 0; i < n; i++)
             {
                 tester = new test();
+                await tester.start();
                 await Task.Delay(100);
             }
         }

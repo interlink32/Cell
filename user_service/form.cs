@@ -12,6 +12,7 @@ namespace user_service
 {
     public partial class form : Form
     {
+        service_im service = new service_im();
         public form()
         {
             InitializeComponent();

@@ -1,5 +1,6 @@
 ﻿using Connection;
 using Dna;
+using Dna.common;
 using Dna.user;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,12 @@ namespace user_service
         {
             await Task.CompletedTask;
             if (request.z_user == 0)
-                return new f_get_introcode.login_required();
-            return new f_get_introcode.done()
-            {
-                introcode = introcode.new_code(request.z_user)
-            };
+                return new developer_error("dkvkdfmnkgkbkdvkdkblfdk");
+            else
+                return new f_get_introcode.done()
+                {
+                    introcode = introcode.new_code(request.z_user)
+                };
         }
     }
 }

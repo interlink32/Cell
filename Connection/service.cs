@@ -1,5 +1,6 @@
 ﻿using Dna;
 using Dna.common;
+using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,15 +17,28 @@ namespace Connection
         public abstract service_gene[] elements { get; }
         public abstract byte[] private_key { get; }
         public abstract IPEndPoint endpoint { get; }
+        public abstract string userid { get; }
+        public abstract string password { get; }
 
         TcpListener listener;
         public service()
         {
+            starting();
+        }
+        async void starting()
+        {
+            if (!(userid == "1" || userid == "2"))
+            {
+                var dv = await login(userid, password);
+                if (!dv)
+                    throw new Exception("lfjhdhbjdjbjgndjbmdlvkx");
+            }
             elementsF = elements;
             listener = new TcpListener(endpoint);
             listener.Start();
             listen();
         }
+
         service_gene[] elementsF = null;
         List<server_side> list = new List<server_side>();
         SemaphoreSlim locking = new SemaphoreSlim(1, 1);

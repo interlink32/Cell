@@ -1,4 +1,5 @@
 ﻿using Connection;
+using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,25 @@ namespace client_test
             new multi(),
             new subtraction(),
         };
-        public test()
+
+        static int n = 1000;
+        static long get_id()
         {
-            start(new client());
+            n++;
+            return n;
+        }
+        public async Task start()
+        {
+            client client = new client();
+            var n = get_id();
+            var dv = await client.question(new f_login()
+            {
+                userid = n.ToString(),
+                password = n + "pass"
+            }) as f_login.done;
+            if (dv == null)
+                throw new Exception("lgkdhbjdjbjfbjucjdnbjcbndjbjcxn");
+            start(client);
         }
     }
 }

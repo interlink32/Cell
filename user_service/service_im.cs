@@ -16,12 +16,17 @@ namespace user_service
             {
                 return new service_gene[]
                 {
-                    
+                    new get_introcode(),
+                    new login(),
+                    new get_userid()
                 };
             }
         }
-        public override byte[] private_key => throw new NotImplementedException();
+        public override byte[] private_key => resource.user_private_key;
+        public override IPEndPoint endpoint => new IPEndPoint(reference.local_ip(), 10001);
 
-        public override IPEndPoint endpoint => throw new NotImplementedException();
+        public override string userid => "2";
+
+        public override string password => "2pass";
     }
 }

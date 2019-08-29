@@ -15,22 +15,25 @@ namespace client_test
 {
     public partial class form : Form
     {
-        client_pool pool = new client_pool(10);
-        //client client = new client();
         public form()
         {
             InitializeComponent();
             gene_tester.report_e += Test_new_report;
-          //  mmm();
+            mmm();
         }
-        //async void mmm()
-        //{
-        //    var dv = await client.question(new f_sum()
-        //    {
-        //        a = 12,
-        //        b = 3
-        //    });
-        //}
+
+        async void mmm()
+        {
+            await Task.Delay(1000);
+            //client_pool pool = new client_pool(1);
+            client client = new client();
+            var dv = await client.login("1000", "1000pass");
+            var rsv = await client.question(new f_sum()
+            {
+                a = 10,
+                b = 20
+            });
+        }
 
         private void Test_new_report()
         {

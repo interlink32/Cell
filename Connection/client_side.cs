@@ -35,17 +35,14 @@ namespace Connection
             await read();
             key32 = keys.key32;
             iv16 = keys.iv16;
-            if (chromosome != chromosome.user)
+            if (!(chromosome == chromosome.user || chromosome == chromosome.central))
             {
-                var rsv = await client.question(new f_get_introcode()
-                {
-                    chromosome = chromosome
-                }) as f_get_introcode.done;
-                if (rsv == null)
+                if (!(await client.question(new f_get_introcode()) is f_get_introcode.done rsv))
                     throw new Exception("kfkbhdhbjgkxlsmjfcks");
+
                 write(new f_set_introcode() { introcode = rsv.introcode });
-                var rsv2 = await read() as f_set_introcode.done;
-                if (rsv2 == null)
+
+                if (!(await read() is f_set_introcode.done))
                     throw new Exception("lgkdkbmrfjjcksmbmbkhfd");
             }
             reading();

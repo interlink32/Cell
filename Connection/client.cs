@@ -19,6 +19,19 @@ namespace Connection
         public event Action<string> notify_e;
         List<client_side> list;
         SemaphoreSlim locking = new SemaphoreSlim(1, 1);
+        public async Task<bool> login(string userid, string password)
+        {
+            if (!started)
+                await start();
+            var side = list.First(i => i.chromosome == chromosome.user);
+            var dv = await side.question(new f_login()
+            {
+                userid = userid,
+                password = password
+            }) as f_login.done;
+            logged = dv != null;
+            return logged;
+        }
         async Task start()
         {
             await locking.WaitAsync();
@@ -28,8 +41,8 @@ namespace Connection
                 return;
             }
             list = new List<client_side>();
-            var dv = reference.get_central_chromosome_info();
-            client_side client = new client_side(dv.chromosome, reference.get_endpoint(dv.endpoint), dv.public_key)
+            var info = reference.get_central_info();
+            client_side client = new client_side(chromosome.central, reference.get_endpoint(info.endpoint), info.public_key)
             {
                 client = this
             };
@@ -46,6 +59,7 @@ namespace Connection
             started = true;
             locking.Release();
         }
+
         private void I_notify_e(string obj)
         {
             notify_e?.Invoke(obj);
@@ -55,8 +69,8 @@ namespace Connection
         bool started = false;
         public async Task<response> question(request request)
         {
-            if (!started)
-                await start();
+            if (!logged)
+                throw new Exception("kdjdhbujfnbidndjbnxjfd");
             var dv = list.First(i => i.chromosome.ToString() == request.z_chromosome);
             var rt = await dv.question(request);
             return rt;
