@@ -29,13 +29,16 @@ namespace Connection
             }
             list = new List<client_side>();
             var dv = reference.get_central_chromosome_info();
-            client_side client = new client_side(dv.chromosome, reference.get_endpoint(dv.endpoint), dv.public_key);
+            client_side client = new client_side(dv.chromosome, reference.get_endpoint(dv.endpoint), dv.public_key)
+            {
+                client = this
+            };
             await client.connect();
             list.Add(client);
             var rsv = await client.question(new f_get_chromosome_info()) as f_get_chromosome_info.done;
             foreach (var i in rsv.chromosome_infos)
             {
-                client = new client_side(i.chromosome, reference.get_endpoint(i.endpoint), i.public_key);
+                client = new client_side(i.chromosome, reference.get_endpoint(i.endpoint), i.public_key) { client = this };
                 list.Add(client);
             }
             foreach (var i in list)
@@ -47,13 +50,15 @@ namespace Connection
         {
             notify_e?.Invoke(obj);
         }
+        public bool logged { get; private set; }
+
         bool started = false;
         public async Task<response> question(request request)
         {
             if (!started)
                 await start();
             var dv = list.First(i => i.chromosome.ToString() == request.z_chromosome);
-            var rt= await dv.question(request);
+            var rt = await dv.question(request);
             return rt;
         }
     }

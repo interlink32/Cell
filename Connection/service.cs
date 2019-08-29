@@ -27,20 +27,23 @@ namespace Connection
         }
         service_gene[] elementsF = null;
         List<server_side> list = new List<server_side>();
+        SemaphoreSlim locking = new SemaphoreSlim(1, 1);
         async void listen()
         {
             var tcp = await listener.AcceptTcpClientAsync();
-            server_side dv = new server_side(tcp, private_key, get_answer);
-            list.Add(dv);
+            server_side dv = new server_side(tcp, private_key, get_answer) { client = this };
+            add(dv);
             dv.error_e += Dv_error_e;
             listen();
         }
-        private void Dv_error_e(core arg1, string arg2)
+        private async void Dv_error_e(core arg1, string arg2)
         {
             var dv = arg1 as server_side;
+            await locking.WaitAsync();
+            list.Remove(dv);
+            locking.Release();
             dv.error_e -= Dv_error_e;
             dv.dispose();
-            list.Remove(dv);
         }
         async Task<response> get_answer(request request)
         {
@@ -49,6 +52,27 @@ namespace Connection
                 throw new Exception("zpjrughdwifhdksjgkfvhy");
             var dv2 = await dv.z_get_answer(request);
             return dv2;
+        }
+        async void add(server_side dv)
+        {
+            await locking.WaitAsync();
+            list.Add(dv);
+            locking.Release();
+        }
+        async Task<server_side[]> get(long user)
+        {
+            await locking.WaitAsync();
+            var dv = list.Where(i => i.z_user == user).ToArray();
+            locking.Release();
+            return dv;
+        }
+        public async void notify(notify notify)
+        {
+            var dv = await get(notify.z_user);
+            foreach (var i in dv)
+            {
+                i.write(notify);
+            }
         }
     }
 }

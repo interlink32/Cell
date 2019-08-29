@@ -36,7 +36,7 @@ namespace Connection
                 public_key = Resource1.public_key
             };
         }
-        static bool local = false;
+        static bool local = true;
         public static IPAddress valid_ip()
         {
             if (local)

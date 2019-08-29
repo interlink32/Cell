@@ -24,7 +24,11 @@ namespace Connection
 
         public TcpClient tcp = null;
         public event Action<core, string> error_e;
-        protected async void write(gene gene)
+        protected void new_error(string info)
+        {
+            error_e?.Invoke(this, info);
+        }
+        internal async void write(gene gene)
         {
             try
             {

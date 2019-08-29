@@ -1,5 +1,6 @@
 ﻿using Dna;
 using Dna.common;
+using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Connection
     {
         internal readonly chromosome chromosome;
         private readonly IPEndPoint endPoint;
+        internal client client = null;
         public client_side(chromosome chromosome, IPEndPoint endPoint, byte[] main_key) : base(main_key)
         {
             this.chromosome = chromosome;
@@ -33,6 +35,19 @@ namespace Connection
             await read();
             key32 = keys.key32;
             iv16 = keys.iv16;
+            if (chromosome != chromosome.user)
+            {
+                var rsv = await client.question(new f_get_introcode()
+                {
+                    chromosome = chromosome
+                }) as f_get_introcode.done;
+                if (rsv == null)
+                    throw new Exception("kfkbhdhbjgkxlsmjfcks");
+                write(new f_set_introcode() { introcode = rsv.introcode });
+                var rsv2 = await read() as f_set_introcode.done;
+                if (rsv2 == null)
+                    throw new Exception("lgkdkbmrfjjcksmbmbkhfd");
+            }
             reading();
         }
         public event Action<string> notify_e;
@@ -45,7 +60,7 @@ namespace Connection
             if (dv is notify)
             {
                 var dv2 = dv as notify;
-                notify_e?.Invoke(dv2.calling);
+                notify_e?.Invoke(dv2.z_calling);
             }
             else
             {
