@@ -16,7 +16,6 @@ namespace Connection
 {
     public class client
     {
-        public event Action<string> notify_e;
         List<client_side> list;
         SemaphoreSlim locking = new SemaphoreSlim(1, 1);
         public async Task<bool> login(string userid, string password)
@@ -59,10 +58,32 @@ namespace Connection
             started = true;
             locking.Release();
         }
-
-        private void I_notify_e(string obj)
+        class notify_me
         {
-            notify_e?.Invoke(obj);
+            public Type type = null;
+            public Action<notify> action = null;
+        }
+        List<notify_me> nl = new List<notify_me>();
+        SemaphoreSlim nl_locking = new SemaphoreSlim(1, 1);
+        public async void add(Type type, Action<notify> action)
+        {
+            if (action == null || type == null)
+                throw new Exception("kgjjdimkgjnkcdknmdkbdjc");
+            await nl_locking.WaitAsync();
+            nl.Add(new notify_me()
+            {
+                action = action,
+                type = type
+            });
+            nl_locking.Release();
+        }
+        async void I_notify_e(notify obj)
+        {
+            await nl_locking.WaitAsync();
+            var dv = nl.Where(i => i.type == obj.GetType()).ToArray();
+            nl_locking.Release();
+            foreach (var i in dv)
+                i.action(obj);
         }
         public bool logged { get; private set; }
 

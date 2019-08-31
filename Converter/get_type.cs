@@ -10,15 +10,9 @@ namespace Converter
     {
         static List<Type> list = new List<Type>();
         static Assembly assembly = Assembly.GetAssembly(typeof(Dna.gene));
-        static string[] commone =
-        {
-            "f_set_key"
-        };
         public static Type GetType(string chromosome, string gene)
         {
-            if (commone.Contains(gene))
-                chromosome = Dna.chromosome.common.ToString();
-            var dv = "Dna." + chromosome + "." + gene;
+            string dv = "Dna." + chromosome + "." + gene;
             var dv2 = list.FirstOrDefault(i => i.FullName == dv);
             if (dv2 == null)
             {

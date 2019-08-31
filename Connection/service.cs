@@ -34,6 +34,8 @@ namespace Connection
                     throw new Exception("lfjhdhbjdjbjgndjbmdlvkx");
             }
             elementsF = elements;
+            foreach (var i in elementsF)
+                i.service = this;
             listener = new TcpListener(endpoint);
             listener.Start();
             listen();

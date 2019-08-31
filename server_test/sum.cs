@@ -14,10 +14,22 @@ namespace server_test
         public async override Task<response> get_answer(f_sum request)
         {
             await Task.Delay(12);
+            mmm(request.a, request.b, request.z_user);
             return new f_sum.done()
             {
                 result = request.a + request.b
             };
+        }
+
+        async void mmm(long a, long b, long user)
+        {
+            await Task.Delay(3000);
+            notify(new n_last_action()
+            {
+                a = a,
+                b = b,
+                z_user = user
+            });
         }
     }
 }

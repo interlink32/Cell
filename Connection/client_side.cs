@@ -47,24 +47,23 @@ namespace Connection
             }
             reading();
         }
-        public event Action<string> notify_e;
+        public event Action<notify> notify_e;
         request_task sent = null;
         async void reading()
         {
-            var dv = await read();
-            if (dv == null)
+            var rsv = await read();
+            if (rsv == null)
                 return;
-            if (dv is notify)
+            if (rsv is notify dv)
             {
-                var dv2 = dv as notify;
-                notify_e?.Invoke(dv2.z_calling);
+                notify_e?.Invoke(dv);
             }
             else
             {
                 await locking.WaitAsync();
                 if (sent == null)
                     throw new Exception("lgjfjbjdfjbhhfhvhc");
-                sent.task.SetResult(dv as response);
+                sent.task.SetResult(rsv as response);
                 sent = null;
                 send();
                 locking.Release();

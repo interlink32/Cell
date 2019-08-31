@@ -8,6 +8,7 @@ namespace Connection
 {
     public abstract class service_gene
     {
+        internal service service;
         internal service_gene() { }
         internal abstract Task<response> z_get_answer(request request);
         internal abstract string z_gene { get; }
@@ -18,6 +19,10 @@ namespace Connection
         public service_gene()
         {
             z_gene = typeof(T).Name;
+        }
+        public void notify(notify notify)
+        {
+            service.notify(notify);
         }
         public abstract Task<response> get_answer(T request);
         internal sealed override Task<response> z_get_answer(request request)
