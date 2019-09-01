@@ -47,7 +47,6 @@ namespace Connection
             }
             reading();
         }
-        public event Action<notify> notify_e;
         request_task sent = null;
         async void reading()
         {
@@ -55,9 +54,7 @@ namespace Connection
             if (rsv == null)
                 return;
             if (rsv is notify dv)
-            {
-                notify_e?.Invoke(dv);
-            }
+                client.receive_notify(dv);
             else
             {
                 await locking.WaitAsync();

@@ -27,12 +27,18 @@ namespace client_test
             await Task.Delay(1000);
             //client_pool pool = new client_pool(1);
             client client = new client();
+            client.notify_e += Client_notify_e;
             var dv = await client.login("1000", "1000pass");
             var rsv = await client.question(new f_sum()
             {
                 a = 10,
                 b = 20
             });
+        }
+
+        private void Client_notify_e(notify obj)
+        {
+            
         }
 
         private void Test_new_report()

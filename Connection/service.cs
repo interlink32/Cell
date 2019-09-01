@@ -82,7 +82,7 @@ namespace Connection
             locking.Release();
             return dv;
         }
-        public async void notify(notify notify)
+        public async void send_notify(notify notify)
         {
             var dv = await get(notify.z_user);
             foreach (var i in dv)

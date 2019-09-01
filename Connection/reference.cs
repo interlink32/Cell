@@ -33,7 +33,7 @@ namespace Connection
             {
                 chromosome = chromosome.central,
                 endpoint = new IPEndPoint(valid_ip(), 10000).ToString(),
-                public_key = Resource1.public_key
+                public_key = resource.central_public_key
             };
         }
         static bool local = false;
