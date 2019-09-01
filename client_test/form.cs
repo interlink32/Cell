@@ -21,33 +21,43 @@ namespace client_test
             gene_tester.report_e += Test_new_report;
             mmm();
         }
-
+        client client1 = null;
+        long id1 = 1000;
+        long id2 = 1001;
+        client client2 = null;
         async void mmm()
         {
             await Task.Delay(1000);
-            client client1 = new client();
+            client1 = new client();
             client1.notify_e += Client1_notify_e;
-            var dv = await client1.login("1000", "1000pass");
+            var dv = await client1.login(id1.ToString(), "1000pass");
 
-            client client2 = new client();
-            client1.notify_e += Client2_notify_e;
-            var dv2 = await client1.login("1001", "1001pass");
+            client2 = new client();
 
-            var rsv =await client1.question(new f_send_message()
+            client2.notify_e += Client2_notify_e;
+            var dv2 = await client2.login(id2.ToString(), "1001pass");
+            await client2.connect_all();
+            var rsv = await client1.question(new f_send_message()
             {
-                receiver_user=1001,
-                message="Hello"
+                receiver_user = id2,
+                message = "form 1 to 2"
             });
         }
-
-        private void Client2_notify_e(notify obj)
+        async void Client2_notify_e(notify obj)
         {
-            
+            var rsv = await client2.question(new f_send_message()
+            {
+                receiver_user = id1,
+                message = "from 2 to 1"
+            });
         }
-
-        private void Client1_notify_e(notify obj)
+        async void Client1_notify_e(notify obj)
         {
-            
+            var rsv = await client1.question(new f_send_message()
+            {
+                receiver_user = id2,
+                message = "form 1 to 2"
+            });
         }
 
         private void Test_new_report()

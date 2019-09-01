@@ -56,6 +56,14 @@ namespace Connection
             started = true;
             locking.Release();
         }
+        public async Task connect_all()
+        {
+            foreach (var item in list)
+            {
+                if (item.tcp == null)
+                    await item.connect();
+            }
+        }
         public event Action<notify> notify_e;
         internal void receive_notify(notify obj)
         {
