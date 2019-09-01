@@ -8,5 +8,9 @@ namespace Dna.test
     {
         public long sender = 0;
         public string message = null;
+
+        public n_new_message(long receiver) : base(receiver)
+        {
+        }
     }
 }

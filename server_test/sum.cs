@@ -24,11 +24,10 @@ namespace server_test
         async void mmm(long a, long b, long user)
         {
             await Task.Delay(3000);
-            notify(new n_last_action()
+            var dv = notify(new n_last_action(user)
             {
                 a = a,
-                b = b,
-                z_user = user
+                b = b
             });
         }
     }

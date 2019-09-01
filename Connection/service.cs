@@ -85,7 +85,7 @@ namespace Connection
         public async Task<bool> send_notify(notify notify)
         {
             bool reseve = false;
-            var dv = await get(notify.z_user);
+            var dv = await get(notify.z_receiver);
             foreach (var i in dv)
             {
                 i.write(notify);

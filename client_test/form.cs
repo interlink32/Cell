@@ -31,9 +31,9 @@ namespace client_test
 
             client client2 = new client();
             client1.notify_e += Client2_notify_e;
-            var dv2 = await client1.login("1001", "1000pass");
+            var dv2 = await client1.login("1001", "1001pass");
 
-            var rsv = client1.question(new f_send_message()
+            var rsv =await client1.question(new f_send_message()
             {
                 receiver_user=1001,
                 message="Hello"

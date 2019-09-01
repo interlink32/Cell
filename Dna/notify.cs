@@ -6,6 +6,10 @@ namespace Dna
 {
     public class notify : gene
     {
-        public long z_user = 0;
+        public readonly long z_receiver;
+        public notify(long receiver)
+        {
+            this.z_receiver = receiver;
+        }
     }
 }

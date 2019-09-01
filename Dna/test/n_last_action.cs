@@ -8,5 +8,9 @@ namespace Dna.test
     {
         public long a = 0;
         public long b = 0;
+
+        public n_last_action(long receiver) : base(receiver)
+        {
+        }
     }
 }

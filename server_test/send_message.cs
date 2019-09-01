@@ -13,9 +13,9 @@ namespace server_test
     {
         public async override Task<response> get_answer(f_send_message request)
         {
-            var dv = await notify(new n_new_message()
+            var dv = await notify(new n_new_message(request.receiver_user)
             {
-                sender = request.receiver_user,
+                sender = request.z_user,
                 message = request.message
             });
             return new f_send_message.done() { resieved = dv };
