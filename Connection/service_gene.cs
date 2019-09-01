@@ -20,9 +20,9 @@ namespace Connection
         {
             z_gene = typeof(T).Name;
         }
-        public void notify(notify notify)
+        public async Task<bool> notify(notify notify)
         {
-            service.send_notify(notify);
+            return await service.send_notify(notify);
         }
         public abstract Task<response> get_answer(T request);
         internal sealed override Task<response> z_get_answer(request request)

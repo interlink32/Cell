@@ -18,7 +18,8 @@ namespace server_test
                 {
                     new subtraction(),
                     new sum(),
-                    new multi()
+                    new multi(),
+                    new send_message()
                 };
             }
         }

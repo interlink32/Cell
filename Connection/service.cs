@@ -82,13 +82,16 @@ namespace Connection
             locking.Release();
             return dv;
         }
-        public async void send_notify(notify notify)
+        public async Task<bool> send_notify(notify notify)
         {
+            bool reseve = false;
             var dv = await get(notify.z_user);
             foreach (var i in dv)
             {
                 i.write(notify);
+                reseve = true;
             }
+            return reseve;
         }
     }
 }

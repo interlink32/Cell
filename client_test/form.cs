@@ -25,18 +25,27 @@ namespace client_test
         async void mmm()
         {
             await Task.Delay(1000);
-            //client_pool pool = new client_pool(1);
-            client client = new client();
-            client.notify_e += Client_notify_e;
-            var dv = await client.login("1000", "1000pass");
-            var rsv = await client.question(new f_sum()
+            client client1 = new client();
+            client1.notify_e += Client1_notify_e;
+            var dv = await client1.login("1000", "1000pass");
+
+            client client2 = new client();
+            client1.notify_e += Client2_notify_e;
+            var dv2 = await client1.login("1001", "1000pass");
+
+            var rsv = client1.question(new f_send_message()
             {
-                a = 10,
-                b = 20
+                receiver_user=1001,
+                message="Hello"
             });
         }
 
-        private void Client_notify_e(notify obj)
+        private void Client2_notify_e(notify obj)
+        {
+            
+        }
+
+        private void Client1_notify_e(notify obj)
         {
             
         }
