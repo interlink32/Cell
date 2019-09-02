@@ -16,10 +16,7 @@ namespace server_test
             {
                 return new service_gene[]
                 {
-                    new subtraction(),
-                    new sum(),
-                    new multi(),
-                    new send_message()
+                    new message()
                 };
             }
         }

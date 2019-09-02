@@ -55,8 +55,7 @@
     <Compile Include="form.Designer.cs">
       <DependentUpon>form.cs</DependentUpon>
     </Compile>
-    <Compile Include="multi.cs" />
-    <Compile Include="send_message.cs" />
+    <Compile Include="message.cs" />
     <Compile Include="service_im.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,8 +64,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>store.resx</DependentUpon>
     </Compile>
-    <Compile Include="sum.cs" />
-    <Compile Include="subtraction.cs" />
     <EmbeddedResource Include="form.resx">
       <DependentUpon>form.cs</DependentUpon>
     </EmbeddedResource>

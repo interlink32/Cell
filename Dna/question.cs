@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Dna
 {
-    public abstract class request : gene
+    public abstract class question : gene
     {
         [JsonIgnore]
         public long z_user = 0;

@@ -61,7 +61,7 @@ namespace Connection
             dv.error_e -= Dv_error_e;
             dv.dispose();
         }
-        async Task<response> get_answer(request request)
+        async Task<answer> get_answer(question request)
         {
             var dv = elementsF.FirstOrDefault(i => i.z_gene == request.z_gene);
             if (dv == null)

@@ -62,7 +62,7 @@ namespace Connection
                 await locking.WaitAsync();
                 if (sent == null)
                     throw new Exception("lgjfjbjdfjbhhfhvhc");
-                sent.task.SetResult(rsv as response);
+                sent.task.SetResult(rsv as answer);
                 sent = null;
                 send();
                 locking.Release();
@@ -71,12 +71,12 @@ namespace Connection
         }
         class request_task
         {
-            public request request = null;
-            public TaskCompletionSource<response> task = new TaskCompletionSource<response>();
+            public question request = null;
+            public TaskCompletionSource<answer> task = new TaskCompletionSource<answer>();
         }
         List<request_task> list = new List<request_task>();
         SemaphoreSlim locking = new SemaphoreSlim(1, 1);
-        public async Task<response> question(request request)
+        public async Task<answer> question(question request)
         {
             var dv = new request_task()
             {

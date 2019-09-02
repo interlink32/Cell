@@ -18,6 +18,7 @@ namespace Connection
     {
         List<client_side> list;
         SemaphoreSlim locking = new SemaphoreSlim(1, 1);
+        public long z_id { get; private set; }
         public async Task<bool> login(string userid, string password)
         {
             if (!started)
@@ -29,6 +30,7 @@ namespace Connection
                 password = password
             }) as f_login.done;
             logged = dv != null;
+            z_id = dv?.id ?? 0;
             return logged;
         }
         async Task start()
@@ -69,12 +71,12 @@ namespace Connection
         public bool logged { get; private set; }
 
         bool started = false;
-        public async Task<response> question(request request)
+        public async Task<answer> question(question question)
         {
             if (!logged)
                 throw new Exception("kdjdhbujfnbidndjbnxjfd");
-            var dv = list.First(i => i.chromosome.ToString() == request.z_chromosome);
-            var rt = await dv.question(request);
+            var dv = list.First(i => i.chromosome.ToString() == question.z_chromosome);
+            var rt = await dv.question(question);
             return rt;
         }
     }

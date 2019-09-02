@@ -10,10 +10,10 @@ namespace Connection
     {
         internal service service;
         internal service_gene() { }
-        internal abstract Task<response> z_get_answer(request request);
+        internal abstract Task<answer> z_get_answer(question request);
         internal abstract string z_gene { get; }
     }
-    public abstract class service_gene<T> : service_gene where T : request
+    public abstract class service_gene<T> : service_gene where T : question
     {
         internal sealed override string z_gene { get; }
         public service_gene()
@@ -24,8 +24,8 @@ namespace Connection
         {
             return await service.send_notify(notify);
         }
-        public abstract Task<response> get_answer(T request);
-        internal sealed override Task<response> z_get_answer(request request)
+        public abstract Task<answer> get_answer(T request);
+        internal sealed override Task<answer> z_get_answer(question request)
         {
             return get_answer(request as T);
         }

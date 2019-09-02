@@ -30,7 +30,7 @@ namespace central_service
             });
             chromosome_infos = list.ToArray();
         }
-        public async override Task<response> get_answer(f_get_chromosome_info request)
+        public async override Task<answer> get_answer(f_get_chromosome_info request)
         {
             await Task.CompletedTask;
             return new f_get_chromosome_info.done()

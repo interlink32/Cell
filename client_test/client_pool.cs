@@ -2,28 +2,38 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace client_test
 {
     class client_pool
     {
-        private readonly int n;
-        public client_pool(int n)
+        static async Task<client_tester> create(long id)
         {
-            this.n = n;
-            start();
+            client_tester dv = new client_tester();
+            await dv.start(id);
+            return dv;
         }
-        public async void start()
+
+        int index = 1000;
+        int max = 1000 + 50;
+        client_tester last;
+        public async void start(object o)
         {
-            test tester;
-            for (int i = 0; i < n; i++)
+            await Task.Delay(100);
+            if (last == null)
             {
-                tester = new test();
-              
-                await tester.start();
-                await Task.Delay(100);
+                last = await create(index);
+                index++;
             }
+            var dv = await create(index);
+            last.connect(index);
+            last = dv;
+            if (index == max)
+                return;
+            index++;
+            ThreadPool.QueueUserWorkItem(start);
         }
     }
 }

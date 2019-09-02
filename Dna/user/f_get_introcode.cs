@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Dna.user
 {
-    public class f_get_introcode : request
+    public class f_get_introcode : question
     {
-        public class done : response
+        public class done : answer
         {
             public byte[] introcode = null;
         }

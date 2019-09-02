@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dna
 {
-    public class response : gene
+    public class answer : gene
     {
 
     }

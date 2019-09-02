@@ -14,9 +14,9 @@ namespace Connection
     class server_side : core
     {
         internal long z_user = 0;
-        Func<request, Task<response>> get_Answer;
+        Func<question, Task<answer>> get_Answer;
         internal client client = null;
-        public server_side(TcpClient tcp, byte[] main_key, Func<request, Task<response>> get_answer) : base(main_key)
+        public server_side(TcpClient tcp, byte[] main_key, Func<question, Task<answer>> get_answer) : base(main_key)
         {
             this.tcp = tcp;
             get_Answer = get_answer;
@@ -30,7 +30,7 @@ namespace Connection
         }
         async void reading(object o)
         {
-            if (!(await read() is request req))
+            if (!(await read() is question req))
                 return;
             switch (req)
             {

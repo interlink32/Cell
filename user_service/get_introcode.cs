@@ -13,7 +13,7 @@ namespace user_service
 {
     class get_introcode : service_gene<f_get_introcode>
     {
-        public async override Task<response> get_answer(f_get_introcode request)
+        public async override Task<answer> get_answer(f_get_introcode request)
         {
             await Task.CompletedTask;
             if (request.z_user == 0)

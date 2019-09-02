@@ -11,7 +11,7 @@ namespace user_service
 {
     class login : service_gene<f_login>
     {
-        public async override Task<response> get_answer(f_login request)
+        public async override Task<answer> get_answer(f_login request)
         {
             await Task.CompletedTask;
             if (request.userid + "pass" == request.password)
