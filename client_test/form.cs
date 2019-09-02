@@ -36,27 +36,30 @@ namespace client_test
 
             client2.notify_e += Client2_notify_e;
             var dv2 = await client2.login(id2.ToString(), "1001pass");
-            await client2.connect_all();
+            await client2.connect(chromosome.test);
             var rsv = await client1.question(new f_send_message()
             {
                 receiver_user = id2,
                 message = "form 1 to 2"
             });
         }
+        int n = 0;
         async void Client2_notify_e(notify obj)
         {
+            n++;
             var rsv = await client2.question(new f_send_message()
             {
                 receiver_user = id1,
-                message = "from 2 to 1"
+                message = "from 2 to 1: " + n
             });
         }
         async void Client1_notify_e(notify obj)
         {
+            n++;
             var rsv = await client1.question(new f_send_message()
             {
                 receiver_user = id2,
-                message = "form 1 to 2"
+                message = "form 1 to 2: " + n
             });
         }
 

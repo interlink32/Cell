@@ -56,13 +56,10 @@ namespace Connection
             started = true;
             locking.Release();
         }
-        public async Task connect_all()
+        public async Task connect(chromosome chromosome)
         {
-            foreach (var item in list)
-            {
-                if (item.tcp == null)
-                    await item.connect();
-            }
+            var dv = list.First(i => i.chromosome == chromosome);
+            await dv.connect();
         }
         public event Action<notify> notify_e;
         internal void receive_notify(notify obj)

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "user_service", "user_servic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "central_service", "central_service\central_service.csproj", "{464A3341-FA69-459D-ACC2-D49FCF5B5092}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "messengar", "messengar\messengar.csproj", "{32184194-BE00-4514-B4B5-9FFE3FC1F83A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{464A3341-FA69-459D-ACC2-D49FCF5B5092}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{464A3341-FA69-459D-ACC2-D49FCF5B5092}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{464A3341-FA69-459D-ACC2-D49FCF5B5092}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32184194-BE00-4514-B4B5-9FFE3FC1F83A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32184194-BE00-4514-B4B5-9FFE3FC1F83A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32184194-BE00-4514-B4B5-9FFE3FC1F83A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32184194-BE00-4514-B4B5-9FFE3FC1F83A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

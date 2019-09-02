@@ -24,6 +24,8 @@ namespace Connection
         }
         public async Task connect()
         {
+            if (tcp != null && tcp.Connected)
+                return;
             tcp = new TcpClient();
             await tcp.ConnectAsync(endPoint.Address, endPoint.Port);
             var keys = crypto.create_symmetrical_keys();
@@ -81,8 +83,7 @@ namespace Connection
                 request = request,
             };
             await locking.WaitAsync();
-            if (tcp == null)
-                await connect();
+            await connect();
             list.Add(dv);
             send();
             locking.Release();
