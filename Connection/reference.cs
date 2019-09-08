@@ -1,5 +1,5 @@
 ﻿using Dna;
-using Dna.central;
+using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -27,16 +27,16 @@ namespace Connection
             }
             return new IPEndPoint(ip, port);
         }
-        internal static s_chromosome_info get_central_info()
+        internal static s_chromosome_info get_user_info()
         {
             return new s_chromosome_info()
             {
-                chromosome = chromosome.central,
+                chromosome = chromosome.user,
                 endpoint = new IPEndPoint(valid_ip(), 10000).ToString(),
-                public_key = resource.central_public_key
+                public_key = resource.user_public_key
             };
         }
-        static bool local = false;
+        static bool local = true;
         public static IPAddress valid_ip()
         {
             if (local)

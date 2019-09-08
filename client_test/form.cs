@@ -22,9 +22,8 @@ namespace client_test
             InitializeComponent();
             start();
         }
-        async void start()
+        void start()
         {
-            await Task.Delay(1000);
             ThreadPool.QueueUserWorkItem(client_Pool.start);
             Invoke(new Action(report));
         }

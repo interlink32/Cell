@@ -1,6 +1,6 @@
 ﻿using Connection;
 using Dna;
-using Dna.central;
+using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace central_service
+namespace user_service
 {
     class get_chromosome_info : service_gene<f_get_chromosome_info>
     {
@@ -18,14 +18,8 @@ namespace central_service
             List<s_chromosome_info> list = new List<s_chromosome_info>();
             list.Add(new s_chromosome_info()
             {
-                chromosome = chromosome.user,
-                endpoint = new IPEndPoint(reference.valid_ip(), 10001).ToString(),
-                public_key = resource.user_public_key
-            });
-            list.Add(new s_chromosome_info()
-            {
                 chromosome = chromosome.test,
-                endpoint = new IPEndPoint(reference.valid_ip(), 10002).ToString(),
+                endpoint = new IPEndPoint(reference.valid_ip(), 10001).ToString(),
                 public_key = resource.test_public_key
             });
             chromosome_infos = list.ToArray();

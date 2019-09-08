@@ -1,83 +1,141 @@
-﻿using Converter;
-using Dna;
-using Dna.central;
+﻿using Dna;
 using Dna.common;
-using Dna.test;
 using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Connection
 {
     public class client
     {
-        List<client_side> list;
-        SemaphoreSlim locking = new SemaphoreSlim(1, 1);
-        public long z_id { get; private set; }
-        public async Task<bool> login(string userid, string password)
+        client_side user_side = null;
+        public client()
         {
-            if (!started)
-                await start();
-            var side = list.First(i => i.chromosome == chromosome.user);
-            var dv = await side.question(new f_login()
-            {
-                userid = userid,
-                password = password
-            }) as f_login.done;
-            logged = dv != null;
-            z_id = dv?.id ?? 0;
-            return logged;
+            user_side = new client_side(this, reference.get_user_info());
+            list.Add(user_side);
         }
-        async Task start()
+        internal async Task login(core core)
         {
-            await locking.WaitAsync();
-            if (started)
-            {
-                locking.Release();
+            var dv = list.FirstOrDefault(i => i == core);
+            if (dv == null)
                 return;
-            }
-            list = new List<client_side>();
-            var info = reference.get_central_info();
-            client_side client = new client_side(chromosome.central, reference.get_endpoint(info.endpoint), info.public_key)
+            if (dv == user_side)
             {
-                client = this
-            };
-            await client.connect();
-            list.Add(client);
-            var rsv = await client.question(new f_get_chromosome_info()) as f_get_chromosome_info.done;
-            foreach (var i in rsv.chromosome_infos)
-            {
-                client = new client_side(i.chromosome, reference.get_endpoint(i.endpoint), i.public_key) { client = this };
-                list.Add(client);
+                await autologin();
+                create_items();
             }
-            started = true;
-            locking.Release();
+            else
+            {
+                var td = await s.load<token_device>("td");
+                var rsv = await user_side.question(new f_get_introcode()
+                {
+                    token = td.token,
+                    divce = td.device
+                }) as f_get_introcode.done;
+                core.write(new f_intrologin()
+                {
+                    introcode = rsv.introcode
+                });
+                if (!(await core.read() is f_intrologin.done))
+                    throw new Exception("lvkdlbmfkvkxmkblcc");
+            }
         }
-        public async Task connect(chromosome chromosome)
+        public event Func<Task<(string userid, string password)>> userid_password_e;
+        async Task autologin()
         {
-            var dv = list.First(i => i.chromosome == chromosome);
-            await dv.connect();
+            //s.save("td", null);
+            var dv = await s.load<token_device>("td");
+            if (dv == null)
+                await login();
+            else
+            {
+                user_side.write(new f_autologin()
+                {
+                    divice = dv.device,
+                    token = dv.token
+                });
+                var rsv = await user_side.read();
+                switch (rsv)
+                {
+                    case f_autologin.done done:
+                        {
+                            z_user = done.id;
+                        }
+                        break;
+                    case f_autologin.invalid_token invalid:
+                        {
+                            s.save("td", null);
+                            await login();
+                        }
+                        break;
+                }
+            }
         }
-        public event Action<notify> notify_e;
-        internal void receive_notify(notify obj)
-        {
-            notify_e?.Invoke(obj);
-        }
-        public bool logged { get; private set; }
 
-        bool started = false;
+        private async Task login()
+        {
+            while (true)
+            {
+                var info = await userid_password_e?.Invoke();
+                if (await login(info.userid, info.password))
+                    return;
+            }
+        }
+        bool ready_items = false;
+        async void create_items()
+        {
+            if (ready_items)
+                return;
+            ready_items = true;
+            var rsv = await user_side.question(new f_get_chromosome_info());
+            if (!(rsv is f_get_chromosome_info.done done))
+                throw new Exception("lbjjbnfjbjcjdjbkckb,fd");
+            foreach (var i in done.chromosome_infos)
+                list.Add(new client_side(this, i));
+        }
         public async Task<answer> question(question question)
         {
-            if (!logged)
-                throw new Exception("kdjdhbujfnbidndjbnxjfd");
-            var dv = list.First(i => i.chromosome.ToString() == question.z_chromosome);
-            var rt = await dv.question(question);
-            return rt;
+            var dv = list.First(i => i.info.chromosome.ToString() == question.z_chromosome);
+            return await dv.question(question);
+        }
+        class token_device
+        {
+            public double device = 0;
+            public double token = 0;
+        }
+
+        List<client_side> list = new List<client_side>();
+        public long z_user { get; private set; }
+        async Task<bool> login(string userid, string password)
+        {
+            Random random = new Random();
+            var divce = random.NextDouble();
+            user_side.write(new f_login()
+            {
+                userid = userid,
+                divce = divce,
+                password = password
+            });
+            switch (await user_side.read())
+            {
+                case f_login.done rsv:
+                    {
+                        z_user = rsv.id;
+                        s.save("td", new token_device()
+                        {
+                            device = divce,
+                            token = rsv.token
+                        });
+                        return true;
+                    }
+                case f_login.invalid rsv:
+                    {
+                        return false;
+                    }
+            }
+            throw new Exception("lgjcjjbjcdjbkdfjkvkdjgj");
         }
     }
 }

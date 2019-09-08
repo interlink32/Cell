@@ -17,12 +17,18 @@ namespace user_service
         {
             await Task.CompletedTask;
             if (request.z_user == 0)
-                return new developer_error("dkvkdfmnkgkbkdvkdkblfdk");
+                return new developer_error() { code = "dkvkdfmnkgkbkdvkdkblfdk" };
             else
-                return new f_get_introcode.done()
-                {
-                    introcode = introcode.new_code(request.z_user)
-                };
+            {
+                var dv = await login.get(request.divce, request.token);
+                if (dv == null)
+                    return new developer_error() { code = "lkdlbfkhkvkfmbkgvkc" };
+                else
+                    return new f_get_introcode.done()
+                    {
+                        introcode = introcode.new_code(request.z_user)
+                    };
+            }
         }
     }
 }

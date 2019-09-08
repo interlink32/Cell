@@ -15,13 +15,14 @@ namespace client_test
         client client = null;
         public async Task<bool> start(long id)
         {
-            client = new client();
-            var dv = await client.login(id.ToString(), id + "pass");
-            if (!dv)
-                report.login_error++;
-            client.notify_e += Client_notify_e;
-            await client.connect(chromosome.test);
-            return dv;
+            //client = new client();
+            //var dv = await client.login(id.ToString(), id + "pass");
+            //if (!dv)
+            //    report.login_error++;
+            //client.notify_e += Client_notify_e;
+            //await client.connect(chromosome.test);
+            //await Task.CompletedTask;
+            return true;
         }
         class item
         {
@@ -70,6 +71,7 @@ namespace client_test
                         if (dv.value + 1 != message.value)
                             throw new Exception("lbllbfklclflblf");
                         dv.value = message.value + 1;
+                        await Task.Delay(2000);
                         send(dv);
                     }
                     break;

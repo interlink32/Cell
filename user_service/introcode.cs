@@ -13,17 +13,17 @@ namespace user_service
         class item
         {
             public long user = 0;
-            public byte[] code = new byte[32];
+            public double code = 0;
         }
         static List<item> list = new List<item>();
         internal static SemaphoreSlim locking = new SemaphoreSlim(1, 1);
-        public static byte[] new_code(long user)
+        public static double new_code(long user)
         {
             item item = new item()
             {
-                user = user
+                user = user,
+                code = random.NextDouble()
             };
-            random.NextBytes(item.code);
             add(item);
             return item.code;
         }
@@ -35,10 +35,10 @@ namespace user_service
             locking.Release();
         }
 
-        public static async Task<long> get_userid(byte[] introcode)
+        public static async Task<long> get_userid(double introcode)
         {
             await locking.WaitAsync();
-            var dv = list.FirstOrDefault(i => i.code.SequenceEqual(introcode));
+            var dv = list.FirstOrDefault(i => i.code == introcode);
             locking.Release();
             return dv?.user ?? 0;
         }

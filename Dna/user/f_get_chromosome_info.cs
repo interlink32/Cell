@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dna.central
+namespace Dna.user
 {
     public class f_get_chromosome_info : question
     {

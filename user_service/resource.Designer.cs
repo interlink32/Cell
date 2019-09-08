@@ -63,9 +63,29 @@ namespace user_service {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
+        internal static byte[] test_public_key {
+            get {
+                object obj = ResourceManager.GetObject("test_public_key", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
         internal static byte[] user_private_key {
             get {
                 object obj = ResourceManager.GetObject("user_private_key", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] user_public_key {
+            get {
+                object obj = ResourceManager.GetObject("user_public_key", resourceCulture);
                 return ((byte[])(obj));
             }
         }

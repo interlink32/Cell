@@ -17,7 +17,7 @@ namespace client_test
         }
 
         int index = 1000;
-        int max = 1000 + 50;
+        int max = 1000 + 1;
         client_tester last;
         public async void start(object o)
         {

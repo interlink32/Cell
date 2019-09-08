@@ -1,11 +1,8 @@
 ﻿using Dna;
-using Dna.central;
-using Dna.common;
 using Dna.user;
+using Dna.common;
 using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -31,14 +28,28 @@ namespace Connection
         async void reading(object o)
         {
             if (!(await read() is question req))
-                return;
+                throw new Exception("lgkhkgodbfkfjdhsgfghdhvh");
             switch (req)
             {
                 case f_set_key dv:
                     {
-                        write(null);
                         key32 = crypto.Decrypt(dv.key32, main_key);
                         iv16 = crypto.Decrypt(dv.iv16, main_key);
+                        write(null);
+                    }
+                    break;
+                case f_get_chromosome_info dv:
+                    {
+                        var res = await get_Answer(req);
+                        write(res);
+                    }
+                    break;
+                case f_autologin dv:
+                    {
+                        var res = await get_Answer(req);
+                        if (res is f_autologin.done done)
+                            z_user = done.id;
+                        write(res);
                     }
                     break;
                 case f_login dv:
@@ -49,35 +60,29 @@ namespace Connection
                         write(res);
                     }
                     break;
-                case f_set_introcode dv:
+                case f_intrologin dv:
                     {
 
-                        var rsv = await client.question(new f_get_userid()
+                        var rsv = await client.question(new f_introcheck()
                         {
                             introcode = dv.introcode
                         });
                         switch (rsv)
                         {
-                            case f_get_userid.done dv2:
+                            case f_introcheck.done dv2:
                                 {
                                     z_user = dv2.userid;
-                                    write(new f_set_introcode.done());
+                                    write(new f_intrologin.done());
                                 }
                                 break;
-                            case f_get_userid.invalidcode dv2:
+                            case f_introcheck.invalidcode dv2:
                                 {
-                                    write(new developer_error(""));
+                                    write(new developer_error() { code = "kgknjfkmfmbmfmbmcmd" });
                                     await Task.Delay(1000 * 5);
-                                    new_error("invalid introcode");
+                                    repotr.error_e?.Invoke(this, "invalid introcode");
                                 }
                                 break;
                         }
-                    }
-                    break;
-                case f_get_chromosome_info dv:
-                    {
-                        var res = await get_Answer(req);
-                        write(res);
                     }
                     break;
                 default:

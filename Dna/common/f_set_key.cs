@@ -8,5 +8,6 @@ namespace Dna.common
     {
         public byte[] key32 = null;
         public byte[] iv16 = null;
+        public class done : answer { }
     }
 }

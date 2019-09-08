@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Connection
 {
-    class core
+    public class core
     {
         static converter converter = new converter();
         internal byte[] main_key = null;
@@ -23,11 +23,6 @@ namespace Connection
         }
 
         public TcpClient tcp = null;
-        public event Action<core, string> error_e;
-        protected void new_error(string info)
-        {
-            error_e?.Invoke(this, info);
-        }
         internal async void write(gene gene)
         {
             try
@@ -45,10 +40,21 @@ namespace Connection
             }
             catch (Exception e)
             {
-                error_e?.Invoke(this, "write: " + e.Message);
+                disconnec();
+                throw new Exception("write: " + e.Message);
             }
         }
-        protected async Task<gene> read()
+
+        internal bool connected = false;
+        public event Action<core, string> disconnect_e;
+        private void disconnec()
+        {
+            tcp.Close();
+            tcp = null;
+            disconnect_e?.Invoke(this, null);
+        }
+
+        internal async Task<gene> read()
         {
             try
             {
@@ -56,20 +62,21 @@ namespace Connection
                 await tcp.GetStream().ReadAsync(data, 0, data.Length);
                 var len = BitConverter.ToInt32(data, 0);
                 if (len == 0)
-                    return null;
+                    return new void_answer();
                 data = new byte[len];
                 await tcp.GetStream().ReadAsync(data, 0, len);
                 if (key32 != null)
                     data = crypto.Decrypt(data, key32, iv16);
-                return converter.change(data) as gene;
+                var dv = converter.change(data) as gene;
+                return dv;
             }
             catch (Exception e)
             {
-                error_e?.Invoke(this, "read: " + e.Message);
-                return null;
+                connected = false;
+                throw new Exception("read: " + e.Message);
             }
         }
-        private byte[] Combine(params byte[][] arrays)
+        public static byte[] Combine(params byte[][] arrays)
         {
             byte[] rv = new byte[arrays.Sum(a => a.Length)];
             int offset = 0;

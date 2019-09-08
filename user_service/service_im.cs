@@ -16,17 +16,19 @@ namespace user_service
             {
                 return new service_gene[]
                 {
+                    new get_chromosome_info(),
                     new get_introcode(),
                     new login(),
-                    new get_userid()
+                    new get_userid(),
+                    new autologin()
                 };
             }
         }
         public override byte[] private_key => resource.user_private_key;
-        public override IPEndPoint endpoint => new IPEndPoint(reference.local_ip(), 10001);
+        public override IPEndPoint endpoint => new IPEndPoint(reference.local_ip(), 10000);
 
-        public override string userid => "2";
+        public override string userid => "1";
 
-        public override string password => "2pass";
+        public override string password => "1pass";
     }
 }

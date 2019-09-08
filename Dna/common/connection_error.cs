@@ -4,8 +4,7 @@ using System.Text;
 
 namespace Dna.common
 {
-    public class developer_error : answer
+    public class connection_error : answer
     {
-        public string code = null;
     }
 }

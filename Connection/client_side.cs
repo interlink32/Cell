@@ -1,12 +1,9 @@
 ﻿using Dna;
-using Dna.common;
 using Dna.user;
+using Dna.common;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,88 +11,136 @@ namespace Connection
 {
     class client_side : core
     {
-        internal readonly chromosome chromosome;
-        private readonly IPEndPoint endPoint;
-        internal client client = null;
-        public client_side(chromosome chromosome, IPEndPoint endPoint, byte[] main_key) : base(main_key)
+        internal readonly s_chromosome_info info;
+        client client = null;
+        public override string ToString()
         {
-            this.chromosome = chromosome;
-            this.endPoint = endPoint;
+            return "client side: " + info.chromosome.ToString();
         }
-        public async Task connect()
+        public client_side(client client, s_chromosome_info chromosome_Info) : base(chromosome_Info.public_key)
         {
-            if (tcp != null && tcp.Connected)
+            this.client = client;
+            this.info = chromosome_Info;
+        }
+        bool sent = false;
+        async void cycle(object o)
+        {
+            try
+            {
+                await connect();
+                reading();
+                if (answer != null)
+                    use_answer();
+                if (!sent && list.Count > 0)
+                {
+                    write(list[0].request);
+                    sent = true;
+                }
+                await Task.Delay(10);
+                ThreadPool.QueueUserWorkItem(cycle);
+            }
+            catch
+            {
+                if (answer != null)
+                    use_answer();
+                answer = null;
+                sent = false;
+                reading_inp = false;
+                ThreadPool.QueueUserWorkItem(cycle);
+            }
+        }
+        internal async Task connect()
+        {
+            if (connected)
                 return;
             tcp = new TcpClient();
-            await tcp.ConnectAsync(endPoint.Address, endPoint.Port);
+            var endpoint = reference.get_endpoint(info.endpoint);
+            await tcp.ConnectAsync(endpoint.Address, endpoint.Port);
             var keys = crypto.create_symmetrical_keys();
             write(new f_set_key()
             {
                 key32 = crypto.Encrypt(keys.key32, main_key),
                 iv16 = crypto.Encrypt(keys.iv16, main_key)
             });
-            await read();
             key32 = keys.key32;
             iv16 = keys.iv16;
-            if (!(chromosome == chromosome.user || chromosome == chromosome.central))
-            {
-                if (!(await client.question(new f_get_introcode()) is f_get_introcode.done rsv))
-                    throw new Exception("kfkbhdhbjgkxlsmjfcks");
-
-                write(new f_set_introcode() { introcode = rsv.introcode });
-
-                if (!(await read() is f_set_introcode.done))
-                    throw new Exception("lgkdkbmrfjjcksmbmbkhfd");
-            }
-            reading();
+            if (!(await read() is void_answer))
+                throw new Exception("lkdkbjkbkfmbkcskbmdkb");
+            await client.login(this);
+            connected = true;
         }
-        request_task sent = null;
-        async void reading()
-        {
-            var rsv = await read();
-            if (rsv == null)
-                return;
-            if (rsv is notify dv)
-                client.receive_notify(dv);
-            else
-            {
-                await locking.WaitAsync();
-                if (sent == null)
-                    throw new Exception("lgjfjbjdfjbhhfhvhc");
-                sent.task.SetResult(rsv as answer);
-                sent = null;
-                send();
-                locking.Release();
-            }
-            reading();
-        }
+
+        List<request_task> list = new List<request_task>();
         class request_task
         {
             public question request = null;
-            public TaskCompletionSource<answer> task = new TaskCompletionSource<answer>();
+            public TaskCompletionSource<answer> rt = new TaskCompletionSource<answer>();
+            public override string ToString()
+            {
+                return request?.z_chromosome + "." + request?.z_gene;
+            }
         }
-        List<request_task> list = new List<request_task>();
+
         SemaphoreSlim locking = new SemaphoreSlim(1, 1);
-        public async Task<answer> question(question request)
+        bool start = false;
+        internal async Task<answer> question(question request)
         {
+            DateTime time = DateTime.Now;
             var dv = new request_task()
             {
-                request = request,
+                request = request
             };
             await locking.WaitAsync();
-            await connect();
+            if (!start)
+            {
+                start = true;
+                ThreadPool.QueueUserWorkItem(cycle);
+            }
             list.Add(dv);
-            send();
             locking.Release();
-            return await dv.task.Task;
+            var rsv = await dv.rt.Task;
+            var space = DateTime.Now - time;
+            ThreadPool.QueueUserWorkItem((o) =>
+            {
+                repotr.answer_time_e?.Invoke((long)space.TotalMilliseconds, request.z_chromosome);
+            });
+            return rsv;
         }
-        void send()
+        public event Action<client_side, notify> notify_e;
+        answer answer = null;
+        bool reading_inp = false;
+        async void reading()
         {
-            if (sent != null || list.Count == 0)
+            if (reading_inp)
                 return;
-            sent = list.First();
-            list.Remove(sent);
-            write(sent.request);
+            reading_inp = true;
+            var dv = await read();
+            switch (dv)
+            {
+                case notify notify:
+                    {
+                        ThreadPool.QueueUserWorkItem((o) =>
+                        {
+                            notify_e?.Invoke(this, notify);
+                        });
+                    }
+                    break;
+                case answer answer:
+                    {
+                        if (this.answer != null)
+                            throw new Exception("mogdkejfjcodkgjdkikvxksjg");
+                        this.answer = answer;
+                    }
+                    break;
+            }
+            reading_inp = false;
+        }
+        private void use_answer()
+        {
+            list[0].rt.SetResult(answer);
+            answer = null;
+            sent = false;
+            list.Remove(list[0]);
         }
     }
 }

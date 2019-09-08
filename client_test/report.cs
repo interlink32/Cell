@@ -11,6 +11,6 @@ namespace Connection
         public static int min = 0;
         public static int counter = 0;
         public static int avrage = 0;
-        public static int login_error;
+        public static int login_error = 0;
     }
 }

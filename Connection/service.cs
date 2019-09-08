@@ -12,8 +12,13 @@ using System.Threading.Tasks;
 
 namespace Connection
 {
-    public abstract class service : client
+    public abstract class service
     {
+        client client = null;
+        public async Task<answer> question(question question)
+        {
+            return await client.question(question);
+        }
         public abstract service_gene[] elements { get; }
         public abstract byte[] private_key { get; }
         public abstract IPEndPoint endpoint { get; }
@@ -23,22 +28,20 @@ namespace Connection
         TcpListener listener;
         public service()
         {
-            starting();
-        }
-        async void starting()
-        {
-            if (!(userid == "1" || userid == "2"))
-            {
-                var dv = await login(userid, password);
-                if (!dv)
-                    throw new Exception("lfjhdhbjdjbjgndjbmdlvkx");
-            }
             elementsF = elements;
             foreach (var i in elementsF)
                 i.service = this;
             listener = new TcpListener(endpoint);
             listener.Start();
             listen();
+            client = new client();
+            client.userid_password_e += Client_userid_password_e;
+        }
+
+        private async Task<(string userid, string password)> Client_userid_password_e()
+        {
+            await Task.CompletedTask;
+            return (userid, password);
         }
 
         service_gene[] elementsF = null;
@@ -47,18 +50,18 @@ namespace Connection
         async void listen()
         {
             var tcp = await listener.AcceptTcpClientAsync();
-            server_side dv = new server_side(tcp, private_key, get_answer) { client = this };
+            server_side dv = new server_side(tcp, private_key, get_answer) { client = client };
             add(dv);
-            dv.error_e += Dv_error_e;
+            dv.disconnect_e += Dv_error_e;
             listen();
         }
-        private async void Dv_error_e(core arg1, string arg2)
+        private async void Dv_error_e(core arg1, string text)
         {
             var dv = arg1 as server_side;
             await locking.WaitAsync();
             list.Remove(dv);
             locking.Release();
-            dv.error_e -= Dv_error_e;
+            dv.disconnect_e -= Dv_error_e;
             dv.dispose();
         }
         async Task<answer> get_answer(question request)

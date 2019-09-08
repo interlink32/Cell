@@ -6,7 +6,6 @@ namespace Dna
 {
     public enum chromosome
     {
-        central,
         common,
         user,
         test,
