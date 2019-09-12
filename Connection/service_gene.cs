@@ -8,7 +8,7 @@ namespace Connection
 {
     public abstract class service_gene
     {
-        internal service service;
+        internal a_center service;
         internal service_gene() { }
         internal abstract Task<answer> z_get_answer(question request);
         internal abstract string z_gene { get; }
@@ -25,9 +25,10 @@ namespace Connection
             return await service.send_notify(notify);
         }
         public abstract Task<answer> get_answer(T request);
-        internal sealed override Task<answer> z_get_answer(question request)
+        internal sealed async override Task<answer> z_get_answer(question request)
         {
-            return get_answer(request as T);
+            var dv = await get_answer(request as T);
+            return dv;
         }
     }
 }

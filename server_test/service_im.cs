@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace server_test
 {
-    class service_im : service
+    class service_im : a_center
     {
         public override service_gene[] elements
         {

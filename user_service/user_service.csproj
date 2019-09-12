@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="s.cs" />
     <Compile Include="service_im.cs" />
+    <Compile Include="sum.cs" />
     <EmbeddedResource Include="form.resx">
       <DependentUpon>form.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,13 +1,14 @@
 ﻿using Connection;
 using Dna;
 using Dna.test;
+using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace server_test
+namespace user_service
 {
     class sum : service_gene<q_sum>
     {

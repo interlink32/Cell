@@ -28,20 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.lbl = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // Form1
+            // label1
+            // 
+            this.lbl.Dock = System.Windows.Forms.DockStyle.Left;
+            this.lbl.Location = new System.Drawing.Point(0, 0);
+            this.lbl.Name = "label1";
+            this.lbl.Size = new System.Drawing.Size(126, 275);
+            this.lbl.TabIndex = 0;
+            this.lbl.Text = "label1";
+            // 
+            // form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(482, 275);
-            this.Name = "Form1";
+            this.Controls.Add(this.lbl);
+            this.Name = "form";
             this.Text = "user_service";
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Label lbl;
     }
 }
 

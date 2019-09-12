@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class autologin : service_gene<f_autologin>
+    class autologin : service_gene<q_autologin>
     {
-        public override async Task<answer> get_answer(f_autologin request)
+        public override async Task<answer> get_answer(q_autologin request)
         {
             var dv = await login.get(request.divice, request.token);
             if (dv == null)
-                return new f_autologin.invalid_token();
+                return new q_autologin.invalid_token();
             else
-                return new f_autologin.done() { id = dv.user };
+                return new q_autologin.done() { id = dv.user };
         }
     }
 }

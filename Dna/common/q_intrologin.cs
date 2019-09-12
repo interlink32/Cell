@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Dna.common
 {
-    public class f_intrologin : question
+    public class q_intrologin : question
     {
         public double introcode = 0;
-        public class done : question { }
+        public class done : answer { }
     }
 }

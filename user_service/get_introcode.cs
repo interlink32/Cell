@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class get_introcode : service_gene<f_get_introcode>
+    class get_introcode : service_gene<q_get_introcode>
     {
-        public async override Task<answer> get_answer(f_get_introcode request)
+        public async override Task<answer> get_answer(q_get_introcode request)
         {
             await Task.CompletedTask;
             if (request.z_user == 0)
@@ -24,7 +24,7 @@ namespace user_service
                 if (dv == null)
                     return new developer_error() { code = "lkdlbfkhkvkfmbkgvkc" };
                 else
-                    return new f_get_introcode.done()
+                    return new q_get_introcode.done()
                     {
                         introcode = introcode.new_code(request.z_user)
                     };

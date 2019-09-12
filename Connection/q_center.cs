@@ -8,117 +8,92 @@ using System.Threading.Tasks;
 
 namespace Connection
 {
-    public class client
+    public class q_center
     {
-        client_side user_side = null;
+        q_item q_item = null;
         string root = null;
-        public client(string root)
+        public q_center(string root)
         {
             this.root = root;
-            user_side = new client_side(this, reference.get_user_info());
-            list.Add(user_side);
-            user_side.start();
+            q_item = new q_item(this, reference.get_user_info());
+            list.Add(q_item);
+            q_item.start = true;
         }
-        public async Task login()
-        {
-            if (z_user != 0)
-                return;
-            var source = new TaskCompletionSource<object>();
-            login_e += (o) =>
-            {
-                source.SetResult(null);
-            };
-            await source.Task;
-        }
-
-        internal async Task login(core core)
+        public event Func<Task<(string userid,string password)>> user_password_e = null;
+        internal async Task login_side(q_item core)
         {
             var dv = list.FirstOrDefault(i => i == core);
             if (dv == null)
                 return;
-            if (dv == user_side)
+            if (dv == q_item)
             {
-                await autologin();
+                if (!await autologin())
+                    while (true)
+                    {
+                        var info = await user_password_e.Invoke();
+                        if (await login(info.userid, info.password))
+                            break;
+                    }
                 await create_items();
             }
             else
             {
                 var td = await s.load<token_device>(root + "td");
-                var rsv = await user_side.question(new f_get_introcode()
+                var rsv = await q_item.question(new q_get_introcode()
                 {
                     token = td.token,
                     divce = td.device
-                }) as f_get_introcode.done;
-                core.write(new f_intrologin()
+                }) as q_get_introcode.done;
+                var rsv2 = await core.q(new q_intrologin()
                 {
                     introcode = rsv.introcode
                 });
-                if (!(await core.read() is f_intrologin.done))
+                if (!(rsv2 is q_intrologin.done))
                     throw new Exception("lvkdlbmfkvkxmkblcc");
             }
         }
 
-        public void connect(chromosome val)
+        public event Action<q_center> login_e;
+        async Task<bool> autologin()
         {
-            if (z_user == 0)
-                throw new Exception("llflbkklocldblblbsdkbc");
-            list.First(i => i.info.chromosome == val).start();
-        }
-
-        public event Func<Task<(string userid, string password)>> userid_password_e;
-        public event Action<client> login_e;
-        async Task autologin()
-        {
-            //s.save("td", null);
             var dv = await s.load<token_device>(root + "td");
             if (dv == null)
-                await login_pro();
+                return false;
             else
             {
-                user_side.write(new f_autologin()
+                var rsv = await q_item.q(new q_autologin()
                 {
                     divice = dv.device,
                     token = dv.token
                 });
-                var rsv = await user_side.read();
                 switch (rsv)
                 {
-                    case f_autologin.done done:
+                    case q_autologin.done done:
                         {
                             z_user = done.id;
+                            return true;
                         }
-                        break;
-                    case f_autologin.invalid_token invalid:
+                    case q_autologin.invalid_token invalid:
                         {
                             s.save(root + "td", null);
-                            await login_pro();
+                            return false;
                         }
-                        break;
                 }
+                throw new Exception("kgjdhhdhvdhjdhbjsjghfgs");
             }
         }
 
-        async Task login_pro()
-        {
-            while (true)
-            {
-                var info = await userid_password_e?.Invoke();
-                if (await login(info.userid, info.password))
-                    return;
-            }
-        }
         bool ready_items = false;
         async Task create_items()
         {
             if (ready_items)
                 return;
             ready_items = true;
-            user_side.write(new f_get_chromosome_info());
-            var rsv = await user_side.read();
-            if (!(rsv is f_get_chromosome_info.done done))
+            var rsv = await q_item.q(new q_get_chromosome_info());
+            if (!(rsv is q_get_chromosome_info.done done))
                 throw new Exception("lbjjbnfjbjcjdjbkckb,fd");
-            foreach (var i in done.chromosome_infos)
-                list.Add(new client_side(this, i));
+            foreach (var i in done.items)
+                list.Add(new q_item(this, i));
             login_e?.Invoke(this);
         }
         public event Action<notify> notify_e;
@@ -137,31 +112,31 @@ namespace Connection
             public double token = 0;
         }
 
-        List<client_side> list = new List<client_side>();
+        List<q_item> list = new List<q_item>();
         public long z_user { get; private set; }
-        async Task<bool> login(string userid, string password)
+        public async Task<bool> login(string userid, string password)
         {
             Random random = new Random();
             var divce = random.NextDouble();
-            user_side.write(new f_login()
+            var rsv = await q_item.q(new q_login()
             {
                 userid = userid,
                 divce = divce,
                 password = password
             });
-            switch (await user_side.read())
+            switch (rsv)
             {
-                case f_login.done rsv:
+                case q_login.done sw:
                     {
-                        z_user = rsv.id;
+                        z_user = sw.id;
                         s.save(root + "td", new token_device()
                         {
                             device = divce,
-                            token = rsv.token
+                            token = sw.token
                         });
                         return true;
                     }
-                case f_login.invalid rsv:
+                case q_login.invalid sw:
                     {
                         return false;
                     }

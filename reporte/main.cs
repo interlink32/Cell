@@ -11,7 +11,7 @@ namespace reporte
     {
         public main()
         {
-            Connection.repotr.answer_time_e = aaa;
+            Connection.report.answer_time_e = aaa;
         }
 
         private void aaa(long totalMilliseconds, string chromosome)

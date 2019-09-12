@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dna.user
 {
-    public class f_login : question
+    public class q_login : question
     {
         public string userid = null;
         public string password = null;

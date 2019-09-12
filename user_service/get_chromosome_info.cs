@@ -10,26 +10,26 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class get_chromosome_info : service_gene<f_get_chromosome_info>
+    class get_chromosome_info : service_gene<q_get_chromosome_info>
     {
         private s_chromosome_info[] chromosome_infos;
         public get_chromosome_info()
         {
             List<s_chromosome_info> list = new List<s_chromosome_info>();
-            list.Add(new s_chromosome_info()
-            {
-                chromosome = chromosome.test,
-                endpoint = new IPEndPoint(reference.valid_ip(), 10001).ToString(),
-                public_key = resource.test_public_key
-            });
+            //list.Add(new s_chromosome_info()
+            //{
+            //    chromosome = chromosome.test,
+            //    endpoint = new IPEndPoint(reference.valid_ip(), 10001).ToString(),
+            //    public_key = resource.test_public_key
+            //});
             chromosome_infos = list.ToArray();
         }
-        public async override Task<answer> get_answer(f_get_chromosome_info request)
+        public async override Task<answer> get_answer(q_get_chromosome_info request)
         {
             await Task.CompletedTask;
-            return new f_get_chromosome_info.done()
+            return new q_get_chromosome_info.done()
             {
-                chromosome_infos = chromosome_infos
+                items = chromosome_infos
             };
         }
     }

@@ -8,24 +8,17 @@ using System.Threading.Tasks;
 
 namespace Connection
 {
-    class server_side : core
+    class a_item : core
     {
         internal long z_user = 0;
         Func<question, Task<answer>> get_Answer;
-        internal client client = null;
-        public server_side(TcpClient tcp, byte[] main_key, Func<question, Task<answer>> get_answer) : base(main_key)
+        internal a_center a = null;
+        internal q_center q = null;
+        public a_item(TcpClient tcp, Func<question, Task<answer>> get_answer)
         {
             this.tcp = tcp;
             get_Answer = get_answer;
             ThreadPool.QueueUserWorkItem(reading);
-        }
-        public event Action<server_side> disconnect_e;
-        internal void dispose()
-        {
-            get_Answer = null;
-            tcp?.Dispose();
-            tcp = null;
-            disconnect_e?.Invoke(this);
         }
         async void reading(object o)
         {
@@ -35,55 +28,55 @@ namespace Connection
                     throw new Exception("fjbhdjbjdjkgndjgjdkvg");
                 switch (req)
                 {
-                    case f_set_key dv:
+                    case q_set_key dv:
                         {
                             key32 = crypto.Decrypt(dv.key32, main_key);
                             iv16 = crypto.Decrypt(dv.iv16, main_key);
-                            write(null);
+                            await write(null);
                         }
                         break;
-                    case f_get_chromosome_info dv:
+                    case q_get_chromosome_info dv:
                         {
                             var res = await get_Answer(req);
-                            write(res);
+                            await write(res);
                         }
                         break;
-                    case f_autologin dv:
+                    case q_autologin dv:
                         {
                             var res = await get_Answer(req);
-                            if (res is f_autologin.done done)
+                            if (res is q_autologin.done done)
                                 z_user = done.id;
-                            write(res);
+                            await write(res);
                         }
                         break;
-                    case f_login dv:
+                    case q_login dv:
                         {
                             var res = await get_Answer(req);
-                            if (res is f_login.done done)
+                            if (res is q_login.done done)
                                 z_user = done.id;
-                            write(res);
+                            await write(res);
                         }
                         break;
-                    case f_intrologin dv:
+                    case q_intrologin dv:
                         {
 
-                            var rsv = await client.question(new f_introcheck()
+                            var rsv = await q.question(new q_introcheck()
                             {
                                 introcode = dv.introcode
                             });
                             switch (rsv)
                             {
-                                case f_introcheck.done dv2:
+                                case q_introcheck.done dv2:
                                     {
                                         z_user = dv2.userid;
-                                        write(new f_intrologin.done());
+                                        await write(new q_intrologin.done());
                                     }
                                     break;
-                                case f_introcheck.invalidcode dv2:
+                                case q_introcheck.invalidcode dv2:
                                     {
-                                        write(new developer_error() { code = "kgknjfkmfmbmfmbmcmd" });
+                                        await write(new developer_error() { code = "kgknjfkmfmbmfmbmcmd" });
                                         await Task.Delay(1000 * 5);
-                                        repotr.error_e?.Invoke(this, "invalid introcode");
+                                        report.error_e?.Invoke(this, "invalid introcode");
                                     }
                                     break;
                             }
@@ -92,21 +85,26 @@ namespace Connection
                     default:
                         {
                             if (z_user == 0)
-                                write(new login_required());
+                                await write(new login_required());
                             else
                             {
                                 req.z_user = z_user;
                                 var res = await get_Answer(req);
-                                write(res);
+                                await write(res);
                             }
                         }
                         break;
                 }
                 ThreadPool.QueueUserWorkItem(reading);
             }
-            catch
+            catch(Exception e)
             {
-                dispose();
+                var dv = e.Message;
+                dv = null;
+                get_Answer = null;
+                tcp.Close();
+                tcp = null;
+                a.remove(this);
             }
         }
     }

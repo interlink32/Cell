@@ -4,13 +4,11 @@ using System.Text;
 
 namespace Dna.user
 {
-    public class f_introcheck : question
+    public class q_get_chromosome_info : question
     {
-        public double introcode = 0;
         public class done : answer
         {
-            public long userid = 0;
+            public s_chromosome_info[] items = null;
         }
-        public class invalidcode : answer { }
     }
 }

@@ -4,13 +4,14 @@ using System.Text;
 
 namespace Dna.user
 {
-    public class f_get_introcode : question
+    public class q_autologin : question
     {
-        public double divce = 0;
+        public double divice = 0;
         public double token = 0;
         public class done : answer
         {
-            public double introcode = 0;
+            public long id = 0;
         }
+        public class invalid_token : answer { }
     }
 }

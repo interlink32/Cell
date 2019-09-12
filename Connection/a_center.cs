@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Connection
 {
-    public abstract class service
+    public abstract class a_center
     {
-        client client = null;
+        public q_center client = null;
         public async Task<answer> question(question question)
         {
             return await client.question(question);
@@ -26,7 +26,7 @@ namespace Connection
         public abstract string password { get; }
 
         TcpListener listener;
-        public service()
+        public a_center()
         {
             elementsF = elements;
             foreach (var i in elementsF)
@@ -34,33 +34,34 @@ namespace Connection
             listener = new TcpListener(endpoint);
             listener.Start();
             listen();
-            client = new client("");
-            client.userid_password_e += Client_userid_password_e;
+            create_client();
         }
-
-        private async Task<(string userid, string password)> Client_userid_password_e()
+        void create_client()
+        {
+            client = new q_center("ohgrdyvfhvxj");
+            client.user_password_e += Client_user_password_e;
+        }
+        private async Task<(string userid, string password)> Client_user_password_e()
         {
             await Task.CompletedTask;
             return (userid, password);
         }
 
         service_gene[] elementsF = null;
-        List<server_side> list = new List<server_side>();
+        List<a_item> list = new List<a_item>();
         SemaphoreSlim locking = new SemaphoreSlim(1, 1);
         async void listen()
         {
             var tcp = await listener.AcceptTcpClientAsync();
-            server_side dv = new server_side(tcp, private_key, get_answer) { client = client };
+            a_item dv = new a_item(tcp, get_answer) { main_key = private_key, a = this, q = client };
             add(dv);
-            dv.disconnect_e += Dv_error_e;
             listen();
         }
-        private async void Dv_error_e(server_side val)
+        internal async void remove(a_item val)
         {
             await locking.WaitAsync();
             list.Remove(val);
             locking.Release();
-            val.disconnect_e -= Dv_error_e;
         }
         async Task<answer> get_answer(question request)
         {
@@ -70,13 +71,13 @@ namespace Connection
             var dv2 = await dv.z_get_answer(request);
             return dv2;
         }
-        async void add(server_side dv)
+        async void add(a_item dv)
         {
             await locking.WaitAsync();
             list.Add(dv);
             locking.Release();
         }
-        async Task<server_side[]> get(long user)
+        async Task<a_item[]> get(long user)
         {
             await locking.WaitAsync();
             var dv = list.Where(i => i.z_user == user).ToArray();
@@ -89,7 +90,7 @@ namespace Connection
             var dv = await get(notify.z_receiver);
             foreach (var i in dv)
             {
-                i.write(notify);
+                await i.write(notify);
                 reseve = true;
             }
             return reseve;

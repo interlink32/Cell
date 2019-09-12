@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dna.test
+namespace Dna.user
 {
     public class q_sum : question
     {
@@ -10,7 +10,7 @@ namespace Dna.test
         public int b = 0;
         public class done : answer
         {
-            public int result = 0;
+            public long result = 0;
         }
     }
 }

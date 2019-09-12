@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class service_im : service
+    class service_im : a_center
     {
         public override service_gene[] elements
         {
@@ -20,7 +20,8 @@ namespace user_service
                     new get_introcode(),
                     new login(),
                     new get_userid(),
-                    new autologin()
+                    new autologin(),
+                    new sum()
                 };
             }
         }

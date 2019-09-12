@@ -88,8 +88,7 @@ namespace client_test
             }) as q_message.done;
             if (dv == null && !dv.receive)
                 send(item);
-            else
-                report.counter++;
+
         }
     }
 }

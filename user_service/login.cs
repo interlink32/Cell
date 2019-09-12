@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class login : service_gene<f_login>
+    class login : service_gene<q_login>
     {
         public login()
         {
@@ -40,7 +40,7 @@ namespace user_service
             locking.Release();
             return dv;
         }
-        public async override Task<answer> get_answer(f_login request)
+        public async override Task<answer> get_answer(q_login request)
         {
             if (request.userid + "pass" == request.password)
             {
@@ -63,14 +63,14 @@ namespace user_service
                     dv.token = random.NextDouble();
                     save();
                 }
-                return new f_login.done()
+                return new q_login.done()
                 {
                     id = id,
                     token = dv.token
                 };
             }
             else
-                return new f_login.invalid();
+                return new q_login.invalid();
         }
 
         private static async Task add(item dv)

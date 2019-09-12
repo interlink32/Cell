@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dna.common
 {
-    public class f_set_key : question
+    public class q_set_key : question
     {
         public byte[] key32 = null;
         public byte[] iv16 = null;
