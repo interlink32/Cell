@@ -20,7 +20,7 @@ namespace Connection
         public client_side(client client, s_chromosome_info chromosome_Info) : base(chromosome_Info.public_key)
         {
             this.client = client;
-            this.info = chromosome_Info;
+            info = chromosome_Info;
         }
         bool sent = false;
         async void cycle(object o)
@@ -28,7 +28,6 @@ namespace Connection
             try
             {
                 await connect();
-                reading();
                 if (answer != null)
                     use_answer();
                 if (!sent && list.Count > 0)
@@ -45,10 +44,12 @@ namespace Connection
                     use_answer();
                 answer = null;
                 sent = false;
-                reading_inp = false;
+                connected = false;
+                key32 = iv16 = null;
                 ThreadPool.QueueUserWorkItem(cycle);
             }
         }
+        bool connected = false;
         internal async Task connect()
         {
             if (connected)
@@ -67,6 +68,7 @@ namespace Connection
             if (!(await read() is void_answer))
                 throw new Exception("lkdkbjkbkfmbkcskbmdkb");
             await client.login(this);
+            reading();
             connected = true;
         }
 
@@ -82,7 +84,7 @@ namespace Connection
         }
 
         SemaphoreSlim locking = new SemaphoreSlim(1, 1);
-        bool start = false;
+        
         internal async Task<answer> question(question request)
         {
             DateTime time = DateTime.Now;
@@ -91,13 +93,9 @@ namespace Connection
                 request = request
             };
             await locking.WaitAsync();
-            if (!start)
-            {
-                start = true;
-                ThreadPool.QueueUserWorkItem(cycle);
-            }
             list.Add(dv);
             locking.Release();
+            start();
             var rsv = await dv.rt.Task;
             var space = DateTime.Now - time;
             ThreadPool.QueueUserWorkItem((o) =>
@@ -106,34 +104,53 @@ namespace Connection
             });
             return rsv;
         }
-        public event Action<client_side, notify> notify_e;
+
+        bool startf = false;
+        public async void start()
+        {
+            if (startf)
+                return;
+            await locking.WaitAsync();
+            if (startf)
+            {
+                locking.Release();
+                return;
+            }
+            startf = true;
+            ThreadPool.QueueUserWorkItem(cycle);
+            locking.Release();
+        }
+
         answer answer = null;
-        bool reading_inp = false;
         async void reading()
         {
-            if (reading_inp)
-                return;
-            reading_inp = true;
-            var dv = await read();
-            switch (dv)
+            try
             {
-                case notify notify:
-                    {
-                        ThreadPool.QueueUserWorkItem((o) =>
+                var dv = await read();
+                switch (dv)
+                {
+                    case notify notify:
                         {
-                            notify_e?.Invoke(this, notify);
-                        });
-                    }
-                    break;
-                case answer answer:
-                    {
-                        if (this.answer != null)
-                            throw new Exception("mogdkejfjcodkgjdkikvxksjg");
-                        this.answer = answer;
-                    }
-                    break;
+                            ThreadPool.QueueUserWorkItem((o) =>
+                            {
+                                client.notify(notify);
+                            });
+                        }
+                        break;
+                    case answer answer:
+                        {
+                            if (this.answer != null)
+                                throw new Exception("mogdkejfjcodkgjdkikvxksjg");
+                            this.answer = answer;
+                        }
+                        break;
+                }
+                reading();
             }
-            reading_inp = false;
+            catch
+            {
+                tcp?.Close();
+            }
         }
         private void use_answer()
         {

@@ -38,43 +38,37 @@ namespace Connection
                     await tcp.GetStream().WriteAsync(data, 0, data.Length);
                 }
             }
-            catch (Exception e)
+            catch
             {
-                disconnec();
-                throw new Exception("write: " + e.Message);
+                tcp?.Close();
             }
         }
 
-        internal bool connected = false;
-        public event Action<core, string> disconnect_e;
-        private void disconnec()
+        static int n = 0;
+        void create_error()
         {
-            tcp.Close();
-            tcp = null;
-            disconnect_e?.Invoke(this, null);
+            n++;
+            if (n % 40 == 0)
+            {
+                Console.Beep();
+                throw new Exception("create error");
+            }
         }
-
         internal async Task<gene> read()
         {
-            try
-            {
-                var data = new byte[4];
-                await tcp.GetStream().ReadAsync(data, 0, data.Length);
-                var len = BitConverter.ToInt32(data, 0);
-                if (len == 0)
-                    return new void_answer();
-                data = new byte[len];
-                await tcp.GetStream().ReadAsync(data, 0, len);
-                if (key32 != null)
-                    data = crypto.Decrypt(data, key32, iv16);
-                var dv = converter.change(data) as gene;
-                return dv;
-            }
-            catch (Exception e)
-            {
-                connected = false;
-                throw new Exception("read: " + e.Message);
-            }
+            
+            var data = new byte[4];
+            await tcp.GetStream().ReadAsync(data, 0, data.Length);
+            var len = BitConverter.ToInt32(data, 0);
+            if (len == 0)
+                return new void_answer();
+            data = new byte[len];
+            await tcp.GetStream().ReadAsync(data, 0, len);
+            create_error();
+            if (key32 != null)
+                data = crypto.Decrypt(data, key32, iv16);
+            var dv = converter.change(data) as gene;
+            return dv;
         }
         public static byte[] Combine(params byte[][] arrays)
         {

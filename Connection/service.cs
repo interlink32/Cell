@@ -34,7 +34,7 @@ namespace Connection
             listener = new TcpListener(endpoint);
             listener.Start();
             listen();
-            client = new client();
+            client = new client("");
             client.userid_password_e += Client_userid_password_e;
         }
 
@@ -55,14 +55,12 @@ namespace Connection
             dv.disconnect_e += Dv_error_e;
             listen();
         }
-        private async void Dv_error_e(core arg1, string text)
+        private async void Dv_error_e(server_side val)
         {
-            var dv = arg1 as server_side;
             await locking.WaitAsync();
-            list.Remove(dv);
+            list.Remove(val);
             locking.Release();
-            dv.disconnect_e -= Dv_error_e;
-            dv.dispose();
+            val.disconnect_e -= Dv_error_e;
         }
         async Task<answer> get_answer(question request)
         {

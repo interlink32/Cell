@@ -27,7 +27,7 @@ namespace client_test
                 last = await create(index);
                 index++;
             }
-            var dv = await create(index);
+            var dv =await create(index);
             last.connect(index);
             last = dv;
             if (index == max)

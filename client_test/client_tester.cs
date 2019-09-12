@@ -13,17 +13,18 @@ namespace client_test
     class client_tester
     {
         client client = null;
-        public async Task<bool> start(long id)
+        public async Task start(long id)
         {
-            //client = new client();
-            //var dv = await client.login(id.ToString(), id + "pass");
-            //if (!dv)
-            //    report.login_error++;
-            //client.notify_e += Client_notify_e;
-            //await client.connect(chromosome.test);
-            //await Task.CompletedTask;
-            return true;
+            client = new client(id.ToString());
+            client.notify_e += Client_notify_e;
+            client.userid_password_e += () =>
+            {
+                return Task.FromResult((id.ToString(), id + "pass"));
+            };
+            await client.login();
+            client.connect(chromosome.test);
         }
+
         class item
         {
             public long user = 0;
@@ -33,6 +34,7 @@ namespace client_test
         SemaphoreSlim locking = new SemaphoreSlim(1, 1);
         public async void connect(long user)
         {
+            await Task.Delay(1000);
             await locking.WaitAsync();
             var dv = add(user, 0);
             locking.Release();
@@ -84,9 +86,10 @@ namespace client_test
                 user = item.user,
                 value = item.value
             }) as q_message.done;
-            if (!dv.receive)
-                throw new Exception("kbkdlbmfknkvmdkbdkbkc");
-            report.counter++;
+            if (dv == null && !dv.receive)
+                send(item);
+            else
+                report.counter++;
         }
     }
 }

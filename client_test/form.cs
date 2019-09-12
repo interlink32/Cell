@@ -20,9 +20,9 @@ namespace client_test
         public form()
         {
             InitializeComponent();
-            start();
+            ThreadPool.QueueUserWorkItem(start);
         }
-        void start()
+        void start(object o)
         {
             ThreadPool.QueueUserWorkItem(client_Pool.start);
             Invoke(new Action(report));
