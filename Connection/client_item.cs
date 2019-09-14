@@ -3,6 +3,7 @@ using Dna.common;
 using Dna.user;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -13,9 +14,9 @@ namespace Connection
     abstract class client_item : core
     {
         internal readonly s_chromosome_info info;
-        client_center client = null;
-        public client_item(client_center client, s_chromosome_info chromosome_Info)
-        {
+        public client client = null;
+        public client_item(client client, s_chromosome_info chromosome_Info)
+        { 
             main_key = chromosome_Info.public_key;
             this.client = client;
             info = chromosome_Info;
@@ -24,9 +25,22 @@ namespace Connection
         protected abstract Task cycle();
         private async void run_cycle()
         {
-            await Task.Run(cycle);
+            await Task.Run(try_cycle);
             await Task.Delay(10);
             run_cycle();
+        }
+        private async Task try_cycle()
+        {
+            
+            try
+            {
+                await connect();
+                await cycle();
+            }
+            catch
+            {
+
+            }
         }
         public async Task<answer> q(question question)
         {
@@ -34,7 +48,7 @@ namespace Connection
             return await read() as answer;
         }
 
-        bool connected = false;
+        internal bool connected = false;
         internal async Task connect()
         {
             if (connected)
@@ -52,7 +66,7 @@ namespace Connection
             iv16 = keys.iv16;
             if (!(await read() is void_answer))
                 throw new Exception("lkdkbjkbkfmbkcskbmdkb");
-            await client.login_side(this);
+            await client.login_item(this);
             connected = true;
         }
     }

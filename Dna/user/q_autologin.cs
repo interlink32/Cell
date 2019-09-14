@@ -8,6 +8,7 @@ namespace Dna.user
     {
         public double divice = 0;
         public double token = 0;
+        public bool accept_notifications = false;
         public class done : answer
         {
             public long id = 0;

@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 
 namespace Connection
 {
-    class a_item : core
+    class responder : core
     {
         internal long z_user = 0;
+        private readonly service service;
         Func<question, Task<answer>> get_Answer;
-        internal a_center a = null;
-        internal q_center q = null;
-        public a_item(TcpClient tcp, Func<question, Task<answer>> get_answer)
+        internal service a = null;
+        internal client q = null;
+        public responder(service service, TcpClient tcp, Func<question, Task<answer>> get_answer)
         {
             this.tcp = tcp;
+            this.service = service;
             get_Answer = get_answer;
             ThreadPool.QueueUserWorkItem(reading);
         }
@@ -43,23 +45,36 @@ namespace Connection
                         break;
                     case q_autologin dv:
                         {
+                            if (z_user != 0)
+                                throw new Exception("lkfjbjfjbjdfhbhcnvc");
                             var res = await get_Answer(req);
                             if (res is q_autologin.done done)
+                            {
                                 z_user = done.id;
+                                if (dv.accept_notifications)
+                                    service.add(this);
+                            }
                             await write(res);
                         }
                         break;
                     case q_login dv:
                         {
+                            if (z_user != 0)
+                                throw new Exception("lkfojhjfjbjdfhbhcnvc");
                             var res = await get_Answer(req);
                             if (res is q_login.done done)
+                            {
                                 z_user = done.id;
+                                if (dv.accept_notifications)
+                                    service.add(this);
+                            }
                             await write(res);
                         }
                         break;
                     case q_intrologin dv:
                         {
-
+                            if (z_user != 0)
+                                throw new Exception("lkfjblseejbjdfhbhcnvc");
                             var rsv = await q.question(new q_introcheck()
                             {
                                 introcode = dv.introcode
@@ -69,6 +84,8 @@ namespace Connection
                                 case q_introcheck.done dv2:
                                     {
                                         z_user = dv2.userid;
+                                        if (dv.accept_notifications)
+                                            service.add(this);
                                         await write(new q_intrologin.done());
                                     }
                                     break;

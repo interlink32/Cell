@@ -36,7 +36,7 @@ namespace Connection
         static int ce = 0;
         void create_error()
         {
-            if (this is q_item)
+            if (this is client_item)
             {
                 ce++;
                 if (ce % 40 == 0)

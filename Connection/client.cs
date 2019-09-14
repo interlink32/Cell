@@ -4,28 +4,37 @@ using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Connection
 {
-    public class q_center
+    public class client
     {
-        q_item q_item = null;
+        questioner user_item = null;
         string root = null;
-        public q_center(string root)
+        public client(string root)
         {
             this.root = root;
-            q_item = new q_item(this, reference.get_user_info());
-            list.Add(q_item);
-            q_item.start = true;
+            user_item = new questioner(this, reference.get_user_info());
+            qlist.Add(user_item);
         }
-        public event Func<Task<(string userid,string password)>> user_password_e = null;
-        internal async Task login_side(q_item core)
+        public event Func<Task<(string userid, string password)>> user_password_e = null;
+        internal async Task login_item(client_item core)
         {
-            var dv = list.FirstOrDefault(i => i == core);
-            if (dv == null)
+            switch (core)
+            {
+                case questioner sw:
+                    core = qlist.FirstOrDefault(i => i == sw);
+                    break;
+                case notifier sw:
+                    core = nlist.FirstOrDefault(i => i == sw);
+                    break;
+            }
+            if (core == null)
                 return;
-            if (dv == q_item)
+            if (core == user_item)
             {
                 if (!await autologin())
                     while (true)
@@ -39,21 +48,20 @@ namespace Connection
             else
             {
                 var td = await s.load<token_device>(root + "td");
-                var rsv = await q_item.question(new q_get_introcode()
+                var rsv = await user_item.question(new q_get_introcode()
                 {
                     token = td.token,
                     divce = td.device
                 }) as q_get_introcode.done;
                 var rsv2 = await core.q(new q_intrologin()
                 {
-                    introcode = rsv.introcode
+                    introcode = rsv.introcode,
+                    accept_notifications = core is notifier
                 });
                 if (!(rsv2 is q_intrologin.done))
                     throw new Exception("lvkdlbmfkvkxmkblcc");
             }
         }
-
-        public event Action<q_center> login_e;
         async Task<bool> autologin()
         {
             var dv = await s.load<token_device>(root + "td");
@@ -61,7 +69,7 @@ namespace Connection
                 return false;
             else
             {
-                var rsv = await q_item.q(new q_autologin()
+                var rsv = await user_item.q(new q_autologin()
                 {
                     divice = dv.device,
                     token = dv.token
@@ -83,28 +91,53 @@ namespace Connection
             }
         }
 
+        TaskCompletionSource<s_chromosome_info[]> completionSource = new TaskCompletionSource<s_chromosome_info[]>();
+        public async Task<s_chromosome_info> infos(string chromosome)
+        {
+            if (chromosome == Dna.chromosome.user.ToString())
+                return reference.get_user_info();
+            var dv = await completionSource.Task;
+            return dv.First(i => i.chromosome.ToString() == chromosome);
+        }
+
         bool ready_items = false;
         async Task create_items()
         {
             if (ready_items)
                 return;
             ready_items = true;
-            var rsv = await q_item.q(new q_get_chromosome_info());
+            var rsv = await user_item.q(new q_get_chromosome_info());
             if (!(rsv is q_get_chromosome_info.done done))
                 throw new Exception("lbjjbnfjbjcjdjbkckb,fd");
-            foreach (var i in done.items)
-                list.Add(new q_item(this, i));
-            login_e?.Invoke(this);
+            completionSource.SetResult(done.items);
         }
         public event Action<notify> notify_e;
         internal void notify(notify notify)
         {
             notify_e?.Invoke(notify);
         }
+        SemaphoreSlim qlocking = new SemaphoreSlim(1, 1);
         public async Task<answer> question(question question)
         {
-            var dv = list.First(i => i.info.chromosome.ToString() == question.z_chromosome);
+            await qlocking.WaitAsync();
+            var dv = qlist.First(i => i.info.chromosome.ToString() == question.z_chromosome);
+            if (dv == null)
+            {
+                dv = new questioner(this, await infos(question.z_chromosome));
+                qlist.Add(dv);
+            }
+            qlocking.Release();
             return await dv.question(question);
+        }
+        List<notifier> nlist = new List<notifier>();
+        SemaphoreSlim nlocking = new SemaphoreSlim(1, 1);
+        public async void active_notify(chromosome chromosome)
+        {
+            await nlocking.WaitAsync();
+            var dv = nlist.FirstOrDefault(i => i.info.chromosome == chromosome);
+            if (dv == null)
+                nlist.Add(new notifier(this, await infos(chromosome.ToString())));
+            nlocking.Release();
         }
         class token_device
         {
@@ -112,13 +145,13 @@ namespace Connection
             public double token = 0;
         }
 
-        List<q_item> list = new List<q_item>();
+        List<questioner> qlist = new List<questioner>();
         public long z_user { get; private set; }
-        public async Task<bool> login(string userid, string password)
+        async Task<bool> login(string userid, string password)
         {
             Random random = new Random();
             var divce = random.NextDouble();
-            var rsv = await q_item.q(new q_login()
+            var rsv = await user_item.q(new q_login()
             {
                 userid = userid,
                 divce = divce,

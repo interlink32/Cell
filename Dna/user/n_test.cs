@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Connection
+namespace Dna.user
 {
-    class n_item : core
+    public class n_test : notify
     {
-
+        public long value = 0;
     }
 }

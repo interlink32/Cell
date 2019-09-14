@@ -9,6 +9,7 @@ namespace Dna.user
         public string userid = null;
         public string password = null;
         public double divce = 0;
+        public bool accept_notifications = false;
         public class done : answer
         {
             public long id = 0;

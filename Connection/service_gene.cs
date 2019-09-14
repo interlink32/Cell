@@ -8,7 +8,7 @@ namespace Connection
 {
     public abstract class service_gene
     {
-        internal a_center service;
+        internal service service;
         internal service_gene() { }
         internal abstract Task<answer> z_get_answer(question request);
         internal abstract string z_gene { get; }

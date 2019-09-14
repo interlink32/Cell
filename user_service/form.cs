@@ -1,4 +1,4 @@
-﻿using Dna.test;
+﻿using Connection;
 using Dna.user;
 using System;
 using System.Collections.Generic;
@@ -19,26 +19,26 @@ namespace user_service
         public form()
         {
             InitializeComponent();
-            service.client.login_e += Client_login_e;
+            mmm();
             report();
         }
-        private void Client_login_e(Connection.q_center obj)
-        {
-            mmm();
-        }
+
         Random random = new Random();
         async void mmm()
         {
-            var p = new q_sum() { a = random.Next(), b = random.Next() };
-            var dv = await service.client.question(p);
-            if (dv is q_sum.done rsv)
+            service.client.active_notify(Dna.chromosome.user);
+            service.client.notify_e += Client_notify_e1;
+            await Task.Delay(1000);
+            var dv = await service.client.question(new q_test()
             {
-                if (rsv.result != p.a + p.b)
-                    throw new Exception("kkjfbjdjvjdjskv");
-                mmm();
-            }
-            else
-                throw new Exception("gjfjbjfjd");
+                receiver = 1,
+                value = 12
+            });
+        }
+
+        private void Client_notify_e1(Dna.notify obj)
+        {
+            
         }
         async void report()
         {

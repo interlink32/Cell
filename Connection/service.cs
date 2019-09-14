@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Connection
 {
-    public abstract class a_center
+    public abstract class service
     {
-        public q_center client = null;
+        public client client = null;
         public async Task<answer> question(question question)
         {
             return await client.question(question);
@@ -26,7 +26,7 @@ namespace Connection
         public abstract string password { get; }
 
         TcpListener listener;
-        public a_center()
+        public service()
         {
             elementsF = elements;
             foreach (var i in elementsF)
@@ -38,7 +38,7 @@ namespace Connection
         }
         void create_client()
         {
-            client = new q_center("ohgrdyvfhvxj");
+            client = new client("ohgrdyvfhvxj");
             client.user_password_e += Client_user_password_e;
         }
         private async Task<(string userid, string password)> Client_user_password_e()
@@ -48,16 +48,15 @@ namespace Connection
         }
 
         service_gene[] elementsF = null;
-        List<a_item> list = new List<a_item>();
+        List<responder> list = new List<responder>();
         SemaphoreSlim locking = new SemaphoreSlim(1, 1);
         async void listen()
         {
             var tcp = await listener.AcceptTcpClientAsync();
-            a_item dv = new a_item(tcp, get_answer) { main_key = private_key, a = this, q = client };
-            add(dv);
+            responder dv = new responder(this, tcp, get_answer) { main_key = private_key, a = this, q = client };
             listen();
         }
-        internal async void remove(a_item val)
+        internal async void remove(responder val)
         {
             await locking.WaitAsync();
             list.Remove(val);
@@ -71,13 +70,13 @@ namespace Connection
             var dv2 = await dv.z_get_answer(request);
             return dv2;
         }
-        async void add(a_item dv)
+        internal async void add(responder dv)
         {
             await locking.WaitAsync();
             list.Add(dv);
             locking.Release();
         }
-        async Task<a_item[]> get(long user)
+        async Task<responder[]> get(long user)
         {
             await locking.WaitAsync();
             var dv = list.Where(i => i.z_user == user).ToArray();
