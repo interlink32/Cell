@@ -9,11 +9,11 @@ namespace user_service
     {
         public override async Task<answer> get_answer(q_test request)
         {
-            var dv = await notify(new n_test()
+            var dv = await notify(new Dna.common.n_event()
             {
                 z_receiver = request.receiver,
-                value = request.value,
-                z_sender = request.z_user
+                chromosome = chromosome.user,
+                gene = "get_message"
             });
             return new q_test.done()
             {

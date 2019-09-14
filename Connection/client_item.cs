@@ -20,16 +20,16 @@ namespace Connection
             main_key = chromosome_Info.public_key;
             this.client = client;
             info = chromosome_Info;
-            run_cycle();
+            runing();
         }
         protected abstract Task cycle();
-        private async void run_cycle()
+        private async void runing()
         {
-            await Task.Run(try_cycle);
+            await Task.Run(try_catch);
             await Task.Delay(10);
-            run_cycle();
+            runing();
         }
-        private async Task try_cycle()
+        private async Task try_catch()
         {
             
             try
@@ -39,7 +39,8 @@ namespace Connection
             }
             catch
             {
-
+                connected = false;
+                key32 = iv16 = null;
             }
         }
         public async Task<answer> q(question question)
@@ -48,8 +49,8 @@ namespace Connection
             return await read() as answer;
         }
 
-        internal bool connected = false;
-        internal async Task connect()
+        bool connected = false;
+        async Task connect()
         {
             if (connected)
                 return;

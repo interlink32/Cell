@@ -19,18 +19,9 @@ namespace Connection
             if (list.Count > 0)
             {
                 var item = await get_item();
-                try
-                {
-
-                    var dv = await q(item.question);
-                    item.rt.SetResult(dv);
-                    await remove_item();
-                }
-                catch
-                {
-                    connected = false;
-                    key32 = iv16 = null;
-                }
+                var dv = await q(item.question);
+                item.rt.SetResult(dv);
+                await remove_item();
             }
         }
         async Task<request_task> get_item()
@@ -58,7 +49,6 @@ namespace Connection
         }
 
         SemaphoreSlim locking = new SemaphoreSlim(1, 1);
-        string ttt = null;
         internal async Task<answer> question(question request)
         {
             DateTime time = DateTime.Now;
@@ -68,7 +58,6 @@ namespace Connection
             };
             await locking.WaitAsync();
             list.Add(dv);
-            ttt = "ggg";
             locking.Release();
             var rsv = await dv.rt.Task;
             var space = DateTime.Now - time;

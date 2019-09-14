@@ -27,18 +27,21 @@ namespace user_service
         async void mmm()
         {
             service.client.active_notify(Dna.chromosome.user);
-            service.client.notify_e += Client_notify_e1;
+            service.client.notify_e += Client_notify_e;
             await Task.Delay(1000);
+            m();
+        }
+        private async void m()
+        {
             var dv = await service.client.question(new q_test()
             {
                 receiver = 1,
                 value = 12
-            });
+            }) as q_test.done;
         }
-
-        private void Client_notify_e1(Dna.notify obj)
+        void Client_notify_e(Dna.notify obj)
         {
-            
+            m();
         }
         async void report()
         {

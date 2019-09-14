@@ -14,7 +14,6 @@ namespace Connection
         public notifier(client client, s_chromosome_info chromosome_Info) : base(client, chromosome_Info)
         {
         }
-
         protected async override Task cycle()
         {
             var dv = await read() as notify;
