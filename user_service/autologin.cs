@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class autologin : service_gene<q_autologin>
+    class autologin : service<q_autologin>
     {
         public override async Task<answer> get_answer(q_autologin request)
         {

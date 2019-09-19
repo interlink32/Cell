@@ -15,33 +15,11 @@ namespace user_service
 {
     public partial class form : Form
     {
-        service_im service = new service_im();
+        server service = new server();
         public form()
         {
             InitializeComponent();
-            mmm();
             report();
-        }
-
-        Random random = new Random();
-        async void mmm()
-        {
-            service.client.active_notify(Dna.chromosome.user);
-            service.client.notify_e += Client_notify_e;
-            await Task.Delay(1000);
-            m();
-        }
-        private async void m()
-        {
-            var dv = await service.client.question(new q_test()
-            {
-                receiver = 1,
-                value = 12
-            }) as q_test.done;
-        }
-        void Client_notify_e(Dna.notify obj)
-        {
-            m();
         }
         async void report()
         {

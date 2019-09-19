@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class login : service_gene<q_login>
+    class login : service<q_login>
     {
         public login()
         {

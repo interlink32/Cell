@@ -8,25 +8,24 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class service_im : service
+    class server : Connection.server
     {
-        public override service_gene[] elements
+        public override Connection.service[] elements
         {
             get
             {
-                return new service_gene[]
+                return new Connection.service[]
                 {
                     new get_chromosome_info(),
                     new get_introcode(),
                     new login(),
                     new get_userid(),
-                    new autologin(),
-                    new test()
+                    new autologin()
                 };
             }
         }
         public override byte[] private_key => resource.user_private_key;
-        public override IPEndPoint endpoint => new IPEndPoint(reference.local_ip(), 10000);
+        public override IPEndPoint endpoint => new IPEndPoint(reference.local_ip(), 10001);
 
         public override string userid => "1";
 

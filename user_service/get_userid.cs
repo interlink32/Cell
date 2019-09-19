@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class get_userid : service_gene<q_introcheck>
+    class get_userid : service<q_introcheck>
     {
         public async override Task<answer> get_answer(q_introcheck request)
         {

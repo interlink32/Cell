@@ -101,6 +101,7 @@ namespace Connection
         }
 
         bool ready_items = false;
+        public event Action<client> login_e;
         async Task create_items()
         {
             if (ready_items)
@@ -110,6 +111,7 @@ namespace Connection
             if (!(rsv is q_get_chromosome_info.done done))
                 throw new Exception("lbjjbnfjbjcjdjbkckb,fd");
             completionSource.SetResult(done.items);
+            login_e?.Invoke(this);
         }
         public event Action<notify> notify_e;
         internal void notify(notify notify)

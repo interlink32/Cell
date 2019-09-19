@@ -11,11 +11,11 @@ namespace Connection
     class responder : core
     {
         internal long z_user = 0;
-        private readonly service service;
+        private readonly server service;
         Func<question, Task<answer>> get_Answer;
-        internal service a = null;
+        internal server a = null;
         internal client q = null;
-        public responder(service service, TcpClient tcp, Func<question, Task<answer>> get_answer)
+        public responder(server service, TcpClient tcp, Func<question, Task<answer>> get_answer)
         {
             this.tcp = tcp;
             this.service = service;

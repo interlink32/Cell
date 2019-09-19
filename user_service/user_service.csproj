@@ -69,8 +69,7 @@
       <DependentUpon>resource.resx</DependentUpon>
     </Compile>
     <Compile Include="s.cs" />
-    <Compile Include="service_im.cs" />
-    <Compile Include="test.cs" />
+    <Compile Include="server.cs" />
     <EmbeddedResource Include="form.resx">
       <DependentUpon>form.cs</DependentUpon>
     </EmbeddedResource>
@@ -97,7 +96,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Resources\test_public_key" />
+    <None Include="Resources\all_public_key" />
     <None Include="Resources\user_private_key" />
     <None Include="Resources\user_public_key" />
   </ItemGroup>

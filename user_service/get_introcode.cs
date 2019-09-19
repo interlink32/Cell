@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class get_introcode : service_gene<q_get_introcode>
+    class get_introcode : service<q_get_introcode>
     {
         public async override Task<answer> get_answer(q_get_introcode request)
         {

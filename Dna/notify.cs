@@ -6,6 +6,6 @@ namespace Dna
 {
     public class notify : gene
     {
-        public long z_receiver = 0;
+
     }
 }

@@ -22,7 +22,7 @@ namespace Connection
         internal async Task write(gene gene)
         {
             if (gene == null)
-                await tcp.GetStream().WriteAsync(new byte[4], 0, 4);
+                await tcp.GetStream().WriteAsync(BitConverter.GetBytes(-1), 0, 4);
             else
             {
                 var data = converter.change(gene);
@@ -32,28 +32,13 @@ namespace Connection
                 await tcp.GetStream().WriteAsync(data, 0, data.Length);
             }
         }
-
-        static int ce = 0;
-        void create_error()
-        {
-            if (this is questioner)
-            {
-                ce++;
-                if (ce % 40 == 0)
-                {
-                    Console.Beep();
-                    throw new Exception("create error");
-                }
-            }
-        }
         internal async Task<gene> read()
         {
             var data = new byte[4];
             await tcp.GetStream().ReadAsync(data, 0, data.Length);
             var len = BitConverter.ToInt32(data, 0);
-            if (len == 0)
+            if (len == -1)
                 return new void_answer();
-            create_error();
             data = new byte[len];
             await tcp.GetStream().ReadAsync(data, 0, len);
             if (key32 != null)
