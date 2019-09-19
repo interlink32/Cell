@@ -10,18 +10,15 @@ namespace message_server
 {
     public class message
     {
-        [BsonId]
-        public long chat_id { get; set; }
+        public int id { get; set; }
         public long sender { get; set; }
         public string text { get; set; }
         public DateTime time { get; set; }
-        public bool delivery { get; set; }
         public s_message create()
         {
             return new s_message()
             {
-                delivery = delivery,
-                chat_id = chat_id,
+                id = id,
                 sender = sender,
                 text = text,
                 time = time

@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace contact_server
 {
-    class create : my_service<q_create>
+    class loadFpartner : my_service<q_loadFpartner>
     {
-        public async override Task<answer> get_answer(q_create question)
+        public async override Task<answer> get_answer(q_loadFpartner question)
         {
             await Task.CompletedTask;
-            var dv = db_contact.FindOne(i => i.members.Any(j => j.person == question.person && j.person == question.z_user));
+            var sss = db_contact.FindAll().ToArray();
+            var dv = db_contact.FindOne(i => check(question, i));
             if (dv == null)
             {
                 dv = new contact()
@@ -26,16 +27,20 @@ namespace contact_server
                         },
                         new member()
                         {
-                            person=question.person
+                            person=question.partner
                         }
                     }
                 };
                 db_contact.Insert(dv);
             }
-            return new q_create.done()
+            return new q_loadFpartner.done()
             {
                 contact = dv.clone()
             };
+        }
+        private static bool check(q_loadFpartner question, contact i)
+        {
+            return i.any(question.z_user, question.partner);
         }
     }
 }

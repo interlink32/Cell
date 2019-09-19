@@ -122,7 +122,7 @@ namespace Connection
         public async Task<answer> question(question question)
         {
             await qlocking.WaitAsync();
-            var dv = qlist.First(i => i.info.chromosome.ToString() == question.z_chromosome);
+            var dv = qlist.FirstOrDefault(i => i.info.chromosome.ToString() == question.z_chromosome);
             if (dv == null)
             {
                 dv = new questioner(this, await infos(question.z_chromosome));

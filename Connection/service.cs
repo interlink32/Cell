@@ -12,6 +12,10 @@ namespace Connection
         internal service() { }
         internal abstract Task<answer> z_get_answer(question question);
         internal abstract string z_gene { get; }
+        public async Task<answer> q(question question)
+        {
+            return await server.question(question);
+        }
     }
     public abstract class service<T> : service where T : question
     {

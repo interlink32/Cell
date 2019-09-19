@@ -7,28 +7,28 @@ namespace contact_server
 {
     public class member
     {
-        public long person = default;
-        public state state = default;
+        public long person { get; set; }
+        public state state { get; set; }
         public s_member clone()
         {
-            e_state dv = default;
-            switch (state)
-            {
-                case state.none:
-                    dv = e_state.none;
-                    break;
-                case state.opponent:
-                    dv = e_state.opponent;
-                    break;
-                case state.defender:
-                    dv = e_state.defender;
-                    break;
-            }
             return new s_member()
             {
                 person = person,
-                state = dv
+                state = get(state)
             };
+        }
+        public static e_state get(state dv)
+        {
+            switch (dv)
+            {
+                case state.none:
+                    return e_state.none;
+                case state.opponent:
+                    return e_state.opponent;
+                case state.defender:
+                    return e_state.defender;
+            }
+            throw new Exception("kgjbjfdjbjdjbjdjbjdbjdjb");
         }
     }
 }

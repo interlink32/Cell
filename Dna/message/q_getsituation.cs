@@ -6,10 +6,9 @@ namespace Dna.message
 {
     public class q_getsituation : question
     {
-        public long partner = default;
+        public long contact = default;
         public class done : answer
         {
-            public long chat_id = default;
             /// <summary>
             /// Last Visited By Partner
             /// </summary>

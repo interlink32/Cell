@@ -16,7 +16,7 @@ namespace message_server
         };
         public override byte[] private_key => resource.all_private_key;
 
-        public override IPEndPoint endpoint => new IPEndPoint(reference.local_ip(), 100002);
+        public override IPEndPoint endpoint => new IPEndPoint(reference.local_ip(), 10002);
 
         public override string userid => "2";
 

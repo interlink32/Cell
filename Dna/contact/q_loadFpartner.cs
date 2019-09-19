@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Dna.contact
 {
-    public class q_create : question
+    public class q_loadFpartner : question
     {
-        public long person = default;
+        public long partner = default;
         public class done : answer
         {
             public s_contact contact = default;

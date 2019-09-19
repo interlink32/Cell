@@ -6,7 +6,7 @@ namespace Dna.message
 {
     public class q_receive : question
     {
-        public long chat_id = default;
+        public long contact = default;
         public int first_index = default;
         public int last_index = default;
         public class done : answer

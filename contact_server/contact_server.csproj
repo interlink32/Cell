@@ -53,8 +53,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="contact.cs" />
-    <Compile Include="create.cs" />
-    <Compile Include="load.cs" />
+    <Compile Include="loadFpartner.cs" />
+    <Compile Include="loadall.cs" />
+    <Compile Include="loadFcontact.cs" />
     <Compile Include="state.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

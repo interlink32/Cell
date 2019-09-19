@@ -13,10 +13,11 @@ namespace message_server
         public async override Task<answer> get_answer(q_receive question)
         {
             await Task.CompletedTask;
-            var dv = db_message.Find(i => i.chat_id >= question.first_index && i.chat_id <= question.last_index).Select(i => i.create()).ToArray();
+            var co = db_message(question.contact);
+            var dv = co.Find(i => i.id <= question.first_index && i.id >= question.last_index);
             return new q_receive.done()
             {
-                messages = dv
+                messages = dv.Select(i => i.create()).ToArray()
             };
         }
     }

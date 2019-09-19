@@ -32,7 +32,7 @@ namespace Connection
             return new s_chromosome_info()
             {
                 chromosome = chromosome.user,
-                endpoint = new IPEndPoint(valid_ip(), 10000).ToString(),
+                endpoint = new IPEndPoint(valid_ip(), 10001).ToString(),
                 public_key = resource.user_public_key
             };
         }

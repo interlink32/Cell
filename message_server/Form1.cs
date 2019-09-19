@@ -12,6 +12,7 @@ namespace message_server
 {
     public partial class Form1 : Form
     {
+        server server = new server();
         public Form1()
         {
             InitializeComponent();

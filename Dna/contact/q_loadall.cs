@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dna.contact
 {
-    public class q_load : question
+    public class q_loadall : question
     {
         public class done : answer
         {

@@ -24,8 +24,12 @@ namespace messanger
             txt_id.KeyDown += Txt_id_KeyDown;
             txt_partner.TextChanged += Txt_partner_TextChanged;
             txt_partner.KeyDown += Txt_partner_KeyDown;
+            txt_partner.AutoCompleteCustomSource = new AutoCompleteStringCollection();
+            txt_partner.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            txt_partner.AutoCompleteSource = AutoCompleteSource.CustomSource;
         }
         bool inp = false;
+        long contact_id = 0;
         async void Txt_partner_KeyDown(object sender, KeyEventArgs e)
         {
             if (inp)
@@ -33,20 +37,14 @@ namespace messanger
             inp = true;
             if (e.KeyCode == Keys.Enter)
             {
-                if (int.TryParse(txt_id.Text, out partner_id))
+                if (int.TryParse(txt_partner.Text, out partner_id))
                 {
-                    var dv = await client.question(new q_getsituation()
+                    var dv = await client.question(new q_loadFpartner() { partner = partner_id }) as q_loadFpartner.done;
+                    contact_id = dv.contact.id;
+                    await client.question(new q_getsituation()
                     {
-                        partner = partner_id
-                    }) as q_getsituation.done;
-                    if (dv != null)
-                    {
-                        txt_partner.BackColor = Color.LightBlue;
-                        var dv2 = await client.question(new q_receive()
-                        {
-                            last_index=int.MaxValue
-                        });
-                    }
+                        
+                    });
                 }
             }
             inp = false;
@@ -77,11 +75,14 @@ namespace messanger
         async void Client_login_e(client obj)
         {
             client.active_notify(chromosome.message);
-            var dv = await client.question(new q_load()) as q_load.done;
-            txt_partner.AutoCompleteCustomSource = new AutoCompleteStringCollection();
-            txt_partner.AutoCompleteCustomSource.AddRange(dv.contacts.Select(i=>i.members.an))
-            txt_id.BackColor = Color.LightBlue;
-            txt_partner.Enabled = true;
+            var dv = await client.question(new q_loadall()) as q_loadall.done;
+            var all = dv.contacts.Select(i => i.members.First(j => j.person != id).person).ToArray();  
+            Invoke(new Action(() =>
+            {
+                txt_partner.AutoCompleteCustomSource.AddRange(all.Select(i => i.ToString()).ToArray());
+                txt_id.BackColor = Color.LightBlue;
+                txt_partner.Enabled = true;
+            }));
         }
 
         private async Task<(string userid, string password)> Client_user_password_e()
@@ -92,6 +93,7 @@ namespace messanger
         private void Txt_id_TextChanged(object sender, EventArgs e)
         {
             txt_send.Enabled = false;
+            txt_partner.Text = "";
         }
     }
 }

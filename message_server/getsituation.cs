@@ -17,7 +17,7 @@ namespace message_server
             await Task.CompletedTask;
             return new q_getsituation.done()
             {
-                last_visit = db_situation.FindOne(i => i.user == question.partner)?.last_visit
+                last_visit = db_situation.FindOne(i => i.user == question.contact)?.last_visit
             };
         }
     }
