@@ -8,7 +8,7 @@ namespace Dna.message
     {
         public long contact = default;
         public int first_index = default;
-        public int last_index = default;
+        public int last_index = int.MaxValue;
         public class done : answer
         {
             public s_message[] messages = default;

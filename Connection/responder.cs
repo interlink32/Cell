@@ -14,9 +14,9 @@ namespace Connection
         private readonly server service;
         Func<question, Task<answer>> get_Answer;
         internal server a = null;
-        internal client q = null;
-        public responder(server service, TcpClient tcp, Func<question, Task<answer>> get_answer)
+        public responder(server service, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer)
         {
+            this.main_key = key;
             this.tcp = tcp;
             this.service = service;
             get_Answer = get_answer;
@@ -88,7 +88,7 @@ namespace Connection
                     {
                         if (z_user != 0)
                             throw new Exception("lkfjblseejbjdfhbhcnvc");
-                        var rsv = await q.question(new q_introcheck()
+                        var rsv = await service.question(new q_introcheck()
                         {
                             introcode = dv.introcode
                         });

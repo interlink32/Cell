@@ -16,7 +16,7 @@ namespace contact_server
             var dv = db_contact.FindOne(i => i.id == question.contact);
             return new q_loadFcontact.done()
             {
-                contact = dv?.clone()
+                contact = dv.clone()
             };
         }
     }

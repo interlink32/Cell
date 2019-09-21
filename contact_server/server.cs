@@ -14,7 +14,8 @@ namespace contact_server
         {
          new loadFpartner(),
          new update(),
-         new loadall()
+         new loadall(),
+         new loadFcontact()
         };
         public override byte[] private_key => resource.all_private_key;
         public override IPEndPoint endpoint => new IPEndPoint(reference.local_ip(), 10003);

@@ -10,9 +10,11 @@ namespace message_server
 {
     class server : Connection.server
     {
-        public override Connection.service[] elements => new Connection.service[]
+        public override service[] elements => new service[]
         {
-
+            new send(),
+            new receive(),
+            new getsituation()
         };
         public override byte[] private_key => resource.all_private_key;
 

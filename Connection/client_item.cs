@@ -16,7 +16,7 @@ namespace Connection
         internal readonly s_chromosome_info info;
         public client client = null;
         public client_item(client client, s_chromosome_info chromosome_Info)
-        { 
+        {
             main_key = chromosome_Info.public_key;
             this.client = client;
             info = chromosome_Info;

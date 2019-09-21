@@ -14,7 +14,8 @@ namespace message_server
         {
             await Task.CompletedTask;
             var co = db_message(question.contact);
-            var dv = co.Find(i => i.id <= question.first_index && i.id >= question.last_index);
+            var all = co.FindAll().ToArray();
+            var dv = co.Find(i => i.id >= question.first_index && i.id <= question.last_index).ToArray();
             return new q_receive.done()
             {
                 messages = dv.Select(i => i.create()).ToArray()

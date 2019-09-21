@@ -38,7 +38,7 @@ namespace Connection
         }
         void create_client()
         {
-            client = new client("ohgrdyvfhvxj");
+            client = new client("main");
             client.user_password_e += Client_user_password_e;
         }
         private async Task<(string userid, string password)> Client_user_password_e()
@@ -53,7 +53,7 @@ namespace Connection
         async void listen()
         {
             var tcp = await listener.AcceptTcpClientAsync();
-            responder dv = new responder(this, tcp, get_answer) { main_key = private_key, a = this, q = client };
+            responder dv = new responder(this, tcp, private_key, get_answer) { a = this };
             listen();
         }
         internal async void remove(responder val)

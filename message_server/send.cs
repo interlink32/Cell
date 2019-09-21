@@ -17,7 +17,7 @@ namespace message_server
             var rsv = await q(new q_loadFcontact()
             {
                 contact = question.contact
-            }) as q_loadFpartner.done;
+            }) as q_loadFcontact.done;
             if (rsv.contact == null)
                 return new developer_error() { code = "fjdhgdmfdndsssfmdfhdhdvf" };
             if (!rsv.contact.included(question.z_user))
@@ -26,11 +26,11 @@ namespace message_server
             {
                 message mes = new message()
                 {
-                    sender = rsv.contact.id,
+                    sender = question.z_user,
                     text = question.text,
                     time = DateTime.Now
                 };
-                db_message(mes.id).Insert(mes);
+                db_message(rsv.contact.id).Insert(mes);
                 notify(rsv.contact.another(question.z_user), new n_new_message());
                 return new q_send.doen()
                 {
