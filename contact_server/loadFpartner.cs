@@ -1,4 +1,5 @@
 ﻿using Dna;
+using Dna.common;
 using Dna.contact;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace contact_server
         public async override Task<answer> get_answer(q_loadFpartner question)
         {
             await Task.CompletedTask;
-            var sss = db_contact.FindAll().ToArray();
+            if (question.partner == question.z_user)
+                return new developer_error() { code = "kfkjfjbkfkfmbkckfb" };
             var dv = db_contact.FindOne(i => check(question, i));
             if (dv == null)
             {

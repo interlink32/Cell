@@ -62,6 +62,11 @@ namespace Connection
                     throw new Exception("lvkdlbmfkvkxmkblcc");
             }
         }
+        public event Action<chromosome> reconnect_e; 
+        internal void reconnect(client_item client_item)
+        {
+            reconnect_e?.Invoke(client_item.info.chromosome);
+        }
         async Task<bool> autologin()
         {
             var dv = await s.load<token_device>(root + "td");

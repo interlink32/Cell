@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Dna;
+using Dna.common;
 using Dna.user;
 
 namespace Connection
@@ -60,6 +61,8 @@ namespace Connection
             list.Add(dv);
             locking.Release();
             var rsv = await dv.rt.Task;
+            if (rsv is developer_error error)
+                throw new Exception(error.code);
             var space = DateTime.Now - time;
             ThreadPool.QueueUserWorkItem((o) =>
             {

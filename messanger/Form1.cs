@@ -68,7 +68,7 @@ namespace messanger
 
         private async Task receive()
         {
-            var rsv = await client.question(new Dna.message.q_receive()
+            var rsv = await client.question(new q_receive()
             {
                 contact = contact_id
             }) as q_receive.done;
@@ -110,9 +110,19 @@ namespace messanger
                 {
                     client = new client(id.ToString());
                     client.notify_e += Client_notify_e;
+                    client.reconnect_e += Client_reconnect_e;
                     client.user_password_e += Client_user_password_e;
                     client.login_e += Client_login_e;
                 }
+            }
+        }
+
+        async void Client_reconnect_e(chromosome obj)
+        {
+            if (obj == chromosome.message)
+            {
+                Console.Beep();
+                await receive();
             }
         }
 
