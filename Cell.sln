@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Converter", "Converter\Conv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "user_service", "user_service\user_service.csproj", "{32227A07-E862-4156-825D-E93E6A6A72A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "reporte", "reporte\reporte.csproj", "{061FE0D1-C66A-4530-8DC7-DB5F2D912B08}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "message_server", "message_server\message_server.csproj", "{58DBCA15-6901-4605-8E89-A4D8C4BD6C78}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "messanger", "messanger\messanger.csproj", "{1944EBD8-0FBF-4796-B607-942AA8EC25B9}"
@@ -41,10 +39,6 @@ Global
 		{32227A07-E862-4156-825D-E93E6A6A72A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32227A07-E862-4156-825D-E93E6A6A72A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32227A07-E862-4156-825D-E93E6A6A72A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{061FE0D1-C66A-4530-8DC7-DB5F2D912B08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{061FE0D1-C66A-4530-8DC7-DB5F2D912B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{061FE0D1-C66A-4530-8DC7-DB5F2D912B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{061FE0D1-C66A-4530-8DC7-DB5F2D912B08}.Release|Any CPU.Build.0 = Release|Any CPU
 		{58DBCA15-6901-4605-8E89-A4D8C4BD6C78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{58DBCA15-6901-4605-8E89-A4D8C4BD6C78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58DBCA15-6901-4605-8E89-A4D8C4BD6C78}.Release|Any CPU.ActiveCfg = Release|Any CPU
