@@ -53,7 +53,7 @@ namespace Connection
         async void listen()
         {
             var tcp = await listener.AcceptTcpClientAsync();
-            responder dv = new responder(this, tcp, private_key, get_answer) { a = this };
+            responder dv = new responder(this, tcp, private_key, get_answer);
             listen();
         }
         internal async void remove(responder val)

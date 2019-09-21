@@ -11,14 +11,13 @@ namespace Connection
     class responder : core
     {
         internal long z_user = 0;
-        private readonly server service;
+        private readonly server server;
         Func<question, Task<answer>> get_Answer;
-        internal server a = null;
         public responder(server service, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer)
         {
             this.main_key = key;
             this.tcp = tcp;
-            this.service = service;
+            this.server = service;
             get_Answer = get_answer;
             ThreadPool.QueueUserWorkItem(reading);
         }
@@ -31,14 +30,9 @@ namespace Connection
                     throw new Exception("fjbhdjbjdjkgndjgjdkvg");
                 req = q;
             }
-            catch (Exception e)
+            catch
             {
-                var dv = e.Message;
-                dv = null;
-                get_Answer = null;
-                tcp.Close();
-                tcp = null;
-                a.remove(this);
+                close();
                 return;
             }
             switch (req)
@@ -65,7 +59,7 @@ namespace Connection
                         {
                             z_user = done.id;
                             if (dv.accept_notifications)
-                                service.add(this);
+                                server.add(this);
                         }
                         local_write(res);
                     }
@@ -79,7 +73,7 @@ namespace Connection
                         {
                             z_user = done.id;
                             if (dv.accept_notifications)
-                                service.add(this);
+                                server.add(this);
                         }
                         local_write(res);
                     }
@@ -88,7 +82,7 @@ namespace Connection
                     {
                         if (z_user != 0)
                             throw new Exception("lkfjblseejbjdfhbhcnvc");
-                        var rsv = await service.question(new q_introcheck()
+                        var rsv = await server.question(new q_introcheck()
                         {
                             introcode = dv.introcode
                         });
@@ -98,7 +92,7 @@ namespace Connection
                                 {
                                     z_user = dv2.userid;
                                     if (dv.accept_notifications)
-                                        service.add(this);
+                                        server.add(this);
                                     local_write(new q_intrologin.done());
                                 }
                                 break;
@@ -127,13 +121,25 @@ namespace Connection
             }
             ThreadPool.QueueUserWorkItem(reading);
         }
+
+        private void close()
+        {
+            get_Answer = null;
+            tcp.Close();
+            tcp = null;
+            server.remove(this);
+        }
+
         async void local_write(gene gene)
         {
             try
             {
                 await write(gene);
             }
-            catch { }
+            catch
+            {
+                close();
+            }
         }
     }
 }

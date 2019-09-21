@@ -31,7 +31,7 @@ namespace Connection
         }
         private async Task try_catch()
         {
-            
+
             try
             {
                 await connect();

@@ -58,6 +58,12 @@ namespace messanger
             {
                 if (int.TryParse(txt_partner.Text, out partner_id))
                 {
+                    if (id == partner_id)
+                    {
+                        txt_partner.Text = null;
+                        inp = false;
+                        return;
+                    }
                     var dv = await client.question(new q_loadFpartner() { partner = partner_id }) as q_loadFpartner.done;
                     contact_id = dv.contact.id;
                     await receive();
