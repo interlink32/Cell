@@ -17,7 +17,7 @@ namespace Connection
         {
             await locking.WaitAsync();
             if (o == null)
-                storage.DeleteFile(key);
+                write(key, new byte[0]);
             else
             {
                 var value = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(o));

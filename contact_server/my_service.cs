@@ -12,7 +12,7 @@ namespace contact_server
 {
     abstract class my_service<T> : service<T> where T : question
     {
-        static LiteDatabase db = new LiteDatabase("d://contact.db");
+        static LiteDatabase db = new LiteDatabase("contact.db");
         public LiteCollection<contact> db_contact => db.GetCollection<contact>();
         public state GetState(e_state state)
         {
