@@ -98,7 +98,7 @@ namespace Connection
             var dv = await get(receiver);
             foreach (var i in dv)
             {
-                await i.write(notify);
+                i.local_write(notify);
             }
         }
     }

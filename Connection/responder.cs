@@ -143,7 +143,7 @@ namespace Connection
                 close();
             }
         }
-        async void local_write(gene gene)
+        internal async void local_write(gene gene)
         {
             try
             {
