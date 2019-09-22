@@ -58,8 +58,6 @@ namespace Connection
                         if (res is q_autologin.done done)
                         {
                             z_user = done.id;
-                            if (dv.accept_notifications)
-                                server.add(this);
                         }
                         local_write(res);
                     }
@@ -72,8 +70,6 @@ namespace Connection
                         if (res is q_login.done done)
                         {
                             z_user = done.id;
-                            if (dv.accept_notifications)
-                                server.add(this);
                         }
                         local_write(res);
                     }
@@ -91,9 +87,12 @@ namespace Connection
                             case q_introcheck.done dv2:
                                 {
                                     z_user = dv2.userid;
-                                    if (dv.accept_notifications)
-                                        server.add(this);
                                     local_write(new q_intrologin.done());
+                                    if (dv.accept_notifications)
+                                    {
+                                        server.add(this);
+                                        return;
+                                    }
                                 }
                                 break;
                             case q_introcheck.invalidcode dv2:
@@ -129,7 +128,21 @@ namespace Connection
             tcp = null;
             server.remove(this);
         }
-
+        internal void remove_pulse()
+        {
+            try
+            {
+                if (tcp.Available != 0)
+                {
+                    byte[] buffer = new byte[tcp.Available];
+                    tcp.GetStream().Read(buffer, 0, buffer.Length);
+                }
+            }
+            catch
+            {
+                close();
+            }
+        }
         async void local_write(gene gene)
         {
             try

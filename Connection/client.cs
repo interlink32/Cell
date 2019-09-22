@@ -19,6 +19,7 @@ namespace Connection
             this.root = root;
             user_item = new questioner(this, reference.get_user_info());
             qlist.Add(user_item);
+            send_pulse();
         }
         public event Func<Task<(string userid, string password)>> user_password_e = null;
         internal async Task login_item(client_item core)
@@ -145,6 +146,15 @@ namespace Connection
             if (dv == null)
                 nlist.Add(new notifier(this, await infos(chromosome.ToString())));
             nlocking.Release();
+        }
+        async void send_pulse()
+        {
+            await nlocking.WaitAsync();
+            foreach (var i in nlist)
+                i.send();
+            nlocking.Release();
+            await Task.Delay(1000);
+            send_pulse();
         }
         class token_device
         {

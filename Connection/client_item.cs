@@ -39,17 +39,21 @@ namespace Connection
             }
             catch
             {
-                connected = false;
-                key32 = iv16 = null;
+                disconnect();
             }
         }
+        internal void disconnect()
+        {
+            connected = false;
+            key32 = iv16 = null;
+        }
+
         public async Task<answer> q(question question)
         {
             await write(question);
             return await read() as answer;
         }
-
-        bool connected = false;
+        public bool connected { get; private set; }
         async Task connect()
         {
             if (connected)

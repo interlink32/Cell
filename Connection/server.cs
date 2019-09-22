@@ -35,6 +35,7 @@ namespace Connection
             listener.Start();
             listen();
             create_client();
+            remove_puls();
         }
         void create_client()
         {
@@ -82,6 +83,15 @@ namespace Connection
             var dv = list.Where(i => i.z_user == user).ToArray();
             locking.Release();
             return dv;
+        }
+        async void remove_puls()
+        {
+            await locking.WaitAsync();
+            foreach (var i in list)
+                i.remove_pulse();
+            locking.Release();
+            await Task.Delay(5 * 1000);
+            remove_puls();
         }
         public async void send_notify(long receiver, notify notify)
         {

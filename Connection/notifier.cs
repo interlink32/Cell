@@ -19,5 +19,17 @@ namespace Connection
             var dv = await read() as notify;
             client.notify(dv);
         }
+        internal void send()
+        {
+            try
+            {
+                if (connected)
+                    tcp.GetStream().WriteByte(39);
+            }
+            catch
+            {
+                disconnect();
+            }
+        }
     }
 }

@@ -127,7 +127,6 @@ namespace messanger
         {
             if (obj == chromosome.message)
             {
-                Console.Beep();
                 await receive();
             }
         }
