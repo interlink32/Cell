@@ -7,8 +7,8 @@ namespace Dna.contact
 {
     public class s_contact
     {
-        public long id = default;
-        public s_member[] members = default;
+        public long id { get; set; }
+        public s_member[] members { get; set; }
         public long another(long user)
         {
             if (members.Length != 2)
@@ -18,9 +18,13 @@ namespace Dna.contact
             else
                 return members[0].person;
         }
-        public bool included(long user)
+        public bool included(params long[] users)
         {
-            return members.Any(i => i.person == user);
+            foreach (var j in users)
+                if (!members.Any(i => i.person == j))
+                    return false;
+            return true;
+
         }
     }
 }

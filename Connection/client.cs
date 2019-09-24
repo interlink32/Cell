@@ -117,8 +117,15 @@ namespace Connection
             if (!(rsv is q_get_chromosome_info.done done))
                 throw new Exception("lbjjbnfjbjcjdjbkckb,fd");
             completionSource.SetResult(done.items);
+            NewMethod();
+        }
+
+        async void NewMethod()
+        {
+            await Task.CompletedTask;
             login_e?.Invoke(this);
         }
+
         public event Action<notify> notify_e;
         internal void notify(notify notify)
         {

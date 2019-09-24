@@ -30,10 +30,10 @@
         {
             this.lbl_me = new System.Windows.Forms.Label();
             this.txt_id = new System.Windows.Forms.TextBox();
-            this.txt_chat = new System.Windows.Forms.TextBox();
-            this.txt_send = new System.Windows.Forms.TextBox();
             this.txt_partner = new System.Windows.Forms.TextBox();
             this.lbl_partner = new System.Windows.Forms.Label();
+            this.txt_chat = new System.Windows.Forms.RichTextBox();
+            this.txt_send = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lbl_me
@@ -54,27 +54,10 @@
             this.txt_id.Size = new System.Drawing.Size(270, 20);
             this.txt_id.TabIndex = 2;
             // 
-            // txt_chat
-            // 
-            this.txt_chat.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txt_chat.Location = new System.Drawing.Point(0, 66);
-            this.txt_chat.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
-            this.txt_chat.Multiline = true;
-            this.txt_chat.Name = "txt_chat";
-            this.txt_chat.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txt_chat.Size = new System.Drawing.Size(270, 161);
-            this.txt_chat.TabIndex = 3;
-            // 
-            // txt_send
-            // 
-            this.txt_send.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txt_send.Location = new System.Drawing.Point(0, 227);
-            this.txt_send.Name = "txt_send";
-            this.txt_send.Size = new System.Drawing.Size(270, 20);
-            this.txt_send.TabIndex = 4;
-            // 
             // txt_partner
             // 
+            this.txt_partner.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txt_partner.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.txt_partner.Dock = System.Windows.Forms.DockStyle.Top;
             this.txt_partner.Location = new System.Drawing.Point(0, 46);
             this.txt_partner.Name = "txt_partner";
@@ -91,11 +74,30 @@
             this.lbl_partner.TabIndex = 3;
             this.lbl_partner.Text = "partner id";
             // 
+            // txt_chat
+            // 
+            this.txt_chat.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txt_chat.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txt_chat.Location = new System.Drawing.Point(0, 66);
+            this.txt_chat.Name = "txt_chat";
+            this.txt_chat.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
+            this.txt_chat.Size = new System.Drawing.Size(270, 252);
+            this.txt_chat.TabIndex = 5;
+            this.txt_chat.Text = "";
+            // 
+            // txt_send
+            // 
+            this.txt_send.Dock = System.Windows.Forms.DockStyle.Top;
+            this.txt_send.Location = new System.Drawing.Point(0, 318);
+            this.txt_send.Name = "txt_send";
+            this.txt_send.Size = new System.Drawing.Size(270, 20);
+            this.txt_send.TabIndex = 6;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(270, 247);
+            this.ClientSize = new System.Drawing.Size(270, 339);
             this.Controls.Add(this.txt_send);
             this.Controls.Add(this.txt_chat);
             this.Controls.Add(this.txt_partner);
@@ -114,10 +116,10 @@
 
         private System.Windows.Forms.Label lbl_me;
         private System.Windows.Forms.TextBox txt_id;
-        private System.Windows.Forms.TextBox txt_chat;
-        private System.Windows.Forms.TextBox txt_send;
         private System.Windows.Forms.TextBox txt_partner;
         private System.Windows.Forms.Label lbl_partner;
+        private System.Windows.Forms.RichTextBox txt_chat;
+        private System.Windows.Forms.TextBox txt_send;
     }
 }
 
