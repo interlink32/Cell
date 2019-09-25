@@ -18,16 +18,29 @@ namespace messanger
 {
     public partial class Form1 : Form
     {
-        LiteDatabase db = new LiteDatabase("d://messanger");
+        LiteDatabase db = new LiteDatabase("d://messanger.db");
         public Form1()
         {
             InitializeComponent();
             FormClosing += Form1_FormClosing;
             txt_chat.ReadOnly = true;
             txt_id.TextChanged += Txt_id_TextChanged;
+            txt_partner.TextChanged += Txt_partner_TextChanged;
             txt_id.KeyDown += Txt_id_KeyDown;
             txt_partner.KeyDown += Txt_partner_KeyDown;
             txt_send.KeyDown += Txt_send_KeyDown;
+        }
+        private void Txt_partner_TextChanged(object sender, EventArgs e)
+        {
+            run(() =>
+            {
+                txt_send.Enabled = false;
+                txt_send.Text = null;
+                txt_partner.BackColor = Color.LightPink;
+                partner = contact = default;
+                txt_chat.Text = null;
+                last_index = 0;
+            });
         }
         async void Txt_send_KeyDown(object sender, KeyEventArgs e)
         {
@@ -40,21 +53,26 @@ namespace messanger
                     text = txt_send.Text
                 });
                 await load();
+                txt_send.Text = null;
                 txt_send.Enabled = true;
             }
         }
         void add(s_message message)
         {
-            if (message.sender == user)
+            run(() =>
             {
-                txt_chat.SelectionColor = Color.Brown;
-            }
-            else
-            {
-                txt_chat.SelectionColor = Color.Black;
-            }
-            txt_chat.AppendText(message.sender + " : " + message.text);
-            last_index = message.id;
+                if (message.sender == user)
+                {
+                    txt_chat.SelectionColor = Color.Brown;
+                }
+                else
+                {
+                    txt_chat.SelectionColor = Color.Black;
+                }
+                txt_chat.AppendText(message.sender + " : " + message.text + "\r\n");
+                last_index = message.id;
+                txt_chat.ScrollToCaret();
+            });
         }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -66,7 +84,7 @@ namespace messanger
             var dv = await client.question(new q_receive()
             {
                 contact = contact,
-                first_index = last_index
+                first_index = last_index + 1
             }) as q_receive.done;
             foreach (var i in dv.messages)
             {
@@ -90,9 +108,9 @@ namespace messanger
         {
             if (e.KeyCode == Keys.Enter && txt_partner.BackColor == Color.LightPink)
             {
-                txt_partner.Enabled = false;
                 if (!long.TryParse(txt_partner.Text, out partner))
                     return;
+                txt_partner.Enabled = false;
                 var dv = db_contact.FindOne(i => i.included(user, partner));
                 if (dv == null)
                 {
@@ -101,16 +119,21 @@ namespace messanger
                         partner = partner
                     }) as q_loadFpartner.done;
                     db_contact.Insert(rsv.contact);
-                    contact = rsv.contact.id;
+                    dv = rsv.contact;
                 }
+                contact = dv.id;
+                load_local();
                 await load();
-                send_pro();
+                run(send_pro);
                 txt_partner.Enabled = true;
             }
         }
         private void send_pro()
         {
+            txt_partner.BackColor = Color.LightBlue;
             txt_send.Enabled = true;
+            txt_send.Focus();
+            Console.Beep();
         }
         private LiteCollection<s_contact> db_contact => db.GetCollection<s_contact>();
         private LiteCollection<s_message> db_message => db.GetCollection<s_message>(contact.ToString());
@@ -137,18 +160,29 @@ namespace messanger
         {
             client.notify_e += Client_notify_e;
             client.active_notify(chromosome.message);
+            client.reconnect_e += Client_reconnect_e;
             run(partner_change);
         }
+
+        async void Client_reconnect_e(chromosome obj)
+        {
+            await load();
+        }
+
         private void partner_change()
         {
             txt_id.BackColor = Color.LightBlue;
             txt_partner.Enabled = true;
             Console.Beep();
+            txt_partner.Focus();
         }
-        async void Client_notify_e(notify obj)
+        void Client_notify_e(notify obj)
         {
             if (obj is n_new_message)
-                await load();
+            {
+                load().Wait();
+                Console.Beep(4000, 100);
+            }
         }
         private void Txt_id_TextChanged(object sender, EventArgs e)
         {
@@ -164,6 +198,7 @@ namespace messanger
 
         void user_change()
         {
+            client?.close();
             client = null;
             user = partner = contact = default;
             last_index = default;
@@ -174,6 +209,7 @@ namespace messanger
             txt_chat.Text = null;
             txt_send.Text = null;
             txt_send.Enabled = false;
+            last_index = 0;
         }
     }
 }

@@ -27,6 +27,8 @@ namespace Connection
         {
             await Task.Run(try_catch);
             await Task.Delay(10);
+            if (client.closeF)
+                return;
             runing();
         }
         private async Task try_catch()
@@ -74,6 +76,10 @@ namespace Connection
             await client.login_item(this);
             client.reconnect(this);
             connected = true;
+        }
+        internal void close()
+        {
+            tcp.Close();
         }
     }
 }

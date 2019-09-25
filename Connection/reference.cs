@@ -41,7 +41,7 @@ namespace Connection
         {
             if (local)
                 return local_ip();
-            return IPAddress.Parse("31.184.135.159");
+            return IPAddress.Parse("94.182.191.71");
         }
         public static IPAddress local_ip()
         {

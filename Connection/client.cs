@@ -63,10 +63,11 @@ namespace Connection
                     throw new Exception("lvkdlbmfkvkxmkblcc");
             }
         }
-        public event Action<chromosome> reconnect_e; 
+        public event Action<chromosome> reconnect_e;
         internal void reconnect(client_item client_item)
         {
-            reconnect_e?.Invoke(client_item.info.chromosome);
+            if (!closeF)
+                reconnect_e?.Invoke(client_item.info.chromosome);
         }
         async Task<bool> autologin()
         {
@@ -117,10 +118,10 @@ namespace Connection
             if (!(rsv is q_get_chromosome_info.done done))
                 throw new Exception("lbjjbnfjbjcjdjbkckb,fd");
             completionSource.SetResult(done.items);
-            NewMethod();
+            invoke_login_e();
         }
 
-        async void NewMethod()
+        async void invoke_login_e()
         {
             await Task.CompletedTask;
             login_e?.Invoke(this);
@@ -199,6 +200,15 @@ namespace Connection
                     }
             }
             throw new Exception("lgjcjjbjcdjbkdfjkvkdjgj");
+        }
+        internal bool closeF = false;
+        public void close()
+        {
+            foreach (var i in qlist)
+            {
+                i.close();
+            }
+            closeF = true;
         }
     }
 }
