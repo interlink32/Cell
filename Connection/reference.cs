@@ -55,5 +55,9 @@ namespace Connection
             }
             throw new Exception("No network adapters with an IPv4 address in the system!");
         }
+        public static string root(string name)
+        {
+            return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + name;
+        }
     }
 }

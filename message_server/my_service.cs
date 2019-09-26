@@ -11,7 +11,7 @@ namespace message_server
 {
     abstract class my_service<T> : service<T> where T : question
     {
-        static LiteDatabase db = new LiteDatabase("messanger.db");
+        static LiteDatabase db = new LiteDatabase(reference.root("messanger.db"));
 
         public LiteCollection<message> db_message(long contact)
         {

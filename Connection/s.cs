@@ -13,7 +13,7 @@ namespace Connection
 {
     class s
     {
-        static LiteDatabase db = new LiteDatabase("info.db");
+        static LiteDatabase db = new LiteDatabase(reference.root("info.db"));
         internal static void save(token_device data)
         {
             var dv = db.GetCollection<token_device>();

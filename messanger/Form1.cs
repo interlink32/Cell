@@ -18,7 +18,7 @@ namespace messanger
 {
     public partial class Form1 : Form
     {
-        LiteDatabase db = new LiteDatabase("d://messanger.db");
+        LiteDatabase db = new LiteDatabase(reference.root("messanger.db"));
         public Form1()
         {
             InitializeComponent();
@@ -44,8 +44,9 @@ namespace messanger
         }
         async void Txt_send_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter && txt_send.Text != "")
             {
+                e.SuppressKeyPress = true;
                 txt_send.Enabled = false;
                 var dv = await client.question(new q_send()
                 {
@@ -114,6 +115,7 @@ namespace messanger
             {
                 if (!long.TryParse(txt_partner.Text, out partner))
                     return;
+                e.SuppressKeyPress = true;
                 txt_partner.Enabled = false;
                 var dv = db_contact.FindOne(i => i.included(user, partner));
                 if (dv == null)
@@ -156,6 +158,8 @@ namespace messanger
             {
                 if (!long.TryParse(txt_id.Text, out user))
                     return;
+                txt_id.Enabled = false;
+                e.SuppressKeyPress = false;
                 client = new client(txt_id.Text);
                 client.login_e += Client_login_e;
                 client.password_e += Client_user_password_e;
@@ -166,13 +170,18 @@ namespace messanger
             await Task.CompletedTask;
             return txt_id.Text + "pass";
         }
-
-        private void Client_login_e(client obj)
+        void Client_login_e(client obj)
         {
             client.notify_e += Client_notify_e;
             client.active_notify(chromosome.message);
             client.reconnect_e += Client_reconnect_e;
-            run(partner_change);
+            run(auto);
+        }
+        private async void auto()
+        {
+            var dv = await client.question(new Dna.contact.q_loadall()) as q_loadall.done;
+            txt_partner.AutoCompleteCustomSource.AddRange(dv.contacts.Select(i => i.another(user).ToString()).ToArray());
+            partner_change();
         }
 
         async void Client_reconnect_e(chromosome obj)
@@ -183,6 +192,7 @@ namespace messanger
 
         private void partner_change()
         {
+            txt_id.Enabled = true;
             txt_id.BackColor = Color.LightBlue;
             txt_partner.Enabled = true;
             Console.Beep();
@@ -190,8 +200,10 @@ namespace messanger
         }
         void Client_notify_e(notify obj)
         {
-            if (obj is n_message)
+            if (obj is n_message rsv)
             {
+                if (rsv.contact != contact)
+                    return;
                 load().Wait();
                 Console.Beep(4000, 100);
             }
