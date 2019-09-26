@@ -34,6 +34,7 @@
             this.lbl_partner = new System.Windows.Forms.Label();
             this.txt_chat = new System.Windows.Forms.RichTextBox();
             this.txt_send = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lbl_me
@@ -93,11 +94,20 @@
             this.txt_send.Size = new System.Drawing.Size(270, 20);
             this.txt_send.TabIndex = 6;
             // 
+            // textBox1
+            // 
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBox1.Location = new System.Drawing.Point(0, 338);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(270, 20);
+            this.textBox1.TabIndex = 7;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(270, 339);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.txt_send);
             this.Controls.Add(this.txt_chat);
             this.Controls.Add(this.txt_partner);
@@ -120,6 +130,7 @@
         private System.Windows.Forms.Label lbl_partner;
         private System.Windows.Forms.RichTextBox txt_chat;
         private System.Windows.Forms.TextBox txt_send;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

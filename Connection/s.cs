@@ -1,4 +1,5 @@
 ﻿using Dna.user;
+using LiteDB;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,55 +13,27 @@ namespace Connection
 {
     class s
     {
-        static IsolatedStorageFile storage = IsolatedStorageFile.GetUserStoreForAssembly();
-        internal async static void save(string key, object o)
+        static LiteDatabase db = new LiteDatabase("info.db");
+        internal static void save(token_device data)
         {
-            await locking.WaitAsync();
-            if (o == null)
-                write(key, new byte[0]);
-            else
-            {
-                var value = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(o));
-                value = core.Combine(BitConverter.GetBytes(value.Length), value);
-                write(key, value);
-            }
-            locking.Release();
+            var dv = db.GetCollection<token_device>();
+            dv.Insert(data);
         }
-        static void write(string key, byte[] value)
+        public static token_device load(string id)
         {
-            var dv =  get(key);
-            dv.Write(value, 0, value.Length);
+            return db.GetCollection<token_device>().FindOne(i => i.user_name == id);
         }
 
-        public static async Task<T> load<T>(string key)
+        internal static void remove(string user_id)
         {
-            await locking.WaitAsync();
-            var dv =  get(key);
-            byte[] data = new byte[4];
-            dv.Read(data, 0, data.Length);
-            data = new byte[BitConverter.ToInt32(data, 0)];
-            if (data.Length == 0)
-            {
-                locking.Release();
-                return default;
-            }
-            dv.Read(data, 0, data.Length);
-            locking.Release();
-            var str = Encoding.UTF8.GetString(data);
-            return JsonConvert.DeserializeObject<T>(str);
+            db.GetCollection<token_device>().Delete(new BsonValue(user_id));
         }
-        static SemaphoreSlim locking = new SemaphoreSlim(1, 1);
-        static Dictionary<string, Stream> dic = new Dictionary<string, Stream>();
-        private static Stream get(string key)
-        {
-            Stream dv = null;
-            if (!dic.TryGetValue(key, out dv))
-            {
-                dv = storage.OpenFile(key, FileMode.OpenOrCreate);
-                dic.Add(key, dv);
-            }
-            dv.Position = 0;
-            return dv;
-        }
+    }
+    public class token_device
+    {
+        [BsonId]
+        public string user_name { get; set; }
+        public double device { get; set; }
+        public double token { get; set; }
     }
 }

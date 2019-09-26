@@ -39,13 +39,13 @@ namespace Connection
         }
         void create_client()
         {
-            client = new client("main");
-            client.user_password_e += Client_user_password_e;
+            client = new client(userid);
+            client.password_e += Client_user_password_e;
         }
-        private async Task<(string userid, string password)> Client_user_password_e()
+        private async Task<string> Client_user_password_e()
         {
             await Task.CompletedTask;
-            return (userid, password);
+            return password;
         }
 
         service[] elementsF = null;

@@ -55,6 +55,7 @@ namespace messanger
                 await load();
                 txt_send.Text = null;
                 txt_send.Enabled = true;
+                txt_send.Focus();
             }
         }
         void add(s_message message)
@@ -79,8 +80,10 @@ namespace messanger
             close_db();
         }
         int last_index = default;
+        SemaphoreSlim load_lock = new SemaphoreSlim(1, 1);
         async Task load()
         {
+            await load_lock.WaitAsync();
             var dv = await client.question(new q_receive()
             {
                 contact = contact,
@@ -91,6 +94,7 @@ namespace messanger
                 db_message.Upsert(i);
                 add(i);
             }
+            load_lock.Release();
         }
         void load_local()
         {
@@ -130,6 +134,7 @@ namespace messanger
         }
         private void send_pro()
         {
+            txt_partner.Enabled = false;
             txt_partner.BackColor = Color.LightBlue;
             txt_send.Enabled = true;
             txt_send.Focus();
@@ -147,13 +152,13 @@ namespace messanger
                     return;
                 client = new client(txt_id.Text);
                 client.login_e += Client_login_e;
-                client.user_password_e += Client_user_password_e;
+                client.password_e += Client_user_password_e;
             }
         }
-        private async Task<(string userid, string password)> Client_user_password_e()
+        private async Task<string> Client_user_password_e()
         {
             await Task.CompletedTask;
-            return (txt_id.Text, txt_id.Text + "pass");
+            return txt_id.Text + "pass";
         }
 
         private void Client_login_e(client obj)
@@ -166,7 +171,8 @@ namespace messanger
 
         async void Client_reconnect_e(chromosome obj)
         {
-            await load();
+            if (obj == chromosome.message)
+                await load();
         }
 
         private void partner_change()

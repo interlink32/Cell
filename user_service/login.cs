@@ -42,9 +42,9 @@ namespace user_service
         }
         public async override Task<answer> get_answer(q_login request)
         {
-            if (request.userid + "pass" == request.password)
+            if (request.user_name + "pass" == request.password)
             {
-                var id = long.Parse(request.userid);
+                var id = long.Parse(request.user_name);
                 await locking.WaitAsync();
                 var dv = list.FirstOrDefault(i => i.user == id && i.divce == request.divce);
                 locking.Release();

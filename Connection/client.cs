@@ -13,15 +13,15 @@ namespace Connection
     public class client
     {
         questioner user_item = null;
-        string root = null;
-        public client(string root)
+        private readonly string user_name;
+        public client(string user_name)
         {
-            this.root = root;
             user_item = new questioner(this, reference.get_user_info());
             qlist.Add(user_item);
             send_pulse();
+            this.user_name = user_name;
         }
-        public event Func<Task<(string userid, string password)>> user_password_e = null;
+        public event Func<Task<string>> password_e = null;
         internal async Task login_item(client_item core)
         {
             switch (core)
@@ -40,15 +40,15 @@ namespace Connection
                 if (!await autologin())
                     while (true)
                     {
-                        var info = await user_password_e.Invoke();
-                        if (await login(info.userid, info.password))
+                        var info = await password_e.Invoke();
+                        if (await login(info))
                             break;
                     }
                 await create_items();
             }
             else
             {
-                var td = await s.load<token_device>(root + "td");
+                var td = s.load(user_name);
                 var rsv = await user_item.question(new q_get_introcode()
                 {
                     token = td.token,
@@ -71,7 +71,7 @@ namespace Connection
         }
         async Task<bool> autologin()
         {
-            var dv = await s.load<token_device>(root + "td");
+            var dv = s.load(user_name);
             if (dv == null)
                 return false;
             else
@@ -90,7 +90,7 @@ namespace Connection
                         }
                     case q_autologin.invalid_token invalid:
                         {
-                            s.save(root + "td", null);
+                            s.remove(user_name);
                             return false;
                         }
                 }
@@ -164,21 +164,16 @@ namespace Connection
             await Task.Delay(1000);
             send_pulse();
         }
-        class token_device
-        {
-            public double device = 0;
-            public double token = 0;
-        }
 
         List<questioner> qlist = new List<questioner>();
         public long z_user { get; private set; }
-        async Task<bool> login(string userid, string password)
+        async Task<bool> login(string password)
         {
             Random random = new Random();
             var divce = random.NextDouble();
             var rsv = await user_item.q(new q_login()
             {
-                userid = userid,
+                user_name = user_name,
                 divce = divce,
                 password = password
             });
@@ -187,8 +182,9 @@ namespace Connection
                 case q_login.done sw:
                     {
                         z_user = sw.id;
-                        s.save(root + "td", new token_device()
+                        s.save(new token_device()
                         {
+                            user_name = user_name,
                             device = divce,
                             token = sw.token
                         });

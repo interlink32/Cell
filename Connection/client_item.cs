@@ -74,7 +74,8 @@ namespace Connection
             if (!(await read() is void_answer))
                 throw new Exception("lkdkbjkbkfmbkcskbmdkb");
             await client.login_item(this);
-            client.reconnect(this);
+            if (this is notifier)
+                client.reconnect(this);
             connected = true;
         }
         internal void close()

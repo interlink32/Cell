@@ -6,7 +6,7 @@ namespace Dna.user
 {
     public class q_login : question
     {
-        public string userid = null;
+        public string user_name = null;
         public string password = null;
         public double divce = 0;
         public bool accept_notifications = false;

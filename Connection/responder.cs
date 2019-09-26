@@ -120,7 +120,6 @@ namespace Connection
             }
             ThreadPool.QueueUserWorkItem(reading);
         }
-
         private void close()
         {
             get_Answer = null;
