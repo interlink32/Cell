@@ -68,7 +68,13 @@ namespace messanger
                 {
                     txt_chat.SelectionColor = Color.Black;
                 }
-                txt_chat.AppendText(message.sender + " : " + message.text + "\r\n");
+
+                txt_chat.SelectionFont = new Font("Tahom", 10, FontStyle.Bold);
+                txt_chat.AppendText(message.sender + " : ");
+
+                txt_chat.SelectionFont = new Font("Tahom", 10, FontStyle.Regular);
+                txt_chat.AppendText(message.text + "\r\n");
+
                 last_index = message.id;
                 txt_chat.ScrollToCaret();
             });
