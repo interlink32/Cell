@@ -3,6 +3,7 @@ using Dna.common;
 using Dna.user;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -16,6 +17,7 @@ namespace Connection
         private readonly string user_name;
         public client(string user_name)
         {
+            Directory.CreateDirectory(reference.root(""));
             user_item = new questioner(this, reference.get_user_info());
             qlist.Add(user_item);
             send_pulse();
