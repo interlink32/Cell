@@ -52,10 +52,7 @@ namespace messanger
                     contact = contact,
                     text = txt_send.Text
                 });
-                await load();
                 txt_send.Text = null;
-                txt_send.Enabled = true;
-                txt_send.Focus();
             }
         }
         void add(s_message message)
@@ -83,6 +80,8 @@ namespace messanger
         SemaphoreSlim load_lock = new SemaphoreSlim(1, 1);
         async Task load()
         {
+            if (contact == 0)
+                return;
             await load_lock.WaitAsync();
             var dv = await client.question(new q_receive()
             {
@@ -95,6 +94,7 @@ namespace messanger
                 add(i);
             }
             load_lock.Release();
+            run(ready_to_send);
         }
         void load_local()
         {
@@ -136,10 +136,16 @@ namespace messanger
         {
             txt_partner.Enabled = false;
             txt_partner.BackColor = Color.LightBlue;
-            txt_send.Enabled = true;
-            txt_send.Focus();
+            ready_to_send();
             Console.Beep();
         }
+
+        private void ready_to_send()
+        {
+            txt_send.Enabled = true;
+            txt_send.Focus();
+        }
+
         private LiteCollection<s_contact> db_contact => db.GetCollection<s_contact>();
         private LiteCollection<s_message> db_message => db.GetCollection<s_message>(contact.ToString());
 
@@ -184,7 +190,7 @@ namespace messanger
         }
         void Client_notify_e(notify obj)
         {
-            if (obj is n_new_message)
+            if (obj is n_message)
             {
                 load().Wait();
                 Console.Beep(4000, 100);

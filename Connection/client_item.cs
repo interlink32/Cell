@@ -56,6 +56,7 @@ namespace Connection
             return await read() as answer;
         }
         public bool connected { get; private set; }
+        bool first_connect = false;
         async Task connect()
         {
             if (connected)
@@ -74,9 +75,10 @@ namespace Connection
             if (!(await read() is void_answer))
                 throw new Exception("lkdkbjkbkfmbkcskbmdkb");
             await client.login_item(this);
-            if (this is notifier)
-                client.reconnect(this);
             connected = true;
+            if (!first_connect && this is notifier)
+                client.reconnect(this);
+            first_connect = true;
         }
         internal void close()
         {

@@ -31,11 +31,9 @@ namespace message_server
                     time = DateTime.Now
                 };
                 db_message(rsv.contact.id).Insert(mes);
-                notify(rsv.contact.another(question.z_user), new n_new_message());
-                return new q_send.doen()
-                {
-                    message = mes.create()
-                };
+                foreach (var i in rsv.contact.members)
+                    notify(i.person, new n_message() { contact = rsv.contact.id });
+                return null;
             }
         }
     }

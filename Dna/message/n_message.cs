@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Dna.message
 {
-    public class n_new_message : notify
+    public class n_message : notify
     {
-
+        public long contact = default;
     }
 }

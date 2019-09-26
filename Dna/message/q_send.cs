@@ -8,9 +8,5 @@ namespace Dna.message
     {
         public long contact = default;
         public string text = default;
-        public class doen : answer
-        {
-            public s_message message = default;
-        }
     }
 }
