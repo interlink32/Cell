@@ -52,7 +52,7 @@
             this.txt_id.Dock = System.Windows.Forms.DockStyle.Top;
             this.txt_id.Location = new System.Drawing.Point(0, 13);
             this.txt_id.Name = "txt_id";
-            this.txt_id.Size = new System.Drawing.Size(270, 20);
+            this.txt_id.Size = new System.Drawing.Size(284, 20);
             this.txt_id.TabIndex = 2;
             // 
             // txt_partner
@@ -62,7 +62,7 @@
             this.txt_partner.Dock = System.Windows.Forms.DockStyle.Top;
             this.txt_partner.Location = new System.Drawing.Point(0, 46);
             this.txt_partner.Name = "txt_partner";
-            this.txt_partner.Size = new System.Drawing.Size(270, 20);
+            this.txt_partner.Size = new System.Drawing.Size(284, 20);
             this.txt_partner.TabIndex = 4;
             // 
             // lbl_partner
@@ -82,7 +82,7 @@
             this.txt_chat.Location = new System.Drawing.Point(0, 66);
             this.txt_chat.Name = "txt_chat";
             this.txt_chat.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.txt_chat.Size = new System.Drawing.Size(270, 252);
+            this.txt_chat.Size = new System.Drawing.Size(284, 252);
             this.txt_chat.TabIndex = 5;
             this.txt_chat.Text = "";
             // 
@@ -91,7 +91,7 @@
             this.txt_send.Dock = System.Windows.Forms.DockStyle.Top;
             this.txt_send.Location = new System.Drawing.Point(0, 318);
             this.txt_send.Name = "txt_send";
-            this.txt_send.Size = new System.Drawing.Size(270, 20);
+            this.txt_send.Size = new System.Drawing.Size(284, 20);
             this.txt_send.TabIndex = 6;
             // 
             // textBox1
@@ -99,14 +99,14 @@
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.textBox1.Location = new System.Drawing.Point(0, 338);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(270, 20);
+            this.textBox1.Size = new System.Drawing.Size(284, 20);
             this.textBox1.TabIndex = 7;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(270, 339);
+            this.ClientSize = new System.Drawing.Size(284, 339);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.txt_send);
             this.Controls.Add(this.txt_chat);

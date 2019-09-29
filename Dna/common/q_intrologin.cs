@@ -6,7 +6,8 @@ namespace Dna.common
 {
     public class q_intrologin : question
     {
-        public double introcode = 0;
+        public double introcode = default;
+        public double device = default;
         public bool accept_notifications = false;
         public class done : answer { }
     }

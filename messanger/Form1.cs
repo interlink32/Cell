@@ -168,13 +168,7 @@ namespace messanger
                 e.SuppressKeyPress = false;
                 client = new client(txt_id.Text);
                 client.login_e += Client_login_e;
-                client.password_e += Client_user_password_e;
             }
-        }
-        private async Task<string> Client_user_password_e()
-        {
-            await Task.CompletedTask;
-            return txt_id.Text + "pass";
         }
         void Client_login_e(client obj)
         {

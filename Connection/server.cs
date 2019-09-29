@@ -22,7 +22,7 @@ namespace Connection
         public abstract service[] elements { get; }
         public abstract byte[] private_key { get; }
         public abstract IPEndPoint endpoint { get; }
-        public abstract string userid { get; }
+        public abstract string user_name { get; }
         public abstract string password { get; }
 
         TcpListener listener;
@@ -37,15 +37,10 @@ namespace Connection
             create_client();
             remove_puls();
         }
-        void create_client()
+        async void create_client()
         {
-            client = new client(userid);
-            client.password_e += Client_user_password_e;
-        }
-        private async Task<string> Client_user_password_e()
-        {
-            await Task.CompletedTask;
-            return password;
+            client = new client(user_name, password);
+            await client.connect();
         }
 
         service[] elementsF = null;
@@ -80,7 +75,7 @@ namespace Connection
         async Task<responder[]> get(long user)
         {
             await locking.WaitAsync();
-            var dv = list.Where(i => i.z_user == user).ToArray();
+            var dv = list.Where(i => i.userid == user).ToArray();
             locking.Release();
             return dv;
         }

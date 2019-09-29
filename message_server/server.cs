@@ -20,8 +20,8 @@ namespace message_server
 
         public override IPEndPoint endpoint => new IPEndPoint(reference.local_ip(), 10002);
 
-        public override string userid => "2";
+        public override string user_name => "message_server";
 
-        public override string password => "2pass";
+        public override string password => "khjvjbjdkbkdjbnhchjbndjbxjb";
     }
 }

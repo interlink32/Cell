@@ -6,7 +6,7 @@ namespace Dna.user
 {
     public class q_introcheck : question
     {
-        public double introcode = 0;
+        public double introcode = default;
         public class done : answer
         {
             public long userid = 0;

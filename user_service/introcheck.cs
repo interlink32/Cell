@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class get_userid : service<q_introcheck>
+    class introcheck : my_server<q_introcheck>
     {
         public async override Task<answer> get_answer(q_introcheck request)
         {
-            var dv = await introcode.get_userid(request.introcode);
-            if (dv == 0)
+            await Task.CompletedTask;
+            var dv = db_intro.FindOne(i => i.value == request.introcode);
+            if (dv == null)
                 return new q_introcheck.invalidcode();
             else
-                return new q_introcheck.done() { userid = dv };
+                return new q_introcheck.done() { userid = dv.user_id };
         }
     }
 }

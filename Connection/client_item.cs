@@ -25,6 +25,8 @@ namespace Connection
         protected abstract Task cycle();
         private async void runing()
         {
+            if (client.closeF)
+                return;
             await Task.Run(try_catch);
             await Task.Delay(10);
             if (client.closeF)
@@ -39,8 +41,10 @@ namespace Connection
                 await connect();
                 await cycle();
             }
-            catch
+            catch(Exception e)
             {
+                Console.Beep();
+                string dv = e.Message;
                 disconnect();
             }
         }

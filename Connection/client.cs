@@ -14,17 +14,81 @@ namespace Connection
     public class client
     {
         questioner user_item = null;
-        private readonly string user_name;
-        public client(string user_name)
-        {
+        public readonly string user_name;
+        string password = null;
+        public client(string user_name, string password = null)
+        {            
+            this.user_name = user_name;
+            this.password = password;
             string path = reference.root("");
             Directory.CreateDirectory(path);
+        }
+        TaskCompletionSource<bool> connect_source;
+        public async Task<bool> connect()
+        {
+            if (connect_source != null)
+                throw new Exception("kvjdjbndjbnnbnncnb");
+            connect_source = new TaskCompletionSource<bool>();
             user_item = new questioner(this, reference.get_user_info());
             qlist.Add(user_item);
             send_pulse();
-            this.user_name = user_name;
+            return await connect_source.Task;
         }
-        public event Func<Task<string>> password_e = null;
+        public async Task logout()
+        {
+            await question(new q_logout()
+            {
+                device = s.load(user_name).device
+            });
+            s.remove(user_name);
+            close();
+        }
+        public static string[] all_user()
+        {
+            return s.db_device.FindAll().Select(i => i.user_name).ToArray();
+        }
+        static Action<(string user, bool login)> user_ef;
+        public static event Action<(string user, bool login)> user_e
+        {
+            add
+            {
+                user_ef += value;
+                if (users == null)
+                {
+                    users = new List<string>();
+                    check_users();
+                }
+            }
+            remove
+            {
+                user_ef -= value;
+            }
+        }
+        static List<string> users = null;
+        static async void check_users()
+        {
+            List<string> new_list = new List<string>(all_user());
+            foreach (var i in new_list)
+            {
+                if (!users.Contains(i))
+                {
+                    users.Add(i);
+                    user_ef?.Invoke((i, true));
+                }
+            }
+            foreach (var i in users.ToArray())
+            {
+                if (!new_list.Contains(i))
+                {
+                    users.Remove(i);
+                    user_ef?.Invoke((i, false));
+                }
+            }
+            await Task.Delay(200);
+            check_users();
+        }
+
+        public event Action disconnect_e = null;
         internal async Task login_item(client_item core)
         {
             switch (core)
@@ -41,12 +105,19 @@ namespace Connection
             if (core == user_item)
             {
                 if (!await autologin())
-                    while (true)
+                {
+                    if (!await login(password))
                     {
-                        var info = await password_e.Invoke();
-                        if (await login(info))
-                            break;
+                        foreach (var i in nlist)
+                            i.close();
+                        foreach (var i in qlist)
+                            i.close();
+                        closeF = true;
+                        disconnect_e?.Invoke();
+                        connect_source.SetResult(false);
                     }
+                }
+                password = null;
                 await create_items();
             }
             else
@@ -54,7 +125,6 @@ namespace Connection
                 var td = s.load(user_name);
                 var rsv = await user_item.question(new q_get_introcode()
                 {
-                    token = td.token,
                     divce = td.device
                 }) as q_get_introcode.done;
                 var rsv2 = await core.q(new q_intrologin()
@@ -81,8 +151,7 @@ namespace Connection
             {
                 var rsv = await user_item.q(new q_autologin()
                 {
-                    divice = dv.device,
-                    token = dv.token
+                    device = dv.device
                 });
                 switch (rsv)
                 {
@@ -101,12 +170,12 @@ namespace Connection
             }
         }
 
-        TaskCompletionSource<s_chromosome_info[]> completionSource = new TaskCompletionSource<s_chromosome_info[]>();
+        TaskCompletionSource<s_chromosome_info[]> info_source = new TaskCompletionSource<s_chromosome_info[]>();
         public async Task<s_chromosome_info> infos(string chromosome)
         {
             if (chromosome == Dna.chromosome.user.ToString())
                 return reference.get_user_info();
-            var dv = await completionSource.Task;
+            var dv = await info_source.Task;
             return dv.First(i => i.chromosome.ToString() == chromosome);
         }
 
@@ -120,14 +189,8 @@ namespace Connection
             var rsv = await user_item.q(new q_get_chromosome_info());
             if (!(rsv is q_get_chromosome_info.done done))
                 throw new Exception("lbjjbnfjbjcjdjbkckb,fd");
-            completionSource.SetResult(done.items);
-            invoke_login_e();
-        }
-
-        async void invoke_login_e()
-        {
-            await Task.CompletedTask;
-            login_e?.Invoke(this);
+            info_source.SetResult(done.items);
+            connect_source.SetResult(true);
         }
 
         public event Action<notify> notify_e;
@@ -172,12 +235,9 @@ namespace Connection
         public long z_user { get; private set; }
         async Task<bool> login(string password)
         {
-            Random random = new Random();
-            var divce = random.NextDouble();
             var rsv = await user_item.q(new q_login()
             {
                 user_name = user_name,
-                divce = divce,
                 password = password
             });
             switch (rsv)
@@ -188,8 +248,7 @@ namespace Connection
                         s.save(new token_device()
                         {
                             user_name = user_name,
-                            device = divce,
-                            token = sw.token
+                            device = sw.device
                         });
                         return true;
                     }

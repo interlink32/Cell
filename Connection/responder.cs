@@ -10,7 +10,9 @@ namespace Connection
 {
     class responder : core
     {
-        internal long z_user = 0;
+        internal long userid = default;
+        internal double device = default;
+        internal double token = default;
         private readonly server server;
         Func<question, Task<answer>> get_Answer;
         public responder(server service, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer)
@@ -52,31 +54,33 @@ namespace Connection
                     break;
                 case q_autologin dv:
                     {
-                        if (z_user != 0)
+                        if (userid != 0)
                             throw new Exception("lkfjbjfjbjdfhbhcnvc");
                         var res = await get_Answer(req);
                         if (res is q_autologin.done done)
                         {
-                            z_user = done.id;
+                            userid = done.id;
+                            device = dv.device;
                         }
                         local_write(res);
                     }
                     break;
                 case q_login dv:
                     {
-                        if (z_user != 0)
+                        if (userid != 0)
                             throw new Exception("lkfojhjfjbjdfhbhcnvc");
                         var res = await get_Answer(req);
                         if (res is q_login.done done)
                         {
-                            z_user = done.id;
+                            userid = done.id;
+                            device = done.device;
                         }
                         local_write(res);
                     }
                     break;
                 case q_intrologin dv:
                     {
-                        if (z_user != 0)
+                        if (userid != 0)
                             throw new Exception("lkfjblseejbjdfhbhcnvc");
                         var rsv = await server.question(new q_introcheck()
                         {
@@ -86,7 +90,8 @@ namespace Connection
                         {
                             case q_introcheck.done dv2:
                                 {
-                                    z_user = dv2.userid;
+                                    userid = dv2.userid;
+                                    device = dv.device;
                                     local_write(new q_intrologin.done());
                                     if (dv.accept_notifications)
                                     {
@@ -107,11 +112,11 @@ namespace Connection
                     break;
                 default:
                     {
-                        if (z_user == 0)
+                        if (userid == 0)
                             local_write(new login_required());
                         else
                         {
-                            req.z_user = z_user;
+                            req.z_user = userid;
                             var res = await get_Answer(req);
                             local_write(res);
                         }
