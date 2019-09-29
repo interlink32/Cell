@@ -50,7 +50,8 @@ namespace user_service
                     new login(),
                     new introcheck(),
                     new autologin(),
-                    new logout()
+                    new logout(),
+                    new create_user()
                 };
             }
         }

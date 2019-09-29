@@ -110,9 +110,15 @@ namespace Connection
                         }
                     }
                     break;
+                case q_create_user dv:
+                    {
+                        var res = await get_Answer(req);
+                        local_write(res);
+                    }
+                    break;
                 default:
                     {
-                        if (userid == 0)
+                        if (userid == 0 || userid == 1)
                             local_write(new login_required());
                         else
                         {

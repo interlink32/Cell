@@ -41,18 +41,20 @@
             // 
             this.lbl_me.AutoSize = true;
             this.lbl_me.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lbl_me.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_me.Location = new System.Drawing.Point(0, 0);
             this.lbl_me.Name = "lbl_me";
-            this.lbl_me.Size = new System.Drawing.Size(31, 13);
+            this.lbl_me.Size = new System.Drawing.Size(39, 16);
             this.lbl_me.TabIndex = 1;
             this.lbl_me.Text = "my id";
             // 
             // txt_id
             // 
             this.txt_id.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txt_id.Location = new System.Drawing.Point(0, 13);
+            this.txt_id.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_id.Location = new System.Drawing.Point(0, 16);
             this.txt_id.Name = "txt_id";
-            this.txt_id.Size = new System.Drawing.Size(284, 20);
+            this.txt_id.Size = new System.Drawing.Size(284, 23);
             this.txt_id.TabIndex = 2;
             // 
             // txt_partner
@@ -60,18 +62,20 @@
             this.txt_partner.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.txt_partner.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.txt_partner.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txt_partner.Location = new System.Drawing.Point(0, 46);
+            this.txt_partner.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_partner.Location = new System.Drawing.Point(0, 55);
             this.txt_partner.Name = "txt_partner";
-            this.txt_partner.Size = new System.Drawing.Size(284, 20);
+            this.txt_partner.Size = new System.Drawing.Size(284, 23);
             this.txt_partner.TabIndex = 4;
             // 
             // lbl_partner
             // 
             this.lbl_partner.AutoSize = true;
             this.lbl_partner.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lbl_partner.Location = new System.Drawing.Point(0, 33);
+            this.lbl_partner.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_partner.Location = new System.Drawing.Point(0, 39);
             this.lbl_partner.Name = "lbl_partner";
-            this.lbl_partner.Size = new System.Drawing.Size(51, 13);
+            this.lbl_partner.Size = new System.Drawing.Size(64, 16);
             this.lbl_partner.TabIndex = 3;
             this.lbl_partner.Text = "partner id";
             // 
@@ -79,7 +83,8 @@
             // 
             this.txt_chat.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txt_chat.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txt_chat.Location = new System.Drawing.Point(0, 66);
+            this.txt_chat.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_chat.Location = new System.Drawing.Point(0, 78);
             this.txt_chat.Name = "txt_chat";
             this.txt_chat.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
             this.txt_chat.Size = new System.Drawing.Size(284, 252);
@@ -89,15 +94,16 @@
             // txt_send
             // 
             this.txt_send.Dock = System.Windows.Forms.DockStyle.Top;
-            this.txt_send.Location = new System.Drawing.Point(0, 318);
+            this.txt_send.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txt_send.Location = new System.Drawing.Point(0, 330);
             this.txt_send.Name = "txt_send";
-            this.txt_send.Size = new System.Drawing.Size(284, 20);
+            this.txt_send.Size = new System.Drawing.Size(284, 23);
             this.txt_send.TabIndex = 6;
             // 
             // textBox1
             // 
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBox1.Location = new System.Drawing.Point(0, 338);
+            this.textBox1.Location = new System.Drawing.Point(0, 353);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(284, 20);
             this.textBox1.TabIndex = 7;
@@ -106,7 +112,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 339);
+            this.ClientSize = new System.Drawing.Size(284, 352);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.txt_send);
             this.Controls.Add(this.txt_chat);

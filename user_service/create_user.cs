@@ -13,12 +13,12 @@ namespace user_service
         public async override Task<answer> get_answer(q_create_user question)
         {
             await Task.CompletedTask;
-            var dv = db_user.FindOne(i => i.user_name == question.user_id);
+            var dv = db_user.FindOne(i => i.user_name == question.user_name);
             if (dv == null)
             {
                 dv = new s_user()
                 {
-                    user_name = question.user_id,
+                    user_name = question.user_name,
                     password = question.password
                 };
                 db_user.Insert(dv);
