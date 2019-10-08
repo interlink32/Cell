@@ -19,11 +19,10 @@ namespace Connection
         }
         public static (byte[] key32, byte[] iv16) create_symmetrical_keys()
         {
-            Random random = new Random();
             byte[] key32 = new byte[32];
             byte[] key16 = new byte[16];
-            random.NextBytes(key32);
-            random.NextBytes(key16);
+            basic.random.NextBytes(key32);
+            basic.random.NextBytes(key16);
             return (key32, key16);
         }
         public static byte[] Encrypt(byte[] data, byte[] public_key)

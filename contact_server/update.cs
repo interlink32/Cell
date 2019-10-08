@@ -14,21 +14,13 @@ namespace contact_server
         public async override Task<answer> get_answer(q_update question)
         {
             await Task.CompletedTask;
-            var dv = db_contact.FindOne(i => i.id == question.contact);
+            var db = dbcontact(question.z_user);
+            var dv = db.FindOne(i => i.contact == question.contact);
             if (dv == null)
-                return new developer_error() { code = "kfjbjfjbjfjjdmvmdjckx" };
-            else
-            {
-                var mem = dv.members.FirstOrDefault(i => i.person == question.z_user);
-                if (mem == null)
-                    return new developer_error() { code = "lgkfjbnfjvjcjdkvkcdk" };
-                mem.state = GetState(question.state);
-                db_contact.Update(dv);
-                return new q_update.done()
-                {
-                    contact = dv.clone()
-                };
-            }
+                return new developer_error() { code = "gkdgjjbdnvndbkdmbmdnbb" };
+            dv.mysetting = question.state;
+            db.Update(dv);
+            return null;
         }
     }
 }

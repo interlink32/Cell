@@ -13,20 +13,10 @@ namespace contact_server
     abstract class my_service<T> : service<T> where T : question
     {
         static LiteDatabase db = new LiteDatabase(reference.root("contact.db"));
-        public LiteCollection<contact> db_contact => db.GetCollection<contact>();
-        public state GetState(e_state state)
+        public LiteCollection<r_contact> dbcontact(long user)
         {
-            switch (state)
-            {
-                case e_state.none:
-                    return contact_server.state.none;
-                case e_state.opponent:
-                    return contact_server.state.opponent;
-                case e_state.defender:
-                    return contact_server.state.defender;
-                default:
-                    throw new Exception();
-            }
+            return db.GetCollection<r_contact>("contact_" + user);
         }
+        public LiteCollection<r_core> dbcore => db.GetCollection<r_core>();
     }
 }

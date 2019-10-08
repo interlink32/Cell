@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace Connection
 {
-    class notifier : client_item
+    class notifier : clientitem
     {
-        public notifier(client client, s_chromosome_info chromosome_Info) : base(client, chromosome_Info)
+        public notifier(string callerid, s_chromosome chromosome_Info) : base(callerid, chromosome_Info)
         {
         }
+        public event Action<notify> notify_e;
         protected async override Task cycle()
         {
             var dv = await read() as notify;
-            client.notify(dv);
+            notify_e?.Invoke(dv);
         }
         internal void send()
         {
@@ -28,7 +29,7 @@ namespace Connection
             }
             catch
             {
-                disconnect();
+                close();
             }
         }
     }

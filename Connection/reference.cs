@@ -11,7 +11,7 @@ namespace Connection
 {
     public class reference
     {
-        public static IPEndPoint get_endpoint(string endPoint)
+        internal static IPEndPoint getendpoint(string endPoint)
         {
             string[] ep = endPoint.Split(':');
             if (ep.Length != 2) throw new FormatException("Invalid endpoint format");
@@ -27,23 +27,20 @@ namespace Connection
             }
             return new IPEndPoint(ip, port);
         }
-        internal static s_chromosome_info get_user_info()
+        public static s_chromosome basechromosome => new s_chromosome()
         {
-            return new s_chromosome_info()
-            {
-                chromosome = chromosome.user,
-                endpoint = new IPEndPoint(valid_ip(), 10001).ToString(),
-                public_key = resource.user_public_key
-            };
-        }
+            chromosome = e_chromosome.user,
+            endpoint = new IPEndPoint(validip(), 10001).ToString(),
+            publickey = resource.user_public_key
+        };
         static bool local = false;
-        public static IPAddress valid_ip()
+        public static IPAddress validip()
         {
             if (local)
-                return local_ip();
+                return localip();
             return IPAddress.Parse("94.182.191.71");
         }
-        public static IPAddress local_ip()
+        public static IPAddress localip()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (var ip in host.AddressList)

@@ -13,11 +13,7 @@ namespace contact_server
         public async override Task<answer> get_answer(q_loadFcontact question)
         {
             await Task.CompletedTask;
-            var dv = db_contact.FindOne(i => i.id == question.contact);
-            return new q_loadFcontact.done()
-            {
-                contact = dv.clone()
-            };
+            return null;
         }
     }
 }

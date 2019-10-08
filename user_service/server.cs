@@ -13,31 +13,7 @@ namespace user_service
     {
         public server()
         {
-            my_server<q_login>.db_user.Upsert(new s_user()
-            {
-                id = 1,
-                user_name = "default",
-                password = "default_password"
-            });
-            my_server<q_login>.db_user.Upsert(new s_user()
-            {
-                id = 2,
-                user_name = user_name,
-                password = password
-            });
-            my_server<q_login>.db_user.Upsert(new s_user()
-            {
-                id = 3,
-                user_name = "contact_server",
-                password = "mgjdjbjdbkdbkgfvjdjdnvbjdmd"
-            });
-            my_server<q_login>.db_user.Upsert(new s_user()
-            {
-                id = 4,
-                user_name = "message_server",
-                password = "khjvjbjdkbkdjbnhchjbndjbxjb"
-            });
-
+            ini();
         }
         public override service[] elements
         {
@@ -45,19 +21,39 @@ namespace user_service
             {
                 return new service[]
                 {
-                    new get_chromosome_info(),
-                    new get_introcode(),
-                    new login(),
-                    new introcheck(),
+                    new getchromosomeinfo(),
+                    new gettoken(),
+                    new getuser(),
                     new autologin(),
                     new logout(),
-                    new create_user()
+                    new load(),
+                    new loadalluser(),
+                    new sendactivecode(),
+                    new serverlogin()
                 };
             }
         }
-        public override byte[] private_key => resource.user_private_key;
-        public override IPEndPoint endpoint => new IPEndPoint(reference.local_ip(), 10001);
-        public override string user_name => "user_server";
+        public override byte[] privatekey => resource.user_private_key;
+        public override IPEndPoint endpoint => new IPEndPoint(reference.localip(), 10001);
+        public override string id => "userserver";
         public override string password => "kfkbfkbfmbmgkbkcmbmfmbkf";
+        private void ini()
+        {
+            myservice<q_gettoken>.dbuser.Upsert(new r_user()
+            {
+                callerid = "firstuser",
+                id = 1000 * 1000
+            });
+            createitem("userserver", "kfkbfkbfmbmgkbkcmbmfmbkf");
+        }
+
+        private static void createitem(string name, string password)
+        {
+            myservice<q_gettoken>.dbserverinfo.Upsert(new r_serverinfo()
+            {
+                name = name,
+                password = password
+            });
+        }
     }
 }

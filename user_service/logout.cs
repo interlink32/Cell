@@ -9,12 +9,12 @@ using Dna.user;
 
 namespace user_service
 {
-    class logout : my_server<q_logout>
+    class logout : myservice<q_logout>
     {
-        public async override Task<answer> get_answer(q_logout question)
+        public async override Task<answer> getanswer(q_logout question)
         {
             await Task.CompletedTask;
-            db_device.Delete(i => i.id == question.device);
+            dbtoken.Delete(i => i.value == question.token);
             return new void_answer();
         }
     }

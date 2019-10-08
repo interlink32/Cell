@@ -11,13 +11,11 @@ namespace Connection
     class responder : core
     {
         internal long userid = default;
-        internal double device = default;
-        internal double token = default;
         private readonly server server;
         Func<question, Task<answer>> get_Answer;
         public responder(server service, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer)
         {
-            this.main_key = key;
+            this.mainkey = key;
             this.tcp = tcp;
             this.server = service;
             get_Answer = get_answer;
@@ -39,17 +37,17 @@ namespace Connection
             }
             switch (req)
             {
-                case q_set_key dv:
+                case q_setkey dv:
                     {
-                        key32 = crypto.Decrypt(dv.key32, main_key);
-                        iv16 = crypto.Decrypt(dv.iv16, main_key);
-                        local_write(null);
+                        key32 = crypto.Decrypt(dv.key32, mainkey);
+                        iv16 = crypto.Decrypt(dv.iv16, mainkey);
+                        localwrite(null);
                     }
                     break;
-                case q_get_chromosome_info dv:
+                case q_getchromosome dv:
                     {
                         var res = await get_Answer(req);
-                        local_write(res);
+                        localwrite(res);
                     }
                     break;
                 case q_autologin dv:
@@ -58,51 +56,64 @@ namespace Connection
                             throw new Exception("lkfjbjfjbjdfhbhcnvc");
                         var res = await get_Answer(req);
                         if (res is q_autologin.done done)
-                        {
-                            userid = done.id;
-                            device = dv.device;
-                        }
-                        local_write(res);
+                            userid = done.user.id;
+                        localwrite(res);
                     }
                     break;
-                case q_login dv:
+                case q_serverlogin serverlogin:
+                    {
+                        if (userid != 0)
+                            throw new Exception("kgjdjbjdjbjdjbkfkbjsdk");
+                        var res = await get_Answer(req);
+                        if (res is q_serverlogin.done done)
+                            userid = done.userid;
+                        localwrite(res);
+                    }
+                    break;
+                case q_gettoken dv:
                     {
                         if (userid != 0)
                             throw new Exception("lkfojhjfjbjdfhbhcnvc");
                         var res = await get_Answer(req);
-                        if (res is q_login.done done)
-                        {
-                            userid = done.id;
-                            device = done.device;
-                        }
-                        local_write(res);
+                        localwrite(res);
                     }
                     break;
-                case q_intrologin dv:
+                case q_getuser dv:
+                    {
+                        var res = await get_Answer(req);
+                        localwrite(res);
+                    }
+                    break;
+                case q_logout dv:
+                    {
+                        var res = await get_Answer(req);
+                        localwrite(res);
+                    }
+                    break;
+                case q_indirectlogin dv:
                     {
                         if (userid != 0)
                             throw new Exception("lkfjblseejbjdfhbhcnvc");
-                        var rsv = await server.question(new q_introcheck()
+                        var rsv = await q.get(new q_getuser()
                         {
-                            introcode = dv.introcode
+                            token = dv.token
                         });
                         switch (rsv)
                         {
-                            case q_introcheck.done dv2:
+                            case q_getuser.done done:
                                 {
-                                    userid = dv2.userid;
-                                    device = dv.device;
-                                    local_write(new q_intrologin.done());
-                                    if (dv.accept_notifications)
+                                    userid = done.user.id;
+                                    localwrite(new q_indirectlogin.done());
+                                    if (dv.acceptnotifications)
                                     {
                                         server.add(this);
                                         return;
                                     }
                                 }
                                 break;
-                            case q_introcheck.invalidcode dv2:
+                            case q_getuser.invalidtoken invalidtoken:
                                 {
-                                    local_write(new developer_error() { code = "kgknjfkmfmbmfmbmcmd" });
+                                    localwrite(new developer_error() { code = "kgknjfkmfmbmfmbmcmd" });
                                     await Task.Delay(1000 * 5);
                                     report.error_e?.Invoke(this, "invalid introcode");
                                 }
@@ -110,21 +121,21 @@ namespace Connection
                         }
                     }
                     break;
-                case q_create_user dv:
+                case q_sendactivecode dv:
                     {
                         var res = await get_Answer(req);
-                        local_write(res);
+                        localwrite(res);
                     }
                     break;
                 default:
                     {
                         if (userid == 0 || userid == 1)
-                            local_write(new login_required());
+                            localwrite(new loginrequired());
                         else
                         {
                             req.z_user = userid;
                             var res = await get_Answer(req);
-                            local_write(res);
+                            localwrite(res);
                         }
                     }
                     break;
@@ -153,7 +164,7 @@ namespace Connection
                 close();
             }
         }
-        internal async void local_write(gene gene)
+        internal async void localwrite(gene gene)
         {
             try
             {

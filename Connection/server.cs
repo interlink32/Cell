@@ -14,15 +14,10 @@ namespace Connection
 {
     public abstract class server
     {
-        public client client = null;
-        public async Task<answer> question(question question)
-        {
-            return await client.question(question);
-        }
         public abstract service[] elements { get; }
-        public abstract byte[] private_key { get; }
+        public abstract byte[] privatekey { get; }
         public abstract IPEndPoint endpoint { get; }
-        public abstract string user_name { get; }
+        public abstract string id { get; }
         public abstract string password { get; }
 
         TcpListener listener;
@@ -34,13 +29,13 @@ namespace Connection
             listener = new TcpListener(endpoint);
             listener.Start();
             listen();
-            create_client();
-            remove_puls();
+            removepuls();
+            createclient();
         }
-        async void create_client()
+        async void createclient()
         {
-            client = new client(user_name, password);
-            await client.connect();
+            await basic.serverlogin(id, password);
+            q.client = new client(id);
         }
 
         service[] elementsF = null;
@@ -49,7 +44,7 @@ namespace Connection
         async void listen()
         {
             var tcp = await listener.AcceptTcpClientAsync();
-            responder dv = new responder(this, tcp, private_key, get_answer);
+            responder dv = new responder(this, tcp, privatekey, get_answer);
             listen();
         }
         internal async void remove(responder val)
@@ -79,21 +74,21 @@ namespace Connection
             locking.Release();
             return dv;
         }
-        async void remove_puls()
+        async void removepuls()
         {
             await locking.WaitAsync();
             foreach (var i in list)
                 i.remove_pulse();
             locking.Release();
             await Task.Delay(5 * 1000);
-            remove_puls();
+            removepuls();
         }
         public async void send_notify(long receiver, notify notify)
         {
             var dv = await get(receiver);
             foreach (var i in dv)
             {
-                i.local_write(notify);
+                i.localwrite(notify);
             }
         }
     }

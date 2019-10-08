@@ -12,10 +12,6 @@ namespace Connection
         internal service() { }
         internal abstract Task<answer> z_get_answer(question question);
         internal abstract string z_gene { get; }
-        public async Task<answer> q(question question)
-        {
-            return await server.question(question);
-        }
     }
     public abstract class service<T> : service where T : question
     {
@@ -28,11 +24,16 @@ namespace Connection
         {
             server.send_notify(receiver, notify);
         }
-        public abstract Task<answer> get_answer(T question);
+        public abstract Task<answer> getanswer(T question);
         internal sealed async override Task<answer> z_get_answer(question question)
         {
-            var dv = await get_answer(question as T);
+            var dv = await getanswer(question as T);
             return dv;
+        }
+        public static void nullcheck(ref string val)
+        {
+            if (val == "")
+                val = null;
         }
     }
 }

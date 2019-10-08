@@ -123,13 +123,13 @@ namespace messanger
                     return;
                 e.SuppressKeyPress = true;
                 txt_partner.Enabled = false;
-                var dv = db_contact.FindOne(i => i.included(user, partner));
+                s_contact dv = null;// db_contact.FindOne(i => i.included(user, partner));
                 if (dv == null)
                 {
-                    var rsv = await client.question(new q_loadFpartner()
+                    var rsv = await client.question(new q_upsert()
                     {
                         partner = partner
-                    }) as q_loadFpartner.done;
+                    }) as q_upsert.done;
                     db_contact.Insert(rsv.contact);
                     dv = rsv.contact;
                 }
@@ -167,7 +167,6 @@ namespace messanger
                 txt_id.Enabled = false;
                 e.SuppressKeyPress = false;
                 client = new client(txt_id.Text);
-                client.login_e += Client_login_e;
             }
         }
         void Client_login_e(client obj)
@@ -179,8 +178,8 @@ namespace messanger
         }
         private async void auto()
         {
-            var dv = await client.question(new Dna.contact.q_loadall()) as q_loadall.done;
-            txt_partner.AutoCompleteCustomSource.AddRange(dv.contacts.Select(i => i.another(user).ToString()).ToArray());
+            var dv = await client.question(new Dna.contact.q_loadallcontact()) as q_loadallcontact.done;
+            //txt_partner.AutoCompleteCustomSource.AddRange(dv.contacts.Select(i => i.another(user).ToString()).ToArray());
             partner_change();
         }
 

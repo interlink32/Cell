@@ -9,9 +9,9 @@ using Dna.user;
 
 namespace Connection
 {
-    class questioner : client_item
+    class questioner : clientitem
     {
-        public questioner(client client, s_chromosome_info chromosome_Info) : base(client, chromosome_Info)
+        public questioner(string callerid, s_chromosome chromosome_Info) : base(callerid, chromosome_Info)
         {
         }
 

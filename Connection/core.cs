@@ -14,7 +14,7 @@ namespace Connection
     public class core
     {
         static converter converter = new converter();
-        internal byte[] main_key = null;
+        internal byte[] mainkey = null;
         internal byte[] key32 = null;
         internal byte[] iv16 = null;
 
