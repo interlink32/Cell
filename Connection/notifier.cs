@@ -11,9 +11,9 @@ namespace Connection
 {
     class notifier : clientitem
     {
-        public notifier(string callerid, s_chromosome chromosome_Info) : base(callerid, chromosome_Info)
-        {
-        }
+        public notifier(long userid, s_chromosome chromosome_Info) : base(userid, chromosome_Info)
+        { }
+
         public event Action<notify> notify_e;
         protected async override Task cycle()
         {

@@ -19,15 +19,6 @@ namespace user_service
         public form()
         {
             InitializeComponent();
-            report();
-        }
-        async void report()
-        {
-            string dv = "";
-            dv += "Counter: " + Connection.report.cunter;
-            lbl.Text = dv;
-            await Task.Delay(100);
-            report();
         }
     }
 }

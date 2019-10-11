@@ -9,21 +9,20 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class autologin : myservice<q_autologin>
+    class login : myservice<q_login>
     {
-        public override async Task<answer> getanswer(q_autologin request)
+        public async override Task<answer> getanswer(q_login request)
         {
             await Task.CompletedTask;
             var dv = dbtoken.FindOne(i => i.value == request.token);
             if (dv == null)
-                return new q_autologin.invalid_token();
+                return new q_login.invalidtoken();
             else
             {
                 var user = dbuser.FindOne(i => i.id == dv.user);
-                return new q_autologin.done
-                {
-                    user = user.clone()
-                };
+                if (user == null)
+                    throw new Exception("mvxdjbdjhdhvhxgsbvxnvndmv");
+                return new q_login.done() { user = user.clone() };
             }
         }
     }

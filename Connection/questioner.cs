@@ -11,7 +11,7 @@ namespace Connection
 {
     class questioner : clientitem
     {
-        public questioner(string callerid, s_chromosome chromosome_Info) : base(callerid, chromosome_Info)
+        public questioner(long userid, s_chromosome chromosome_Info) : base(userid, chromosome_Info)
         {
         }
 
@@ -61,7 +61,7 @@ namespace Connection
             list.Add(dv);
             locking.Release();
             var rsv = await dv.rt.Task;
-            if (rsv is developer_error error)
+            if (rsv is developererror error)
                 throw new Exception(error.code);
             var space = DateTime.Now - time;
             ThreadPool.QueueUserWorkItem((o) =>

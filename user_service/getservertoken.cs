@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class serverlogin : myservice<q_serverlogin>
+    class getservertoken : myservice<q_getservertoken>
     {
-        public async override Task<answer> getanswer(q_serverlogin question)
+        public async override Task<answer> getanswer(q_getservertoken question)
         {
             await Task.CompletedTask;
-            var dv = dbserverinfo.FindOne(i => i.name == question.serverid && i.password == question.password);
+            var dv = dbserverinfo.FindOne(i => i.id == (int)question.chromosome && i.password == question.password);
             if (dv == null)
                 return null;
             else
@@ -26,7 +26,13 @@ namespace user_service
                     value = basic.random.Next() + basic.random.Next().ToString()
                 };
                 dbtoken.Insert(token);
-                return new q_serverlogin.done() { userid = dv.id, token = token.value };
+                dbuser.Upsert(new r_user()
+                {
+                    callerid = question.chromosome.ToString(),
+                    fullname = question.chromosome.ToString(),
+                    id = (long)question.chromosome
+                });
+                return new q_getservertoken.done() { token = token.value };
             }
         }
     }

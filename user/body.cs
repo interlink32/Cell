@@ -86,7 +86,7 @@ namespace user
         {
             if (selected == null)
                 return;
-            txt.Text = selected.callerid;
+            txt.Text = selected.fullname;
         }
         private void Basic_user_e((userinfo user, bool login) obj)
         {
@@ -124,7 +124,7 @@ namespace user
                     break;
                 case e_state.logout:
                     {
-                        await basic.logout(txt.Text);
+                        await basic.logout(selected.id);
                     }
                     break;
             }
@@ -166,7 +166,7 @@ namespace user
         {
             subject.Text = describtion.Text = null;
             string dvphone = txt.Text;
-            var dv = userinfos.FirstOrDefault(i => i.callerid == dvphone);
+            var dv = userinfos.FirstOrDefault(i => i.fullname == dvphone);
             if (dv == null)
             {
                 lstaccounts.SelectedItem = null;

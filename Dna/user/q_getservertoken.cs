@@ -4,13 +4,13 @@ using System.Text;
 
 namespace Dna.user
 {
-    public class q_serverlogin : question
+    public class q_getservertoken : question
     {
-        public string serverid = default;
+        public e_chromosome chromosome = default;
         public string password = default;
+        public override e_permission z_permission => e_permission.free;
         public class done : answer
         {
-            public long userid = default;
             public string token = default;
         }
     }

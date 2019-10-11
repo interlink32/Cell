@@ -13,10 +13,10 @@ namespace Connection
 {
     public class client
     {
-        public readonly string callerid;
-        public client(string callerid)
+        public readonly long id;
+        public client(long id)
         { 
-            this.callerid = callerid;
+            this.id = id;
             string path = reference.root("");
             Directory.CreateDirectory(path);
             send_pulse();
@@ -26,11 +26,7 @@ namespace Connection
         {
             await qlocking.WaitAsync();
             foreach (var i in await basic.allchromosome())
-            {
-                if (callerid == "userserver" && i.chromosome == e_chromosome.user)
-                    continue;
-                qlist.Add(new questioner(callerid, i));
-            }
+                qlist.Add(new questioner(id, i));
             qlocking.Release();
         }
         public event Action<notify> notify_e;
@@ -45,7 +41,7 @@ namespace Connection
             var dv = qlist.FirstOrDefault(i => i.info.chromosome.ToString() == question.z_chromosome);
             if (dv == null)
             {
-                dv = new questioner(callerid, await basic.getchromosome(question.z_chromosome));
+                dv = new questioner(id, await basic.getchromosome(question.z_chromosome));
                 qlist.Add(dv);
             }
             qlocking.Release();
@@ -58,7 +54,7 @@ namespace Connection
             await nlocking.WaitAsync();
             var dv = nlist.FirstOrDefault(i => i.info.chromosome == chromosome);
             if (dv == null)
-                nlist.Add(new notifier(callerid, await basic.getchromosome(chromosome.ToString())));
+                nlist.Add(new notifier(id, await basic.getchromosome(chromosome.ToString())));
             nlocking.Release();
         }
         async void send_pulse()

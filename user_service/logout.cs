@@ -15,7 +15,7 @@ namespace user_service
         {
             await Task.CompletedTask;
             dbtoken.Delete(i => i.value == question.token);
-            return new void_answer();
+            return new voidanswer();
         }
     }
 }

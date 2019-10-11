@@ -1,4 +1,5 @@
 ﻿using Connection;
+using Dna;
 using Dna.user;
 using System;
 using System.Collections.Generic;
@@ -21,37 +22,40 @@ namespace user_service
             {
                 return new service[]
                 {
-                    new getchromosomeinfo(),
-                    new gettoken(),
-                    new getuser(),
-                    new autologin(),
+                    new getchromosome(),
+                    new getusertoken(),
+                    new login(),
                     new logout(),
                     new load(),
                     new loadalluser(),
                     new sendactivecode(),
-                    new serverlogin()
+                    new getservertoken(),
+                    new rename()
                 };
             }
         }
         public override byte[] privatekey => resource.user_private_key;
         public override IPEndPoint endpoint => new IPEndPoint(reference.localip(), 10001);
-        public override string id => "userserver";
         public override string password => "kfkbfkbfmbmgkbkcmbmfmbkf";
+
+        public override e_chromosome id => e_chromosome.user;
+
         private void ini()
         {
-            myservice<q_gettoken>.dbuser.Upsert(new r_user()
+            myservice<q_getusertoken>.dbuser.Upsert(new r_user()
             {
                 callerid = "firstuser",
-                id = 1000 * 1000
+                id = 1000 * 1000 * 100
             });
-            createitem("userserver", "kfkbfkbfmbmgkbkcmbmfmbkf");
+            createitem(e_chromosome.user, "kfkbfkbfmbmgkbkcmbmfmbkf");
+            createitem(e_chromosome.profile, "kgjjjfjbjvjcnvjfjbkndfjbjcnbjcn");
         }
 
-        private static void createitem(string name, string password)
+        private static void createitem(e_chromosome chromosome, string password)
         {
-            myservice<q_gettoken>.dbserverinfo.Upsert(new r_serverinfo()
+            myservice<q_getusertoken>.dbserverinfo.Upsert(new r_serverinfo()
             {
-                name = name,
+                chromosome = chromosome,
                 password = password
             });
         }

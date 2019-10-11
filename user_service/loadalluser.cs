@@ -19,8 +19,6 @@ namespace user_service
                 dv = dv.Where(i => question.ids_filter.Contains(i.id));
             if (question.name_filter != null)
                 dv = dv.Where(i => i.callerid.Contains(question.name_filter));
-            if (question.callerids_filter != null)
-                dv = dv.Where(i => question.callerids_filter.Contains(i.callerid));
             return new q_loadalluser.done()
             {
                 users = dv.Select(i => i.clone()).Skip(question.skep).Take(20).ToArray()

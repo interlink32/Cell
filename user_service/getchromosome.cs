@@ -10,13 +10,19 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class getchromosomeinfo : service<q_getchromosome>
+    class getchromosome : service<q_getchromosome>
     {
         private s_chromosome[] chromosome_infos;
-        public getchromosomeinfo()
+        public getchromosome()
         {
             List<s_chromosome> list = new List<s_chromosome>();
             list.Add(reference.basechromosome);
+            list.Add(new s_chromosome()
+            {
+                chromosome = e_chromosome.profile,
+                endpoint = new IPEndPoint(reference.validip(), 10002).ToString(),
+                publickey = resource.all_public_key
+            });
             //list.Add(new s_chromosome()
             //{
             //    chromosome = e_chromosome.message,

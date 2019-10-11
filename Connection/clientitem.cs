@@ -13,12 +13,12 @@ namespace Connection
 {
     abstract class clientitem : core
     {
-        internal readonly string callerid;
+        internal readonly long id;
         internal readonly s_chromosome info;
-        public clientitem(string callerid, s_chromosome chromosomeinfo)
+        public clientitem(long id, s_chromosome chromosomeinfo)
         {
             mainkey = chromosomeinfo.publickey;
-            this.callerid = callerid;
+            this.id = id;
             info = chromosomeinfo;
             runing();
         }
@@ -45,7 +45,7 @@ namespace Connection
             {
                 Console.Beep();
                 string dv = e.Message;
-                close();
+                disconnect();
             }
         }
         public async Task<answer> q(question question)
@@ -71,30 +71,35 @@ namespace Connection
             });
             key32 = keys.key32;
             iv16 = keys.iv16;
-            if (!(await read() is void_answer))
+            if (!(await read() is voidanswer))
                 throw new Exception("lkdkbjkbkfmbkcskbmdkb");
-            if (callerid != null)
+            if (id != 0)
             {
-                var dv = s.dbuserinfo.FindOne(i => i.callerid == callerid);
-                if (dv == null)
-                    nullcallerid();
-                else
+                userlogin dv = await getlogin();
+                var rsv = await q(new q_login()
                 {
-                    var rsv = await q(new q_indirectlogin()
-                    {
-                        token = dv.token,
-                        acceptnotifications = this is notifier
-                    });
-                    if (!(rsv is q_indirectlogin.done))
-                        badanswer();
-                }
+                    notifyconnection = this is notifier,
+                    token = dv.token
+                });
+                if (!(rsv is q_login.done))
+                    badanswer();
             }
             connected = true;
             if (!firstconnect && this is notifier)
                 reconnect_e?.Invoke(this);
             firstconnect = true;
         }
-
+        async Task<userlogin> getlogin()
+        {
+            userlogin userlogin = null;
+            userlogin = s.dbuserlogin.FindOne(i => i.id == id);
+            while (userlogin == null)
+            {
+                await Task.Delay(200);
+                userlogin = s.dbuserlogin.FindOne(i => i.id == id);
+            }
+            return userlogin;
+        }
         async void badanswer()
         {
             await Task.CompletedTask;
@@ -109,6 +114,10 @@ namespace Connection
         internal void close()
         {
             closef = true;
+        }
+
+        private void disconnect()
+        {
             tcp.Close();
             connected = false;
             key32 = iv16 = null;

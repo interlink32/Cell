@@ -52,22 +52,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="autologin.cs" />
     <Compile Include="form.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="form.Designer.cs">
       <DependentUpon>form.cs</DependentUpon>
     </Compile>
-    <Compile Include="getchromosomeinfo.cs" />
-    <Compile Include="getuser.cs" />
+    <Compile Include="getchromosome.cs" />
+    <Compile Include="login.cs" />
     <Compile Include="loadalluser.cs" />
     <Compile Include="load.cs" />
-    <Compile Include="gettoken.cs" />
+    <Compile Include="getusertoken.cs" />
     <Compile Include="logout.cs" />
     <Compile Include="myservice.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="rename.cs" />
     <Compile Include="resource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -79,7 +79,7 @@
     <Compile Include="r_user.cs" />
     <Compile Include="r_token.cs" />
     <Compile Include="r_serverinfo.cs" />
-    <Compile Include="serverlogin.cs" />
+    <Compile Include="getservertoken.cs" />
     <EmbeddedResource Include="form.resx">
       <DependentUpon>form.cs</DependentUpon>
     </EmbeddedResource>

@@ -12,14 +12,12 @@ namespace user_service
         public long id { get; set; }
         public string callerid { get; set; }
         public string fullname { get; set; }
-        public bool authentic { get; set; }
         internal s_user clone()
         {
             return new s_user()
             {
                 id = id,
-                fullname = fullname,
-                authentic = authentic
+                fullname = fullname
             };
         }
     }

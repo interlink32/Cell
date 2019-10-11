@@ -17,7 +17,7 @@ namespace Connection
         public abstract service[] elements { get; }
         public abstract byte[] privatekey { get; }
         public abstract IPEndPoint endpoint { get; }
-        public abstract string id { get; }
+        public abstract e_chromosome id { get; }
         public abstract string password { get; }
 
         TcpListener listener;
@@ -30,30 +30,29 @@ namespace Connection
             listener.Start();
             listen();
             removepuls();
-            createclient();
+            q.client = new client((long)id);
+            if (!s.dbuserlogin.Exists(i => i.id == (int)id))
+                login();
         }
-        async void createclient()
+        async void login()
         {
             await basic.serverlogin(id, password);
-            q.client = new client(id);
         }
 
         service[] elementsF = null;
-        List<responder> list = new List<responder>();
-        SemaphoreSlim locking = new SemaphoreSlim(1, 1);
         async void listen()
         {
             var tcp = await listener.AcceptTcpClientAsync();
-            responder dv = new responder(this, tcp, privatekey, get_answer);
+            responder dv = new responder(this, tcp, privatekey, getanswer);
             listen();
         }
         internal async void remove(responder val)
         {
             await locking.WaitAsync();
-            list.Remove(val);
+            mainlist.Remove(val);
             locking.Release();
         }
-        async Task<answer> get_answer(question request)
+        async Task<answer> getanswer(question request)
         {
             var dv = elementsF.FirstOrDefault(i => i.z_gene == request.z_gene);
             if (dv == null)
@@ -61,23 +60,26 @@ namespace Connection
             var dv2 = await dv.z_get_answer(request);
             return dv2;
         }
+        List<responder> mainlist = new List<responder>();
+        SemaphoreSlim locking = new SemaphoreSlim(1, 1);
         internal async void add(responder dv)
         {
             await locking.WaitAsync();
-            list.Add(dv);
+            if (!mainlist.Contains(dv))
+                mainlist.Add(dv);
             locking.Release();
         }
-        async Task<responder[]> get(long user)
+        async Task<responder[]> getmain(long user)
         {
             await locking.WaitAsync();
-            var dv = list.Where(i => i.userid == user).ToArray();
+            var dv = mainlist.Where(i => i.userid == user).ToArray();
             locking.Release();
             return dv;
         }
         async void removepuls()
         {
             await locking.WaitAsync();
-            foreach (var i in list)
+            foreach (var i in mainlist)
                 i.remove_pulse();
             locking.Release();
             await Task.Delay(5 * 1000);
@@ -85,11 +87,10 @@ namespace Connection
         }
         public async void send_notify(long receiver, notify notify)
         {
-            var dv = await get(receiver);
+            notify.z_user = receiver;
+            var dv = await getmain(receiver);
             foreach (var i in dv)
-            {
                 i.localwrite(notify);
-            }
         }
     }
 }

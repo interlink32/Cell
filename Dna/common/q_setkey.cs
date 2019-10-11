@@ -8,6 +8,7 @@ namespace Dna.common
     {
         public byte[] key32 = null;
         public byte[] iv16 = null;
+        public sealed override e_permission z_permission => e_permission.free;
         public class done : answer { }
     }
 }

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dna.common
+namespace Dna.user
 {
-    public class void_answer : answer
+    public class n_rename : notify
     {
     }
 }

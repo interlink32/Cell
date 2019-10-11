@@ -8,10 +8,9 @@ namespace Dna.user
     {
         public long id { get; set; }
         public string fullname { get; set; }
-        public bool authentic { get; set; }
         public override string ToString()
         {
-            return authentic ? fullname : "*" + fullname + "*";
+            return fullname;
         }
     }
 }

@@ -23,19 +23,40 @@ namespace Connection
         }
         async void reading(object o)
         {
-            question req = null;
+            question question = null;
             try
             {
                 if (!(await read() is question q))
                     throw new Exception("fjbhdjbjdjkgndjgjdkvg");
-                req = q;
+                question = q;
             }
             catch
             {
                 close();
                 return;
             }
-            switch (req)
+            switch (question.z_permission)
+            {
+                case e_permission.server:
+                    {
+                        if (userid > 100)
+                        {
+                            localwrite(new developererror() { code = "flfbfblflblfgfbndhvhdc" });
+                            return;
+                        }
+                    }
+                    break;
+                case e_permission.user:
+                    {
+                        if (userid == 0)
+                        {
+                            localwrite(new developererror() { code = "gkdjbjbkvmdmvbkvdkv" });
+                            return;
+                        }
+                    }
+                    break;
+            }
+            switch (question)
             {
                 case q_setkey dv:
                     {
@@ -44,99 +65,27 @@ namespace Connection
                         localwrite(null);
                     }
                     break;
-                case q_getchromosome dv:
+                case q_login dv:
                     {
-                        var res = await get_Answer(req);
-                        localwrite(res);
-                    }
-                    break;
-                case q_autologin dv:
-                    {
-                        if (userid != 0)
-                            throw new Exception("lkfjbjfjbjdfhbhcnvc");
-                        var res = await get_Answer(req);
-                        if (res is q_autologin.done done)
+                        answer rsv = null;
+                        if (server.id == e_chromosome.user)
+                            rsv = await get_Answer(dv);
+                        else
+                            rsv = await q.get(dv);
+                        if (userid == 0 && rsv is q_login.done done)
+                        {
                             userid = done.user.id;
-                        localwrite(res);
-                    }
-                    break;
-                case q_serverlogin serverlogin:
-                    {
-                        if (userid != 0)
-                            throw new Exception("kgjdjbjdjbjdjbkfkbjsdk");
-                        var res = await get_Answer(req);
-                        if (res is q_serverlogin.done done)
-                            userid = done.userid;
-                        localwrite(res);
-                    }
-                    break;
-                case q_gettoken dv:
-                    {
-                        if (userid != 0)
-                            throw new Exception("lkfojhjfjbjdfhbhcnvc");
-                        var res = await get_Answer(req);
-                        localwrite(res);
-                    }
-                    break;
-                case q_getuser dv:
-                    {
-                        var res = await get_Answer(req);
-                        localwrite(res);
-                    }
-                    break;
-                case q_logout dv:
-                    {
-                        var res = await get_Answer(req);
-                        localwrite(res);
-                    }
-                    break;
-                case q_indirectlogin dv:
-                    {
-                        if (userid != 0)
-                            throw new Exception("lkfjblseejbjdfhbhcnvc");
-                        var rsv = await q.get(new q_getuser()
-                        {
-                            token = dv.token
-                        });
-                        switch (rsv)
-                        {
-                            case q_getuser.done done:
-                                {
-                                    userid = done.user.id;
-                                    localwrite(new q_indirectlogin.done());
-                                    if (dv.acceptnotifications)
-                                    {
-                                        server.add(this);
-                                        return;
-                                    }
-                                }
-                                break;
-                            case q_getuser.invalidtoken invalidtoken:
-                                {
-                                    localwrite(new developer_error() { code = "kgknjfkmfmbmfmbmcmd" });
-                                    await Task.Delay(1000 * 5);
-                                    report.error_e?.Invoke(this, "invalid introcode");
-                                }
-                                break;
+                            if (dv.notifyconnection)
+                                server.add(this);
                         }
-                    }
-                    break;
-                case q_sendactivecode dv:
-                    {
-                        var res = await get_Answer(req);
-                        localwrite(res);
+                        localwrite(rsv);
                     }
                     break;
                 default:
                     {
-                        if (userid == 0 || userid == 1)
-                            localwrite(new loginrequired());
-                        else
-                        {
-                            req.z_user = userid;
-                            var res = await get_Answer(req);
-                            localwrite(res);
-                        }
+                        question.z_user = userid;
+                        var res = await get_Answer(question);
+                        localwrite(res);
                     }
                     break;
             }

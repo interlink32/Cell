@@ -8,6 +8,7 @@ namespace Dna.user
     {
         public string callerid = default;
         public long randomvalue = default;
+        public override e_permission z_permission => e_permission.free;
         public class done : answer { }
     }
 }

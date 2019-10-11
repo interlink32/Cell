@@ -38,7 +38,7 @@ namespace Connection
             await tcp.GetStream().ReadAsync(data, 0, data.Length);
             var len = BitConverter.ToInt32(data, 0);
             if (len == -1)
-                return new void_answer();
+                return new voidanswer();
             data = new byte[len];
             await tcp.GetStream().ReadAsync(data, 0, len);
             if (key32 != null)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +9,8 @@ namespace Dna
     {
         public string z_gene = null;
         public string z_chromosome = null;
+        [JsonIgnore]
+        public long z_user = 0;
         public gene()
         {
             var dv = get(GetType());

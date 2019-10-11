@@ -22,23 +22,21 @@ namespace Connection
             Filename = reference.root("info.db"),
             Password = get()
         });
-        internal static LiteCollection<userinfosec> dbuserinfo => db.GetCollection<userinfosec>();
+        internal static LiteCollection<userlogin> dbuserlogin => db.GetCollection<userlogin>();
         internal static LiteCollection<randomcode> dbrandom => db.GetCollection<randomcode>();
     }
-    class userinfosec
+    class userlogin
     {
-        [BsonId]
+        public long id { get; set; }
         public string callerid { get; set; }
         public string fullname { get; set; }
-        public long id { get; set; }
         public string token { get; set; }
         public bool general { get; set; }
-        public bool authentic { get; set; }
         public userinfo clone()
         {
             return new userinfo()
             {
-                callerid = callerid,
+                id = id,
                 fullname = fullname
             };
         }

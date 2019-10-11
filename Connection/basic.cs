@@ -17,16 +17,16 @@ namespace Connection
         {
             await defaultlock.WaitAsync();
             if (defaultitem == null)
-                defaultitem = new questioner(null, reference.basechromosome);
+                defaultitem = new questioner(0, reference.basechromosome);
             defaultlock.Release();
             return await defaultitem.question(question);
         }
-        public static async Task logout(string callerid)
+        public static async Task logout(long userid)
         {
-            var dv = s.dbuserinfo.FindOne(i => i.callerid == callerid);
+            var dv = s.dbuserlogin.FindOne(i => i.id == userid);
             if (dv == null)
                 return;
-            s.dbuserinfo.Delete(i => i.callerid == callerid);
+            s.dbuserlogin.Delete(i => i.id == userid);
             await q(new q_logout()
             {
                 token = dv.token
@@ -37,60 +37,67 @@ namespace Connection
         {
             var dv = s.dbrandom.FindOne(i => i.callerid == callerid);
             if (dv == null)
-            {
-                dv = new randomcode()
-                {
-                    callerid = callerid,
-                    value = random.Next()
-                };
-                s.dbrandom.Insert(dv);
-            }
+                dv = createrandomcode(callerid);
             await q(new q_sendactivecode()
             {
                 callerid = callerid,
                 randomvalue = dv.value
             });
         }
+        private static randomcode createrandomcode(string callerid)
+        {
+            randomcode dv = new randomcode()
+            {
+                callerid = callerid,
+                value = random.Next()
+            };
+            s.dbrandom.Upsert(dv);
+            return dv;
+        }
         public static async Task<bool> login(string callerid, string activecode)
         {
+            var userlogin = s.dbuserlogin.FindOne(i => i.callerid == callerid);
+            if (userlogin != null)
+            {
+                await logout(userlogin.id);
+                s.dbuserlogin.Delete(i => i.id == userlogin.id);
+                return await login(callerid, activecode);
+            }
             var code = s.dbrandom.FindOne(i => i.callerid == callerid);
             if (code == null)
                 return false;
-            var dv = await q(new q_gettoken()
+            var dv = await q(new q_getusertoken()
             {
-                activecode = activecode,
                 callerid = callerid,
+                activecode = activecode,
                 randomvalue = code.value
-            }) as q_gettoken.done;
+            }) as q_getusertoken.done;
             if (dv == null)
                 return false;
-            var user = await q(new q_getuser() { token = dv.token }) as q_getuser.done;
-            s.dbuserinfo.Upsert(new userinfosec()
+            s.dbuserlogin.Upsert(new userlogin()
             {
-                callerid = callerid,
                 token = dv.token,
                 general = true,
-                id = user.user.id,
-                fullname = user.user.fullname,
-                authentic = user.user.authentic
+                id = dv.user.id,
+                fullname = dv.user.fullname
             });
             s.dbrandom.Delete(i => i.callerid == callerid);
             return true;
         }
-        public static async Task<bool> serverlogin(string serverid, string password)
+        public static async Task<bool> serverlogin(e_chromosome chromosome, string password)
         {
-            var dv = await q(new q_serverlogin()
+            var dv = await q(new q_getservertoken()
             {
-                serverid = serverid,
+                chromosome = chromosome,
                 password = password
-            }) as q_serverlogin.done;
+            }) as q_getservertoken.done;
             if (dv == null)
                 return false;
-            s.dbuserinfo.Upsert(new userinfosec()
+            s.dbuserlogin.Upsert(new userlogin()
             {
-                callerid = serverid,
                 token = dv.token,
-                general = false
+                general = false,
+                id = (int)chromosome
             });
             return true;
         }
@@ -110,24 +117,24 @@ namespace Connection
         }
         public static async Task updateusers()
         {
-            var dv = s.dbuserinfo.Find(i => i.general).Select(i => i.callerid).ToArray();
+            var dv = s.dbuserlogin.Find(i => i.general).Select(i => i.id).ToArray();
             if (dv.Length == 0)
                 return;
             var rsv = await q(new q_loadalluser()
             {
-                callerids_filter = dv
+                ids_filter = dv
             }) as q_loadalluser.done;
-            userinfosec userinfosec;
+            userlogin userinfosec;
             foreach (var i in rsv.users)
             {
-                userinfosec = s.dbuserinfo.FindOne(j => j.id == i.id);
+                userinfosec = s.dbuserlogin.FindOne(j => j.id == i.id);
                 userinfosec.fullname = i.fullname;
-                s.dbuserinfo.Update(userinfosec);
+                s.dbuserlogin.Update(userinfosec);
             }
         }
         public static userinfo[] alluser()
         {
-            return s.dbuserinfo.Find(i => i.general).Select(i => i.clone()).ToArray();
+            return s.dbuserlogin.Find(i => i.general).Select(i => i.clone()).ToArray();
         }
         static Action<(userinfo user, bool login)> useref;
         public static event Action<(userinfo user, bool login)> user_e
@@ -153,7 +160,7 @@ namespace Connection
             List<userinfo> newlist = new List<userinfo>(alluser());
             foreach (var i in newlist)
             {
-                if (!users.Any(j => j.callerid == i.callerid))
+                if (!users.Any(j => j.id == i.id))
                 {
                     users.Add(i);
                     useref?.Invoke((i, true));
@@ -161,7 +168,7 @@ namespace Connection
             }
             foreach (var i in users.ToArray())
             {
-                if (!newlist.Any(j => j.callerid == i.callerid))
+                if (!newlist.Any(j => j.id == i.id))
                 {
                     users.Remove(i);
                     useref?.Invoke((i, false));
@@ -173,7 +180,7 @@ namespace Connection
     }
     public class userinfo
     {
-        public string callerid { get; internal set; }
+        public long id { get; internal set; }
         public string fullname { get; internal set; }
         public override string ToString() => fullname;
     }

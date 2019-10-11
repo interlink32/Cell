@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dna.common
 {
-    public class loginrequired : answer
+    public class voidanswer : answer
     {
     }
 }

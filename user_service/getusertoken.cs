@@ -10,15 +10,14 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class gettoken : myservice<q_gettoken>
+    class getusertoken : myservice<q_getusertoken>
     {
-        public async override Task<answer> getanswer(q_gettoken question)
+        public async override Task<answer> getanswer(q_getusertoken question)
         {
-            var dddd = dbtoken.FindAll().ToArray();
             await Task.CompletedTask;
             var activecode = dbactivecode.FindOne(i => i.callerid == question.callerid && i.randomvalue == question.randomvalue && i.activecode == question.activecode);
             if (activecode == null)
-                return new q_gettoken.invalid();
+                return new q_getusertoken.invalid();
             var user = dbuser.FindOne(i => i.callerid == question.callerid);
             if (user == null)
             {
@@ -29,16 +28,16 @@ namespace user_service
                 };
                 dbuser.Insert(user);
             }
-
             var token = new r_token()
             {
                 user = user.id,
                 value = basic.random.Next() + basic.random.Next().ToString()
             };
             dbtoken.Insert(token);
-            return new q_gettoken.done()
+            return new q_getusertoken.done()
             {
                 token = token.value,
+                user = user.clone()
             };
         }
     }
