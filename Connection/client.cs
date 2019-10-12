@@ -1,9 +1,6 @@
 ﻿using Dna;
-using Dna.common;
-using Dna.user;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,68 +10,83 @@ namespace Connection
 {
     public class client
     {
-        public readonly long id;
+        public long id { get; }
         public client(long id)
-        { 
+        {
             this.id = id;
-            string path = reference.root("");
-            Directory.CreateDirectory(path);
-            send_pulse();
-            create();
         }
-        async void create()
-        {
-            await qlocking.WaitAsync();
-            foreach (var i in await basic.allchromosome())
-                qlist.Add(new questioner(id, i));
-            qlocking.Release();
-        }
-        public event Action<notify> notify_e;
-        internal void notify(notify notify)
-        {
-            notify_e?.Invoke(notify);
-        }
-        SemaphoreSlim qlocking = new SemaphoreSlim(1, 1);
         public async Task<answer> question(question question)
         {
-            await qlocking.WaitAsync();
-            var dv = qlist.FirstOrDefault(i => i.info.chromosome.ToString() == question.z_chromosome);
-            if (dv == null)
-            {
-                dv = new questioner(id, await basic.getchromosome(question.z_chromosome));
-                qlist.Add(dv);
-            }
-            qlocking.Release();
-            return await dv.question(question);
-        }
-        List<notifier> nlist = new List<notifier>();
-        SemaphoreSlim nlocking = new SemaphoreSlim(1, 1);
-        public async void active_notify(e_chromosome chromosome)
-        {
-            await nlocking.WaitAsync();
-            var dv = nlist.FirstOrDefault(i => i.info.chromosome == chromosome);
-            if (dv == null)
-                nlist.Add(new notifier(id, await basic.getchromosome(chromosome.ToString())));
-            nlocking.Release();
-        }
-        async void send_pulse()
-        {
-            await nlocking.WaitAsync();
-            foreach (var i in nlist)
-                i.send();
-            nlocking.Release();
-            await Task.Delay(1000);
-            send_pulse();
+            return await client.question(id, question);
         }
 
-        List<questioner> qlist = new List<questioner>();
-        public long z_user { get; private set; }
-        public void close()
+        static List<questioner> list = new List<questioner>();
+        static SemaphoreSlim qlock = new SemaphoreSlim(1, 1);
+        static async Task<questioner> getq(long user, string chromosome)
         {
+            await qlock.WaitAsync();
+            var dv = list.FirstOrDefault(i => i.userid == user && i.chromosome == chromosome);
+            if (dv == null)
+            {
+                dv = new questioner(user, chromosome);
+                list.Add(dv);
+            }
+            qlock.Release();
+            return dv;
+        }
+        public static async Task<answer> question(long user, question question)
+        {
+            if (user == 0 && question.z_permission != e_permission.free)
+                throw new Exception("kgjdjrbjcnbjfjnfjvbixjbjdkvb");
+            var dv = await getq(user, question.z_chromosome);
+            return await dv.question(question);
+        }
+        public static async void close(long user, e_chromosome chromosome)
+        {
+            await nlock.WaitAsync();
+            var dv = await getn(user, chromosome.ToString());
+            dv.close();
+            nlist.Remove(dv);
+            nlock.Release();
+        }
+        static List<notifier> nlist = new List<notifier>();
+        public static async void add<T>(long user, Action<T> action) where T : notify, new()
+        {
+            T d = new T();
+            notifier dv = await getn(user, d.z_chromosome);
+            dv.add(action);
+        }
+        static SemaphoreSlim nlock = new SemaphoreSlim(1, 1);
+        async static Task<notifier> getn(long user, string chromosome)
+        {
+            await nlock.WaitAsync();
+            if (nlist == null)
+            {
+                nlist = new List<notifier>();
+                send_pulse();
+            }
+            var dv = nlist.FirstOrDefault(i => i.userid == user && i.chromosome == chromosome);
+            if (dv == null)
+            {
+                dv = new notifier(user, chromosome);
+                nlist.Add(dv);
+            }
+            nlock.Release();
+            return dv;
+        }
+        public static async void reconnect(long user, e_chromosome chromosome, Action action)
+        {
+            var dv = await getn(user, chromosome.ToString());
+            dv.reconnect_e += action;
+        }
+        static async void send_pulse()
+        {
+            await nlock.WaitAsync();
             foreach (var i in nlist)
-                i.close();
-            foreach (var i in qlist)
-                i.close();
+                i.send();
+            nlock.Release();
+            await Task.Delay(1000);
+            send_pulse();
         }
     }
 }

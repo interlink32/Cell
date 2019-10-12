@@ -122,6 +122,10 @@
       <Project>{2463C0C6-3D96-4D0C-9780-3D70BC5A54D8}</Project>
       <Name>Connection</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dna\Dna.csproj">
+      <Project>{FE1D99EB-3DB7-44D9-B3AF-A54975E57B93}</Project>
+      <Name>Dna</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

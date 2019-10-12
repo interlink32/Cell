@@ -11,7 +11,7 @@ namespace Connection
 {
     class questioner : clientitem
     {
-        public questioner(long userid, s_chromosome chromosome_Info) : base(userid, chromosome_Info)
+        public questioner(long userid, string chromosome) : base(userid, chromosome)
         {
         }
 

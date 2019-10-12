@@ -11,14 +11,9 @@ namespace Connection
 {
     public static class basic
     {
-        static questioner defaultitem;
-        static SemaphoreSlim defaultlock = new SemaphoreSlim(1, 1);
+        static questioner defaultitem = new questioner(0, e_chromosome.user.ToString());
         static async Task<answer> q(question question)
         {
-            await defaultlock.WaitAsync();
-            if (defaultitem == null)
-                defaultitem = new questioner(0, reference.basechromosome);
-            defaultlock.Release();
             return await defaultitem.question(question);
         }
         public static async Task logout(long userid)
@@ -103,7 +98,9 @@ namespace Connection
         }
         public static async Task<s_chromosome> getchromosome(string chromosome)
         {
-            return (await allchromosome()).First(i => i.ToString() == chromosome);
+            if (chromosome == e_chromosome.user.ToString())
+                return reference.userchromosome;
+            return (await allchromosome()).First(i => i.chromosome.ToString() == chromosome);
         }
         static s_chromosome[] chromosomes = null;
         static SemaphoreSlim getlock = new SemaphoreSlim(1, 1);
@@ -114,23 +111,6 @@ namespace Connection
                 chromosomes = (await q(new q_getchromosome()) as q_getchromosome.done).items;
             getlock.Release();
             return chromosomes;
-        }
-        public static async Task updateusers()
-        {
-            var dv = s.dbuserlogin.Find(i => i.general).Select(i => i.id).ToArray();
-            if (dv.Length == 0)
-                return;
-            var rsv = await q(new q_loadalluser()
-            {
-                ids_filter = dv
-            }) as q_loadalluser.done;
-            userlogin userinfosec;
-            foreach (var i in rsv.users)
-            {
-                userinfosec = s.dbuserlogin.FindOne(j => j.id == i.id);
-                userinfosec.fullname = i.fullname;
-                s.dbuserlogin.Update(userinfosec);
-            }
         }
         public static userinfo[] alluser()
         {
@@ -183,5 +163,16 @@ namespace Connection
         public long id { get; internal set; }
         public string fullname { get; internal set; }
         public override string ToString() => fullname;
+        public override int GetHashCode()
+        {
+            return 0;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            var dv = obj as userinfo;
+            return id == dv.id;
+        }
     }
 }

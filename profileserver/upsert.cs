@@ -27,7 +27,7 @@ namespace profileserver
             if (profile.fullname != question.fullname)
             {
                 profile.fullname = question.fullname;
-                await q.get(new q_rename()
+                await server.q(new q_rename()
                 {
                     user = question.z_user,
                     fullname = question.fullname

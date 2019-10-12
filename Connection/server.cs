@@ -21,8 +21,10 @@ namespace Connection
         public abstract string password { get; }
 
         TcpListener listener;
+        static long serverid = default;
         public server()
         {
+            serverid = (long)id;
             elementsF = elements;
             foreach (var i in elementsF)
                 i.server = this;
@@ -30,13 +32,12 @@ namespace Connection
             listener.Start();
             listen();
             removepuls();
-            q.client = new client((long)id);
-            if (!s.dbuserlogin.Exists(i => i.id == (int)id))
-                login();
+            login();
         }
         async void login()
         {
-            await basic.serverlogin(id, password);
+            if (!s.dbuserlogin.Exists(i => i.id == (int)id))
+                await basic.serverlogin(id, password);
         }
 
         service[] elementsF = null;
@@ -91,6 +92,10 @@ namespace Connection
             var dv = await getmain(receiver);
             foreach (var i in dv)
                 i.localwrite(notify);
+        }
+        public static async Task<answer> q(question question)
+        {
+            return await client.question(serverid, question);
         }
     }
 }

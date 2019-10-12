@@ -3,6 +3,7 @@ using Dna.common;
 using Dna.user;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -11,15 +12,22 @@ using System.Threading.Tasks;
 
 namespace Connection
 {
-    abstract class clientitem : core
+    public abstract class clientitem : core
     {
-        internal readonly long id;
-        internal readonly s_chromosome info;
-        public clientitem(long id, s_chromosome chromosomeinfo)
+        public long userid { get; private set; }
+        internal s_chromosome info { get; private set; }
+        public clientitem(long id, string chromosome)
         {
-            mainkey = chromosomeinfo.publickey;
-            this.id = id;
-            info = chromosomeinfo;
+            string path = reference.root("");
+            Directory.CreateDirectory(path);
+            ini(id, chromosome);
+            this.chromosome = chromosome;
+        }
+        async void ini(long userid, string chromosome)
+        {
+            info =await basic.getchromosome(chromosome);
+            mainkey = info.publickey;
+            this.userid = userid;
             runing();
         }
         protected abstract Task cycle();
@@ -54,8 +62,10 @@ namespace Connection
             return await read() as answer;
         }
         public bool connected { get; private set; }
+        public string chromosome { get; }
+
         bool firstconnect = false;
-        public event Action<clientitem> reconnect_e;
+        public event Action reconnect_e;
         async Task connect()
         {
             if (connected)
@@ -73,7 +83,7 @@ namespace Connection
             iv16 = keys.iv16;
             if (!(await read() is voidanswer))
                 throw new Exception("lkdkbjkbkfmbkcskbmdkb");
-            if (id != 0)
+            if (userid != 0)
             {
                 userlogin dv = await getlogin();
                 var rsv = await q(new q_login()
@@ -86,17 +96,17 @@ namespace Connection
             }
             connected = true;
             if (!firstconnect && this is notifier)
-                reconnect_e?.Invoke(this);
+                reconnect_e?.Invoke();
             firstconnect = true;
         }
         async Task<userlogin> getlogin()
         {
             userlogin userlogin = null;
-            userlogin = s.dbuserlogin.FindOne(i => i.id == id);
+            userlogin = s.dbuserlogin.FindOne(i => i.id == userid);
             while (userlogin == null)
             {
                 await Task.Delay(200);
-                userlogin = s.dbuserlogin.FindOne(i => i.id == id);
+                userlogin = s.dbuserlogin.FindOne(i => i.id == userid);
             }
             return userlogin;
         }

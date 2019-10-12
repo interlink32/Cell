@@ -27,7 +27,7 @@ namespace Connection
             }
             return new IPEndPoint(ip, port);
         }
-        public static s_chromosome basechromosome => new s_chromosome()
+        public static s_chromosome userchromosome => new s_chromosome()
         {
             chromosome = e_chromosome.user,
             endpoint = new IPEndPoint(validip(), 10001).ToString(),

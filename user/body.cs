@@ -1,4 +1,6 @@
 ﻿using Connection;
+using Dna;
+using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,13 +21,20 @@ namespace user
     {
         public StackPanel panel = new StackPanel() { Width = 400 };
         ListBox lstaccounts = new ListBox() { MinHeight = 100 };
+        Button btnlogout = new Button()
+        {
+            Content = "خروج از حساب انتخاب شده",
+            Padding = new Thickness(8),
+            MinWidth = 120,
+            Margin = new Thickness(2)
+        };
         TextBlock lbl = new TextBlock()
         {
             Padding = new Thickness(5),
             Margin = new Thickness(5),
             FlowDirection = FlowDirection.RightToLeft
         };
-        WatermarkTextBox txt = new WatermarkTextBox();
+        WatermarkTextBox txt = new WatermarkTextBox() { Padding = new Thickness(5) };
         StackPanel btnpanel = new StackPanel()
         {
             Orientation = Orientation.Horizontal,
@@ -51,6 +60,7 @@ namespace user
         {
             panel.Margin = new Thickness(10);
             panel.Children.Add(lstaccounts);
+            panel.Children.Add(btnlogout);
             lbl.Inlines.Add(subject);
             lbl.Inlines.Add(describtion);
             panel.Children.Add(lbl);
@@ -64,9 +74,16 @@ namespace user
             btnsubmit.Click += Btnsubmit_Click;
             resetsource();
             basic.user_e += Basic_user_e;
-            reset();
             lstaccounts.SelectionChanged += Lstaccounts_SelectionChanged;
             btnback.Click += Btnback_Click;
+            btnlogout.Click += Btnlogout_Click;
+            reset();
+            reset2();
+        }
+
+        async void Btnlogout_Click(object sender, RoutedEventArgs e)
+        {
+            await basic.logout(selected.id);
         }
 
         private void resetsource()
@@ -84,27 +101,37 @@ namespace user
         userinfo selected => lstaccounts.SelectedValue as userinfo;
         private void Lstaccounts_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (selected == null)
-                return;
-            txt.Text = selected.fullname;
+            reset2();
         }
+
+        private void reset2()
+        {
+            btnlogout.IsEnabled = selected != null;
+        }
+
         private void Basic_user_e((userinfo user, bool login) obj)
         {
             if (obj.login)
+            {
                 userinfos.Add(obj.user);
+                
+            }
             else
+            {
                 userinfos.Remove(obj.user);
+            }
             reset();
         }
         async void Btnsubmit_Click(object sender, RoutedEventArgs e)
         {
+            btnpanel.IsEnabled = false;
             switch (state)
             {
                 case e_state.submitphone:
                     {
+                        await basic.sendactivecode(txt.Text);
                         phone = txt.Text;
                         txt.Text = null;
-                        await basic.sendactivecode(phone);
                     }
                     break;
                 case e_state.submitcode:
@@ -112,9 +139,8 @@ namespace user
                         var dv = await basic.login(phone, txt.Text);
                         if (dv)
                         {
-                            txt.Text = phone;
                             phone = null;
-                            txt.CaretIndex = txt.Text.Length;
+                            txt.Text = null;
                         }
                         else
                         {
@@ -122,13 +148,9 @@ namespace user
                         }
                     }
                     break;
-                case e_state.logout:
-                    {
-                        await basic.logout(selected.id);
-                    }
-                    break;
             }
             reset();
+            btnpanel.IsEnabled = true;
         }
         private void Txt_KeyDown(object sender, KeyEventArgs e)
         {
@@ -165,43 +187,12 @@ namespace user
         void reset()
         {
             subject.Text = describtion.Text = null;
-            string dvphone = txt.Text;
-            var dv = userinfos.FirstOrDefault(i => i.fullname == dvphone);
-            if (dv == null)
-            {
-                lstaccounts.SelectedItem = null;
-                if (phone == null)
-                    phonepro();
-                else
-                    activecodepro();
-            }
+            if (phone == null)
+                phonepro();
             else
-            {
-                subject.Text = "حساب کاربری فعال";
-                lstaccounts.SelectedItem = dv;
-                btnsubmit.Content = "خروج از حساب";
-                state = e_state.logout;
-                btnsubmit.IsEnabled = true;
-            }
+                activecodepro();
         }
-        private void nicknamepro()
-        {
-            subject.Text = "نام دلخواه : ";
-            describtion.Text = "لطفا یک نام دلخواه برای خود انتخاب کنید.";
-            btnback.IsEnabled = false;
-            btnback.Content = null;
-            if (txt.Text.Length >= 5 && txt.Text.Length <= 20)
-            {
-                btnsubmit.IsEnabled = true;
-                btnsubmit.Content = "ارسال";
-            }
-            else
-            {
-                btnsubmit.IsEnabled = false;
-                btnsubmit.Content = null;
-                state = e_state.none;
-            }
-        }
+
         Run subject = new Run() { FontWeight = FontWeights.Bold };
         Run describtion = new Run() { FontWeight = FontWeights.Normal };
         private void activecodepro()
@@ -228,13 +219,13 @@ namespace user
         {
             submitphone,
             submitcode,
-            logout,
             none
         }
         e_state state = e_state.none;
         private void phonepro()
         {
-            subject.Text = "شماره تلفن همراه";
+            subject.Text = "شماره تلفن : ";
+            describtion.Text = "افزودن حساب جدید از طریق شماره تلفن همراه";
             btnback.IsEnabled = false;
             btnback.Content = null;
             txt.Focus();

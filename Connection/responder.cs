@@ -71,7 +71,7 @@ namespace Connection
                         if (server.id == e_chromosome.user)
                             rsv = await get_Answer(dv);
                         else
-                            rsv = await q.get(dv);
+                            rsv = await server.q(dv);
                         if (userid == 0 && rsv is q_login.done done)
                         {
                             userid = done.user.id;
