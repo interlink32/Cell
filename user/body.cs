@@ -13,7 +13,6 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using Xceed.Wpf.Toolkit;
 
 namespace user
 {
@@ -34,7 +33,7 @@ namespace user
             Margin = new Thickness(5),
             FlowDirection = FlowDirection.RightToLeft
         };
-        WatermarkTextBox txt = new WatermarkTextBox() { Padding = new Thickness(5) };
+        TextBox txt = new TextBox() { Padding = new Thickness(5) };
         StackPanel btnpanel = new StackPanel()
         {
             Orientation = Orientation.Horizontal,
@@ -131,7 +130,7 @@ namespace user
                         }
                         else
                         {
-                            Xceed.Wpf.Toolkit.MessageBox.Show("کد فعال سازی به درستی وارد نشده است.");
+                            MessageBox.Show("کد فعال سازی به درستی وارد نشده است.");
                         }
                     }
                     break;

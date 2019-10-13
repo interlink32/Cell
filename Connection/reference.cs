@@ -3,6 +3,7 @@ using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -52,8 +53,10 @@ namespace Connection
             }
             throw new Exception("No network adapters with an IPv4 address in the system!");
         }
+        static string rootf = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Caaa\\";
         public static string root(string name)
         {
+            Directory.CreateDirectory(rootf);
             return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Caaa\\" + name;
         }
     }

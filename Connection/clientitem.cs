@@ -18,8 +18,6 @@ namespace Connection
         internal s_chromosome info { get; private set; }
         public clientitem(long id, string chromosome)
         {
-            string path = reference.root("");
-            Directory.CreateDirectory(path);
             ini(id, chromosome);
             this.chromosome = chromosome;
         }
