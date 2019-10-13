@@ -37,7 +37,7 @@ namespace user_service
             return new q_getusertoken.done()
             {
                 token = token.value,
-                user = user.clone()
+                user = user.id
             };
         }
     }

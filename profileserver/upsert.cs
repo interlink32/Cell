@@ -37,6 +37,7 @@ namespace profileserver
             profile.nationalcode = question.nationalcode;
             profile.tell = question.tell;
             dbprofile.Upsert(profile);
+            notify(question.z_user, new n_update());
             return null;
         }
     }

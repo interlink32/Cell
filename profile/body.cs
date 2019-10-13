@@ -68,6 +68,7 @@ namespace profile
             client = new client(userid);
             run(load);
             btnsave.Click += Btnsave_Click;
+            client.add<n_update>(userid, load);
         }
 
         async void Btnsave_Click(object sender, RoutedEventArgs e)
@@ -87,6 +88,10 @@ namespace profile
         void run(Action action)
         {
             Application.Current.Dispatcher.Invoke(action);
+        }
+        void load(n_update update)
+        {
+            run(load);
         }
         async void load()
         {

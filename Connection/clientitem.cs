@@ -25,7 +25,7 @@ namespace Connection
         }
         async void ini(long userid, string chromosome)
         {
-            info =await basic.getchromosome(chromosome);
+            info = await basic.getchromosome(chromosome);
             mainkey = info.publickey;
             this.userid = userid;
             runing();
@@ -123,6 +123,7 @@ namespace Connection
         bool closef = false;
         internal void close()
         {
+            disconnect();
             closef = true;
         }
 

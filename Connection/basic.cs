@@ -53,11 +53,7 @@ namespace Connection
         {
             var userlogin = s.dbuserlogin.FindOne(i => i.callerid == callerid);
             if (userlogin != null)
-            {
-                await logout(userlogin.id);
-                s.dbuserlogin.Delete(i => i.id == userlogin.id);
-                return await login(callerid, activecode);
-            }
+                return true;
             var code = s.dbrandom.FindOne(i => i.callerid == callerid);
             if (code == null)
                 return false;
@@ -71,10 +67,10 @@ namespace Connection
                 return false;
             s.dbuserlogin.Upsert(new userlogin()
             {
+                id = dv.user,
+                callerid = callerid,
                 token = dv.token,
-                general = true,
-                id = dv.user.id,
-                fullname = dv.user.fullname
+                general = true
             });
             s.dbrandom.Delete(i => i.callerid == callerid);
             return true;
@@ -111,51 +107,6 @@ namespace Connection
                 chromosomes = (await q(new q_getchromosome()) as q_getchromosome.done).items;
             getlock.Release();
             return chromosomes;
-        }
-        public static userinfo[] alluser()
-        {
-            return s.dbuserlogin.Find(i => i.general).Select(i => i.clone()).ToArray();
-        }
-        static Action<(userinfo user, bool login)> useref;
-        public static event Action<(userinfo user, bool login)> user_e
-        {
-            add
-            {
-                useref += value;
-                if (users == null)
-                {
-                    users = new List<userinfo>(alluser());
-                    checkusers();
-                }
-            }
-            remove
-            {
-                useref -= value;
-            }
-        }
-
-        static List<userinfo> users = null;
-        static async void checkusers()
-        {
-            List<userinfo> newlist = new List<userinfo>(alluser());
-            foreach (var i in newlist)
-            {
-                if (!users.Any(j => j.id == i.id))
-                {
-                    users.Add(i);
-                    useref?.Invoke((i, true));
-                }
-            }
-            foreach (var i in users.ToArray())
-            {
-                if (!newlist.Any(j => j.id == i.id))
-                {
-                    users.Remove(i);
-                    useref?.Invoke((i, false));
-                }
-            }
-            await Task.Delay(200);
-            checkusers();
         }
     }
     public class userinfo

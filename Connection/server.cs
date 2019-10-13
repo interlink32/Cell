@@ -88,14 +88,14 @@ namespace Connection
         }
         public async void send_notify(long receiver, notify notify)
         {
-            notify.z_user = receiver;
+            notify.z_receiver = receiver;
             var dv = await getmain(receiver);
             foreach (var i in dv)
                 i.localwrite(notify);
         }
         public static async Task<answer> q(question question)
         {
-            return await client.question(serverid, question);
+            return await client.question(question, serverid);
         }
     }
 }

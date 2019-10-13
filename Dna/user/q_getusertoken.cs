@@ -13,7 +13,7 @@ namespace Dna.user
         public class done : answer
         {
             public string token = default;
-            public s_user user = default;
+            public long user = default;
         }
         public class invalid : answer { }
     }

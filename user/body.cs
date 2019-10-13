@@ -55,7 +55,6 @@ namespace user
             Padding = new Thickness(5),
             MinWidth = 120
         };
-        ObservableCollection<userinfo> userinfos;
         public body()
         {
             panel.Margin = new Thickness(10);
@@ -72,24 +71,26 @@ namespace user
             txt.TextChanged += Txt_TextChanged;
             txt.KeyDown += Txt_KeyDown;
             btnsubmit.Click += Btnsubmit_Click;
-            resetsource();
-            basic.user_e += Basic_user_e;
             lstaccounts.SelectionChanged += Lstaccounts_SelectionChanged;
             btnback.Click += Btnback_Click;
             btnlogout.Click += Btnlogout_Click;
             reset();
             reset2();
+            alluser.reset_e += Alluser_reset_e;
+            lstaccounts.ItemsSource = alluser.list;
         }
 
+        private void Alluser_reset_e()
+        {
+            run(lstaccounts.Items.Refresh);
+        }
+        void run(Action action)
+        {
+            Application.Current.Dispatcher.Invoke(action);
+        }
         async void Btnlogout_Click(object sender, RoutedEventArgs e)
         {
             await basic.logout(selected.id);
-        }
-
-        private void resetsource()
-        {
-            userinfos = new ObservableCollection<userinfo>(basic.alluser());
-            lstaccounts.ItemsSource = userinfos;
         }
         private void Btnback_Click(object sender, RoutedEventArgs e)
         {
@@ -107,20 +108,6 @@ namespace user
         private void reset2()
         {
             btnlogout.IsEnabled = selected != null;
-        }
-
-        private void Basic_user_e((userinfo user, bool login) obj)
-        {
-            if (obj.login)
-            {
-                userinfos.Add(obj.user);
-                
-            }
-            else
-            {
-                userinfos.Remove(obj.user);
-            }
-            reset();
         }
         async void Btnsubmit_Click(object sender, RoutedEventArgs e)
         {

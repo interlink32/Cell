@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dna.user
+namespace Dna.profile
 {
-    public class n_rename : notify
+    public class n_update : notify
     {
-        
+       
     }
 }

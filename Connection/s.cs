@@ -27,18 +27,9 @@ namespace Connection
     }
     class userlogin
     {
-        public long id { get; set; }
         public string callerid { get; set; }
-        public string fullname { get; set; }
+        public long id { get; set; }
         public string token { get; set; }
         public bool general { get; set; }
-        public userinfo clone()
-        {
-            return new userinfo()
-            {
-                id = id,
-                fullname = fullname
-            };
-        }
     }
 }

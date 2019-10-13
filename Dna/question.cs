@@ -8,6 +8,8 @@ namespace Dna
     public abstract class question : gene
     {
         [JsonIgnore]
+        public long z_user = 0;
+        [JsonIgnore]
         public virtual e_permission z_permission { get; } = e_permission.user;
     }
 }

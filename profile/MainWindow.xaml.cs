@@ -23,42 +23,41 @@ namespace profile
     public partial class MainWindow : Window
     {
         StackPanel panel = new StackPanel();
-        ComboBox comboBox = new ComboBox();
+        ComboBox cmbuser = new ComboBox();
         List<body> bodies = new List<body>();
-        ObservableCollection<userinfo> userinfos;
         public MainWindow()
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
             SizeToContent = SizeToContent.WidthAndHeight;
             Content = panel;
-            panel.Children.Add(comboBox);
-            comboBox.SelectionChanged += ComboBox_SelectionChanged;
-            userinfos = new ObservableCollection<userinfo>(basic.alluser());
+            panel.Children.Add(cmbuser);
+            cmbuser.SelectionChanged += ComboBox_SelectionChanged;
             autoselect();
-            comboBox.ItemsSource = userinfos;
-            basic.user_e += Basic_user_e;
+            alluser.reset_e += Alluser_reset_e;
+            cmbuser.ItemsSource = alluser.list;
         }
-
+        private void Alluser_reset_e()
+        {
+            run(delegate ()
+            {
+                var dv = selected;
+                cmbuser.SelectedItem = null;
+                cmbuser.SelectedItem = dv;
+            });
+        }
+        void run(Action action)
+        {
+            Application.Current.Dispatcher.Invoke(action);
+        }
         private void autoselect()
         {
             if (body == null)
-                comboBox.SelectedItem = userinfos.FirstOrDefault();
-        }
-
-        private void Basic_user_e((userinfo user, bool login) obj)
-        {
-            if (obj.login)
-                userinfos.Add(obj.user);
-            else
-            {
-                userinfos.Remove(userinfos.First(i => i.id == obj.user.id));
-            }
-            autoselect();
+                cmbuser.SelectedItem = alluser.list.FirstOrDefault();
         }
 
         body body = null;
-        userinfo selected => comboBox.SelectedValue as userinfo;
+        userinfo selected => cmbuser.SelectedValue as userinfo;
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (body != null)

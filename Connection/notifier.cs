@@ -39,6 +39,14 @@ namespace Connection
             };
             l.Add(item);
         }
+        public void remove<T>(Action<T> action) where T : notify
+        {
+            var dv = l.OfType<item2<T>>().FirstOrDefault(i => i.actionT == action);
+            if (dv != null)
+                l.Remove(dv);
+            if (l.Count == 0)
+                client.close(this);
+        }
         protected async override Task cycle()
         {
             var dv = await read() as notify;
