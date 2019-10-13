@@ -92,7 +92,8 @@ namespace Connection
                     token = dv.token
                 });
                 if (!(rsv is q_login.done))
-                    badanswer();
+                    throw new Exception("bkdkbmfbcmfmbmmbm");
+                   // badanswer();
             }
             connected = true;
             if (!firstconnect && this is notifier)
