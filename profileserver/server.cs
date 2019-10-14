@@ -9,7 +9,7 @@ using Dna;
 
 namespace profileserver
 {
-    class server : Connection.server
+    class server : Connection.mainserver
     {
         public override service[] elements => new service[]
         {

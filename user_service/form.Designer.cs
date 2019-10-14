@@ -28,24 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbl = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // lbl
-            // 
-            this.lbl.Dock = System.Windows.Forms.DockStyle.Left;
-            this.lbl.Location = new System.Drawing.Point(0, 0);
-            this.lbl.Name = "lbl";
-            this.lbl.Size = new System.Drawing.Size(126, 161);
-            this.lbl.TabIndex = 0;
-            this.lbl.Text = "label1";
             // 
             // form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 161);
-            this.Controls.Add(this.lbl);
             this.Name = "form";
             this.Text = "user_service";
             this.WindowState = System.Windows.Forms.FormWindowState.Minimized;
@@ -54,8 +43,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lbl;
     }
 }
 

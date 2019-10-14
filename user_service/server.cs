@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class server : Connection.server
+    class server : Connection.mainserver
     {
         public server()
         {

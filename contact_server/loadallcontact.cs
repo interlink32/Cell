@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace contact_server
 {
-    class loadallcontact : my_service<q_loadallcontact>
+    class loadallcontact : myservice<q_loadallcontact>
     {
-        public async override Task<answer> get_answer(q_loadallcontact question)
+        public async override Task<answer> getanswer(q_loadallcontact question)
         {
-            nullcheck(ref question.namefilter);
+            nullcheck(ref question.fullnamefilter);
             var db = dbcontact(question.z_user);
             s_contact[] rt = null;
             if (question.mysettingfilter == e_connectionsetting.none)
             {
-                var dv = await q.get(new q_loadalluser() { user_name_filter = question.namefilter }) as q_loadalluser.done;
+                var dv = await mainserver.q(new q_loadalluser() { name_filter = question.fullnamefilter }) as q_loadalluser.done;
                 rt = join(dv.users, db.FindAll().ToArray());
             }
             else
@@ -27,7 +27,7 @@ namespace contact_server
                 var dv = db.FindAll();
                 if (question.mysettingfilter != e_connectionsetting.any)
                     dv = db.Find(i => i.mysetting == question.mysettingfilter);
-                var users = await p.get_users(question.namefilter, dv.Select(i => i.partner).ToArray());
+                var users = await p.getusers(question.fullnamefilter, dv.Select(i => i.partner).ToArray());
                 rt = join(users, dv.ToArray());
             }
             return new q_loadallcontact.done()

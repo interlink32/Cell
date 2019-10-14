@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using Xceed.Wpf.Toolkit;
+using System.Windows.Media;
 
 namespace profile
 {
@@ -17,18 +17,17 @@ namespace profile
         public StackPanel panel = new StackPanel()
         {
             Width = 400,
-            Margin = new Thickness(20, 20, 20, 40),
+            Margin = new Thickness(20, 20, 20, 20),
             FlowDirection = FlowDirection.RightToLeft
         };
-        TextBlock txtblock = new TextBlock() { Padding = new Thickness(10) };
         Label lblfullname = new Label() { Content = "نام و نام خانوادگی : " };
-        WatermarkTextBox txtfullname = new WatermarkTextBox();
+        TextBox txtfullname = new TextBox();
         Label lblnationalcode = new Label() { Content = "کدملی : " };
-        WatermarkTextBox txtnationalcode = new WatermarkTextBox() { FlowDirection = FlowDirection.LeftToRight };
+        TextBox txtnationalcode = new TextBox() { FlowDirection = FlowDirection.LeftToRight };
         Label lbltell = new Label() { Content = "تلفن تماس : " };
-        WatermarkTextBox txttell = new WatermarkTextBox() { FlowDirection = FlowDirection.LeftToRight };
+        TextBox txttell = new TextBox() { FlowDirection = FlowDirection.LeftToRight };
         Label lblgender = new Label() { Content = "جنسیت : " };
-        WatermarkComboBox cmbgender = new WatermarkComboBox()
+        ComboBox cmbgender = new ComboBox()
         {
             ItemsSource = new string[] { "نامشخص", "مرد", "زن" }
         };
@@ -46,7 +45,6 @@ namespace profile
 
         public body(long userid)
         {
-            panel.Children.Add(txtblock);
             panel.Children.Add(lblfullname);
             panel.Children.Add(txtfullname);
             panel.Children.Add(lblnationalcode);

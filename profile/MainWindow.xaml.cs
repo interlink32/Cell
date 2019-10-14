@@ -1,4 +1,5 @@
 ﻿using Connection;
+using controllibrary;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,7 +24,7 @@ namespace profile
     public partial class MainWindow : Window
     {
         StackPanel panel = new StackPanel();
-        ComboBox cmbuser = new ComboBox();
+        userselector userselector = new userselector();
         List<body> bodies = new List<body>();
         public MainWindow()
         {
@@ -31,51 +32,31 @@ namespace profile
             ResizeMode = ResizeMode.NoResize;
             SizeToContent = SizeToContent.WidthAndHeight;
             Content = panel;
-            panel.Children.Add(cmbuser);
-            cmbuser.SelectionChanged += ComboBox_SelectionChanged;
-            autoselect();
-            alluser.reset_e += Alluser_reset_e;
-            cmbuser.ItemsSource = alluser.list;
+            panel.Children.Add(userselector.element);
+            userselector.user_e += Userselector_user_e;
         }
-        private void Alluser_reset_e()
-        {
-            run(delegate ()
-            {
-                var dv = selected;
-                cmbuser.SelectedItem = null;
-                cmbuser.SelectedItem = dv;
-            });
-        }
-        void run(Action action)
-        {
-            Application.Current.Dispatcher.Invoke(action);
-        }
-        private void autoselect()
-        {
-            if (body == null)
-                cmbuser.SelectedItem = alluser.list.FirstOrDefault();
-        }
-
         body body = null;
-        userinfo selected => cmbuser.SelectedValue as userinfo;
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Userselector_user_e(long obj)
         {
             if (body != null)
             {
                 panel.Children.Remove(body.panel);
                 body = null;
             }
-            if (selected != null)
+            if (obj != 0)
             {
-                var dv = bodies.FirstOrDefault(i => i.userid == selected.id);
-                if (dv == null)
+                body = bodies.FirstOrDefault(i => i.userid == obj);
+                if (body == null)
                 {
-                    dv = new body(selected.id);
-                    bodies.Add(dv);
+                    body = new body(obj);
+                    bodies.Add(body);
                 }
-                body = dv;
-                panel.Children.Add(dv.panel);
+                panel.Children.Add(body.panel);
             }
+        }
+        void run(Action action)
+        {
+            Application.Current.Dispatcher.Invoke(action);
         }
     }
 }

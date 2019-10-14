@@ -7,6 +7,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Connection
 {
@@ -57,7 +58,7 @@ namespace Connection
         public static string root(string name)
         {
             Directory.CreateDirectory(rootf);
-            return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Caaa\\" + name;
+            return rootf + name;
         }
     }
 }

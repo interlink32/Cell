@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Connection
 {
-    public abstract class server
+    public abstract class mainserver
     {
         public abstract service[] elements { get; }
         public abstract byte[] privatekey { get; }
@@ -22,7 +22,7 @@ namespace Connection
 
         TcpListener listener;
         static long serverid = default;
-        public server()
+        public mainserver()
         {
             serverid = (long)id;
             elementsF = elements;

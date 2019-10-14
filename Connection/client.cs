@@ -22,7 +22,7 @@ namespace Connection
 
         static List<questioner> list = new List<questioner>();
         static SemaphoreSlim qlock = new SemaphoreSlim(1, 1);
-        static async Task<questioner> getq(long user, string chromosome)
+        static async Task<questioner> getquestioner(long user, string chromosome)
         {
             await qlock.WaitAsync();
             var dv = list.FirstOrDefault(i => i.userid == user && i.chromosome == chromosome);
@@ -38,7 +38,7 @@ namespace Connection
         {
             if (user == 0 && question.z_permission != e_permission.free)
                 throw new Exception("kgjdjrbjcnbjfjnfjvbixjbjdkvb");
-            var dv = await getq(user, question.z_chromosome);
+            var dv = await getquestioner(user, question.z_chromosome);
             return await dv.question(question);
         }
         internal static async void close(notifier notifier)
@@ -66,11 +66,6 @@ namespace Connection
         async static Task<notifier> getn(long user, string chromosome)
         {
             await nlock.WaitAsync();
-            if (nlist == null)
-            {
-                nlist = new List<notifier>();
-                send_pulse();
-            }
             var dv = nlist.FirstOrDefault(i => i.userid == user && i.chromosome == chromosome);
             if (dv == null)
             {
@@ -85,14 +80,14 @@ namespace Connection
             var dv = await getn(user, chromosome.ToString());
             dv.reconnect_e += action;
         }
-        static async void send_pulse()
+        internal static async void sendpulse()
         {
             await nlock.WaitAsync();
             foreach (var i in nlist)
                 i.send();
             nlock.Release();
             await Task.Delay(1000);
-            send_pulse();
+            sendpulse();
         }
     }
 }

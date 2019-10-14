@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace contact_server
 {
-    abstract class my_service<T> : service<T> where T : question
+    abstract class myservice<T> : service<T> where T : question
     {
         static LiteDatabase db = new LiteDatabase(reference.root("contact.db"));
         public LiteCollection<r_contact> dbcontact(long user)

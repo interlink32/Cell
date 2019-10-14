@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace contact_server
 {
-    class update : my_service<q_update>
+    class update : myservice<q_update>
     {
-        public async override Task<answer> get_answer(q_update question)
+        public async override Task<answer> getanswer(q_update question)
         {
             await Task.CompletedTask;
             var db = dbcontact(question.z_user);
             var dv = db.FindOne(i => i.contact == question.contact);
             if (dv == null)
-                return new developer_error() { code = "gkdgjjbdnvndbkdmbmdnbb" };
+                return new developererror() { code = "gkdgjjbdnvndbkdmbmdnbb" };
             dv.mysetting = question.state;
             db.Update(dv);
             return null;

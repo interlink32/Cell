@@ -8,7 +8,7 @@ namespace Dna.contact
     public class q_loadallcontact : question
     {
         
-        public string namefilter = default;
+        public string fullnamefilter = default;
         public e_connectionsetting mysettingfilter = default;
         public e_connectionsetting partnersettingfilter = default;
         public class done : answer

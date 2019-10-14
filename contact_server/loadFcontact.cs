@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace contact_server
 {
-    class loadFcontact : my_service<q_loadFcontact>
+    class loadFcontact : myservice<q_loadcontact>
     {
-        public async override Task<answer> get_answer(q_loadFcontact question)
+        public async override Task<answer> getanswer(q_loadcontact question)
         {
             await Task.CompletedTask;
             return null;

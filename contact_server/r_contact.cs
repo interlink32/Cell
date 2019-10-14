@@ -13,7 +13,6 @@ namespace contact_server
         [BsonId]
         public long partner { get; set; }
         public long contact { get; set; }
-        public string nickname { get; set; }
         public e_connectionsetting mysetting { get; set; }
         public e_connectionsetting partnersetting { get; set; }
     }

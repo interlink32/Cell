@@ -13,21 +13,26 @@ namespace Connection
     {
         public static event Action reset_e;
         static ObservableCollection<userinfo> listf = null;
-        static object locking = new object();
+        static object lockobject = new object();
         public static ObservableCollection<userinfo> list
         {
             get
             {
-                lock (locking)
+                lock (lockobject)
                 {
                     if (listf == null)
                     {
                         listf = new ObservableCollection<userinfo>();
-                        checkusers();
+                        start();
                     }
                 }
                 return listf;
             }
+        }
+        private static void start()
+        {
+            checkusers();
+            client.sendpulse();
         }
         static async void checkusers()
         {

@@ -19,28 +19,18 @@ namespace contact
         usercolumn usercolumn = new usercolumn();
         mysetting mysetting = new mysetting();
         partnersetting partnersetting = new partnersetting();
-        client client;
-        public readonly string account;
-        public manager(string user_name)
+        public readonly long user;
+        public manager(long user)
         {
-            this.account = user_name;
-            start();
+            this.user = user;
+            grid.Columns.Add(usercolumn);
+            grid.Columns.Add(mysetting);
+            grid.Columns.Add(partnersetting);
+            grid.ItemsSource = rows;
+            usercolumn.filter.KeyDown += userculomn_KeyDown;
+            mysetting.filter.SelectionChanged += mysetting_SelectionChanged;
+            partnersetting.filter.SelectionChanged += partnersetting_SelectionChanged;
         }
-        async void start()
-        {
-            client = new client(account);
-            if (await client.connect())
-            {
-                grid.Columns.Add(usercolumn);
-                grid.Columns.Add(mysetting);
-                grid.Columns.Add(partnersetting);
-                grid.ItemsSource = rows;
-                usercolumn.filter.KeyDown += userculomn_KeyDown;
-                mysetting.filter.SelectionChanged += mysetting_SelectionChanged;
-                partnersetting.filter.SelectionChanged += partnersetting_SelectionChanged;
-            }
-        }
-
         private void partnersetting_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             reset();
@@ -59,7 +49,6 @@ namespace contact
         {
             var dv = await client.question(new q_loadallcontact()
             {
-                namefilter = usercolumn.filter.Text,
                 mysettingfilter = mysetting.connectionsetting,
                 partnersettingfilter = partnersetting.connectionsetting
             }) as q_loadallcontact.done;

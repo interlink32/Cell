@@ -12,14 +12,14 @@ namespace contact_server
     {
         public static async Task<s_user> get_user(long user)
         {
-            var dv = await q.get(new q_load() { userid = user }) as q_load.done;
+            var dv = await server.q(new q_load() { userid = user }) as q_load.done;
             return dv.user;
         }
-        public static async Task<s_user[]> get_users(string user_name_filter, params long[] user)
+        public static async Task<s_user[]> getusers(string user_name_filter, params long[] user)
         {
-            var dv = await q.get(new q_loadalluser()
+            var dv = await server.q(new q_loadalluser()
             {
-                user_name_filter = user_name_filter,
+                name_filter = user_name_filter,
                 ids_filter = user
             }) as q_loadalluser.done;
             return dv.users;

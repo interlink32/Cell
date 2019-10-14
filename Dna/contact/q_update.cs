@@ -7,7 +7,6 @@ namespace Dna.contact
     public class q_update : question
     {
         public long contact = default;
-        public long user = default;
         public e_connectionsetting state = default;
     }
 }

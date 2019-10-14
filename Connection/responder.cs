@@ -11,9 +11,9 @@ namespace Connection
     class responder : core
     {
         internal long userid = default;
-        private readonly server server;
+        private readonly mainserver server;
         Func<question, Task<answer>> get_Answer;
-        public responder(server service, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer)
+        public responder(mainserver service, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer)
         {
             this.mainkey = key;
             this.tcp = tcp;
@@ -71,7 +71,7 @@ namespace Connection
                         if (server.id == e_chromosome.user)
                             rsv = await get_Answer(dv);
                         else
-                            rsv = await server.q(dv);
+                            rsv = await mainserver.q(dv);
                         if (userid == 0 && rsv is q_login.done done)
                         {
                             userid = done.user.id;
