@@ -37,6 +37,11 @@ namespace Connection
             var data = new byte[4];
             await tcp.GetStream().ReadAsync(data, 0, data.Length);
             var len = BitConverter.ToInt32(data, 0);
+            var dvv = this is notifier;
+            if (len == 0)
+            {
+                Console.Beep(2000, 500);
+            }
             if (len == -1)
                 return new voidanswer();
             data = new byte[len];

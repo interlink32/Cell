@@ -21,8 +21,11 @@ namespace Connection
             get_Answer = get_answer;
             ThreadPool.QueueUserWorkItem(reading);
         }
+        bool stopreading = false;
         async void reading(object o)
         {
+            if (stopreading)
+                return;
             question question = null;
             try
             {
@@ -76,7 +79,10 @@ namespace Connection
                         {
                             userid = done.user.id;
                             if (dv.notifyconnection)
+                            {
                                 server.addnotify(this);
+                                stopreading = true;
+                            }
                         }
                         localwrite(rsv);
                     }
@@ -98,11 +104,11 @@ namespace Connection
             tcp?.Close();
             tcp = null;
         }
-        internal void remove_pulse()
+        internal void removepulse()
         {
             try
             {
-                if (tcp.Available != 0)
+                if (tcp.Available > 0)
                 {
                     byte[] buffer = new byte[tcp.Available];
                     tcp.GetStream().Read(buffer, 0, buffer.Length);

@@ -49,19 +49,23 @@ namespace Connection
         }
         protected async override Task cycle()
         {
-            var dv = await read() as notify;
-            var ddd = l.FirstOrDefault(i => i.gene == dv.z_gene);
-            ddd?.action(dv);
+            var rsv = await read() as notify;
+            var dv = l.FirstOrDefault(i => i.gene == rsv.z_gene);
+            dv?.action(rsv);
         }
-        internal void send()
+        internal async void send()
         {
             try
             {
                 if (connected)
-                    tcp.GetStream().WriteByte(39);
+                {
+                    byte[] buff = new byte[] { 56 };
+                    await tcp.GetStream().WriteAsync(buff, 0, buff.Length);
+                }
             }
             catch
             {
+                Console.Beep(4000, 500);
                 close();
             }
         }

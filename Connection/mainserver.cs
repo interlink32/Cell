@@ -31,8 +31,8 @@ namespace Connection
             listener = new TcpListener(endpoint);
             listener.Start();
             listen();
-            removepuls();
             login();
+            removepulse();
         }
         async void login()
         {
@@ -67,8 +67,21 @@ namespace Connection
         {
             await notifylock.WaitAsync();
             if (!notifylist.Contains(dv))
+            {
                 notifylist.Add(dv);
+            }
             notifylock.Release();
+        }
+        async void removepulse()
+        {
+            responder[] l = null;
+            await notifylock.WaitAsync();
+            l = notifylist.ToArray();
+            notifylock.Release();
+            foreach (var i in l)
+                i.removepulse();
+            await Task.Delay(5000);
+            removepulse();
         }
         async Task<responder[]> getnotify(long user)
         {
@@ -76,15 +89,6 @@ namespace Connection
             var dv = notifylist.Where(i => i.userid == user).ToArray();
             notifylock.Release();
             return dv;
-        }
-        async void removepuls()
-        {
-            await notifylock.WaitAsync();
-            foreach (var i in notifylist)
-                i.remove_pulse();
-            notifylock.Release();
-            await Task.Delay(5 * 1000);
-            removepuls();
         }
         public async void sendnotify(long receiver, notify notify)
         {

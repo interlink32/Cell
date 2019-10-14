@@ -86,7 +86,7 @@ namespace Connection
             foreach (var i in nlist)
                 i.send();
             nlock.Release();
-            await Task.Delay(1000);
+            await Task.Delay(5000);
             sendpulse();
         }
     }
