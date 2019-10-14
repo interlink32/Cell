@@ -14,7 +14,6 @@ namespace Connection
         public questioner(long userid, string chromosome) : base(userid, chromosome)
         {
         }
-
         protected async override Task cycle()
         {
             if (list.Count > 0)

@@ -22,7 +22,7 @@ namespace Connection
         }
         public void notify(long receiver, notify notify)
         {
-            server.send_notify(receiver, notify);
+            server.sendnotify(receiver, notify);
         }
         public abstract Task<answer> getanswer(T question);
         internal sealed async override Task<answer> z_get_answer(question question)

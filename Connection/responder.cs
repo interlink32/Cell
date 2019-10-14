@@ -76,7 +76,7 @@ namespace Connection
                         {
                             userid = done.user.id;
                             if (dv.notifyconnection)
-                                server.add(this);
+                                server.addnotify(this);
                         }
                         localwrite(rsv);
                     }
@@ -93,10 +93,10 @@ namespace Connection
         }
         private void close()
         {
-            get_Answer = null;
-            tcp.Close();
-            tcp = null;
             server.remove(this);
+            get_Answer = null;
+            tcp?.Close();
+            tcp = null;
         }
         internal void remove_pulse()
         {

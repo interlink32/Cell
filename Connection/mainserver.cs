@@ -49,9 +49,9 @@ namespace Connection
         }
         internal async void remove(responder val)
         {
-            await locking.WaitAsync();
-            mainlist.Remove(val);
-            locking.Release();
+            await notifylock.WaitAsync();
+            notifylist.Remove(val);
+            notifylock.Release();
         }
         async Task<answer> getanswer(question request)
         {
@@ -61,35 +61,35 @@ namespace Connection
             var dv2 = await dv.z_get_answer(request);
             return dv2;
         }
-        List<responder> mainlist = new List<responder>();
-        SemaphoreSlim locking = new SemaphoreSlim(1, 1);
-        internal async void add(responder dv)
+        List<responder> notifylist = new List<responder>();
+        SemaphoreSlim notifylock = new SemaphoreSlim(1, 1);
+        internal async void addnotify(responder dv)
         {
-            await locking.WaitAsync();
-            if (!mainlist.Contains(dv))
-                mainlist.Add(dv);
-            locking.Release();
+            await notifylock.WaitAsync();
+            if (!notifylist.Contains(dv))
+                notifylist.Add(dv);
+            notifylock.Release();
         }
-        async Task<responder[]> getmain(long user)
+        async Task<responder[]> getnotify(long user)
         {
-            await locking.WaitAsync();
-            var dv = mainlist.Where(i => i.userid == user).ToArray();
-            locking.Release();
+            await notifylock.WaitAsync();
+            var dv = notifylist.Where(i => i.userid == user).ToArray();
+            notifylock.Release();
             return dv;
         }
         async void removepuls()
         {
-            await locking.WaitAsync();
-            foreach (var i in mainlist)
+            await notifylock.WaitAsync();
+            foreach (var i in notifylist)
                 i.remove_pulse();
-            locking.Release();
+            notifylock.Release();
             await Task.Delay(5 * 1000);
             removepuls();
         }
-        public async void send_notify(long receiver, notify notify)
+        public async void sendnotify(long receiver, notify notify)
         {
             notify.z_receiver = receiver;
-            var dv = await getmain(receiver);
+            var dv = await getnotify(receiver);
             foreach (var i in dv)
                 i.localwrite(notify);
         }
