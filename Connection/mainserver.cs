@@ -61,8 +61,8 @@ namespace Connection
             var dv2 = await dv.z_get_answer(request);
             return dv2;
         }
-        List<responder> notifylist = new List<responder>();
-        SemaphoreSlim notifylock = new SemaphoreSlim(1, 1);
+        static List<responder> notifylist = new List<responder>();
+        static SemaphoreSlim notifylock = new SemaphoreSlim(1, 1);
         internal async void addnotify(responder dv)
         {
             await notifylock.WaitAsync();
@@ -83,14 +83,14 @@ namespace Connection
             await Task.Delay(5000);
             removepulse();
         }
-        async Task<responder[]> getnotify(long user)
+        static async Task<responder[]> getnotify(long user)
         {
             await notifylock.WaitAsync();
             var dv = notifylist.Where(i => i.userid == user).ToArray();
             notifylock.Release();
             return dv;
         }
-        public async void sendnotify(long receiver, notify notify)
+        public async static void sendnotify(long receiver, notify notify)
         {
             notify.z_receiver = receiver;
             var dv = await getnotify(receiver);

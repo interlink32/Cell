@@ -70,10 +70,10 @@ namespace Connection
         }
         async static void rename(n_rename obj)
         {
-            var rsv = await client.question(new q_load()
+            var rsv = await client.question(new q_loaduser()
             {
                 userid = obj.z_receiver
-            }) as q_load.done;
+            }) as q_loaduser.done;
             list.First(i => i.id == obj.z_receiver).fullname = rsv.user.fullname;
             reset_e?.Invoke();
         }

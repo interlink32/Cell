@@ -52,10 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="load.cs" />
+    <Compile Include="log.cs" />
     <Compile Include="r_core.cs" />
+    <Compile Include="r_log.cs" />
     <Compile Include="upsert.cs" />
-    <Compile Include="loadallcontact.cs" />
-    <Compile Include="loadFcontact.cs" />
     <Compile Include="r_contact.cs" />
     <Compile Include="p.cs" />
     <Compile Include="state.cs" />
@@ -74,7 +75,7 @@
       <DependentUpon>resource.resx</DependentUpon>
     </Compile>
     <Compile Include="server.cs" />
-    <Compile Include="update.cs" />
+    <Compile Include="updatecontact.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

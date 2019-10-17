@@ -1,4 +1,5 @@
-﻿using Dna.contact;
+﻿using Dna.usercontact;
+using Dna.profile;
 using LiteDB;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,19 @@ namespace contact_server
 {
     public class r_contact
     {
-        [BsonId]
-        public long partner { get; set; }
-        public long contact { get; set; }
-        public e_connectionsetting mysetting { get; set; }
-        public e_connectionsetting partnersetting { get; set; }
+        public long id { get; set; }
+        public s_profile partner { get; set; }
+        public e_contactsetting mysetting { get; set; }
+        public e_contactsetting partnersetting { get; set; }
+        internal s_usercontact clone()
+        {
+            return new s_usercontact()
+            {
+                id = id,
+                partner = partner,
+                mysetting = mysetting,
+                partnersetting = partnersetting
+            };
+        }
     }
 }

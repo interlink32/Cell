@@ -13,8 +13,8 @@ namespace contact
     class partnersetting : DataGridTextColumn
     {
         StackPanel pannel = new StackPanel();
-        public WatermarkComboBox filter = new WatermarkComboBox() { Watermark = "Search" };
-        Label label = new Label() { Content = "Partner Setting" };
+        public WatermarkComboBox filter = new WatermarkComboBox() { Watermark = "جستجو" };
+        Label label = new Label() { Content = "تنظیمات مخاطبان" };
         public partnersetting()
         {
             filter.ItemsSource = r_connectionsetting.list;

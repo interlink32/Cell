@@ -9,7 +9,7 @@ namespace Dna
         none,
         user,
         profile,
-        message,
         contact,
+        message,
     }
 }

@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class load : myservice<q_load>
+    class load : myservice<q_loaduser>
     {
-        public async override Task<answer> getanswer(q_load question)
+        public async override Task<answer> getanswer(q_loaduser question)
         {
             await Task.CompletedTask;
             var dv = dbuser.FindOne(i => i.id == question.userid);
-            return new q_load.done()
+            return new q_loaduser.done()
             {
                 user = new s_user()
                 {

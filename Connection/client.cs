@@ -10,14 +10,14 @@ namespace Connection
 {
     public class client
     {
-        public long id { get; }
-        public client(long id)
+        public long userid { get; }
+        public client(long userid)
         {
-            this.id = id;
+            this.userid = userid;
         }
         public async Task<answer> question(question question)
         {
-            return await client.question(question, id);
+            return await client.question(question, userid);
         }
 
         static List<questioner> list = new List<questioner>();
@@ -84,7 +84,7 @@ namespace Connection
         {
             await nlock.WaitAsync();
             foreach (var i in nlist)
-                i.send();
+                i.sendpulse();
             nlock.Release();
             await Task.Delay(5000);
             sendpulse();

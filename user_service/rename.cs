@@ -13,10 +13,10 @@ namespace user_service
         public async override Task<answer> getanswer(q_rename question)
         {
             await Task.CompletedTask;
-            var dv = dbuser.FindOne(i => i.id == question.user);
+            var dv = dbuser.FindOne(i => i.id == question.z_user);
             dv.fullname = question.fullname;
             dbuser.Update(dv);
-            notify(question.user, new n_rename());
+            notify(question.z_user, new n_rename());
             return null;
         }
     }

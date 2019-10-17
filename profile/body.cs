@@ -16,8 +16,7 @@ namespace profile
     {
         public StackPanel panel = new StackPanel()
         {
-            Width = 400,
-            Margin = new Thickness(20, 20, 20, 20),
+            Margin = new Thickness(20, 0, 20, 20),
             FlowDirection = FlowDirection.RightToLeft
         };
         Label lblfullname = new Label() { Content = "نام و نام خانوادگی : " };
@@ -80,8 +79,61 @@ namespace profile
                 nationalcode = txtnationalcode.Text,
                 tell = txttell.Text
             };
-            await client.question(q);
+            if (!valid())
+            {
+                panel.IsEnabled = true;
+                return;
+            }
+            var rsv = await client.question(q);
+            switch (rsv)
+            {
+                case q_upsert.done done:
+                    {
+
+                    }
+                    break;
+                case q_upsert.duplicatename duplicatename:
+                    {
+                        MessageBox.Show("این نام قبلا به ثبت رسیده است. لطفا یک نام دیگر انتخاب کنید");
+                    }
+                    break;
+            }
             panel.IsEnabled = true;
+        }
+        bool valid()
+        {
+            string text = txtfullname.Text;
+            if (text.Length < 5)
+            {
+                MessageBox.Show("طول نام انتخاب شده کمتر از حد مجاز است");
+                return false;
+            }
+            if (text.Length > 25)
+            {
+                MessageBox.Show("طول نام انتخاب شده بیشتر از حد مجاز است");
+                return false;
+            }
+            if (text.Contains("  "))
+            {
+                MessageBox.Show("میان کلمات تنها از یک فاصله استفاده کنید");
+                return false;
+            }
+            if (text.First() == ' ' || text.Last() == ' ')
+            {
+                MessageBox.Show("در ابتدا یا انتهای نام فاصله نگذارید");
+                return false;
+            }
+            foreach (var i in text)
+            {
+                if (i == ' ')
+                    continue;
+                if (!char.IsLetter(i))
+                {
+                    MessageBox.Show("در نام از کارکتر غیر مجاز استفاده شده است");
+                    return false;
+                }
+            }
+            return true;
         }
         void run(Action action)
         {

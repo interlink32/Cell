@@ -1,6 +1,6 @@
 ﻿using Dna;
 using Dna.common;
-using Dna.contact;
+using Dna.usercontact;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,50 +9,31 @@ using System.Threading.Tasks;
 
 namespace contact_server
 {
-    class upsert : myservice<q_upsert>
+    class upsert : myservice<q_createcontact>
     {
-        public async override Task<answer> getanswer(q_upsert question)
+        public async override Task<answer> getanswer(q_createcontact question)
         {
             await Task.CompletedTask;
-            var core = dbcore.FindOne(i => i.include(question.z_user, question.partner));
+            var core = s.dbcore.FindOne(i => i.include(question.z_user, question.partner));
             if (core == null)
             {
                 core = new r_core() { memebers = new long[] { question.z_user, question.partner } };
-                if (question.mysetting == e_connectionsetting.blocked)
-                    core.block(question.z_user, true);
-                dbcore.Insert(core);
+                s.dbcore.Insert(core);
 
-                var userdb = dbcontact(question.z_user);
-                userdb.Insert(new r_contact()
+                var userdb = s.dbcontact(question.z_user);
+                userdb.Upsert(new r_contact()
                 {
-                    contact = core.id,
-                    mysetting = question.mysetting,
-                    partner = question.partner,
-                    partnersetting = e_connectionsetting.none
+                    id = core.id,
+                    partner = question.partner
                 });
 
-                var partnerdb = dbcontact(question.partner);
-                partnerdb.Insert(new r_contact()
+                var partnerdb = s.dbcontact(question.partner);
+                partnerdb.Upsert(new r_contact()
                 {
-                    contact = core.id,
-                    mysetting = e_connectionsetting.none,
+                    id = core.id,
                     partner = question.z_user,
-                    partnersetting = question.mysetting
                 });
-                notify(question.partner, new n_new() { contact = core.id });
-            }
-            else
-            {
-                var userdb = dbcontact(question.z_user);
-                var usercontact = userdb.FindOne(i => i.partner == question.partner);
-                usercontact.mysetting = question.mysetting;
-                userdb.Update(usercontact);
-
-                var dbpartner = dbcontact(question.partner);
-                var partnercontact = dbpartner.FindOne(i => i.partner == question.z_user);
-                partnercontact.partnersetting = question.mysetting;
-                dbpartner.Update(partnercontact);
-                notify(question.partner, new n_update() { contact = core.id });
+                log.create(core.id, question.z_user, question.partner);
             }
             return null;
         }

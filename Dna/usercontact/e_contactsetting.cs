@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dna.contact
+namespace Dna.usercontact
 {
-    public enum e_connectionsetting
+    public enum e_contactsetting
     {
         none,
         ordinary,

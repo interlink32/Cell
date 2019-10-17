@@ -15,8 +15,8 @@ namespace contact
     class mysetting : DataGridComboBoxColumn
     {
         StackPanel heder = new StackPanel();
-        public WatermarkComboBox filter = new WatermarkComboBox() { Watermark = "Search" };
-        Label label = new Label() { Content = "My Setting" };
+        public WatermarkComboBox filter = new WatermarkComboBox() { Watermark = "جستجو" };
+        Label label = new Label() { Content = "تنظیمات من" };
         public mysetting()
         {
             filter.ItemsSource = r_connectionsetting.list;

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dna.user
+namespace Dna.usercontact
 {
-    public class n_rename : notify
+    public class c_profile
     {
         public long user = default;
     }

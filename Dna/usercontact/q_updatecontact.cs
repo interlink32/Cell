@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dna.contact
+namespace Dna.usercontact
 {
-    public class n_update : notify
+    public class q_updatecontact : question
     {
         public long contact = default;
+        public e_contactsetting mysetting = default;
     }
 }

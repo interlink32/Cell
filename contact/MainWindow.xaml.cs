@@ -1,4 +1,5 @@
 ﻿using Connection;
+using controllibrary;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -23,23 +24,32 @@ namespace contact
     public partial class MainWindow : Window
     {
         StackPanel panel = new StackPanel();
-        ComboBox cmb_user = new ComboBox();
+        userselector userselector = new userselector("مخاطبان");
         public MainWindow()
         {
             InitializeComponent();
+            ResizeMode = ResizeMode.NoResize;
+            SizeToContent = SizeToContent.WidthAndHeight;
             Content = panel;
-            panel.Children.Add(new Label()
+            panel.Children.Add(userselector.element);
+            userselector.user_e += Userselector_user_e;
+        }
+        List<body> list = new List<body>();
+        body body = null;
+        private void Userselector_user_e(long obj)
+        {
+            if (body != null)
             {
-                Content = "Selected account :"
-            });
-            panel.Children.Add(cmb_user);
-            panel.Children.Add(new Label()
+                panel.Children.Remove(this.body.element);
+                body = null;
+            }
+            body = list.FirstOrDefault(i => i.user == obj);
+            if (body == null)
             {
-                Content = "Conatacts :",
-                FontSize = 16,
-                FontWeight = FontWeights.Bold,
-                Padding = new Thickness(10)
-            });
+                body = new body(obj);
+                list.Add(body);
+            }
+            panel.Children.Add(body.element);
         }
     }
 }

@@ -23,16 +23,16 @@ namespace user_service
                 endpoint = new IPEndPoint(reference.validip(), 10002).ToString(),
                 publickey = resource.all_public_key
             });
+            list.Add(new s_chromosome()
+            {
+                chromosome = e_chromosome.contact,
+                endpoint = new IPEndPoint(reference.validip(), 10003).ToString(),
+                publickey = resource.all_public_key
+            });
             //list.Add(new s_chromosome()
             //{
             //    chromosome = e_chromosome.message,
-            //    endpoint = new IPEndPoint(reference.validip(), 10002).ToString(),
-            //    publickey = resource.all_public_key
-            //});
-            //list.Add(new s_chromosome()
-            //{
-            //    chromosome = e_chromosome.contact,
-            //    endpoint = new IPEndPoint(reference.validip(), 10003).ToString(),
+            //    endpoint = new IPEndPoint(reference.validip(), 10004).ToString(),
             //    publickey = resource.all_public_key
             //});
             chromosome_infos = list.ToArray();

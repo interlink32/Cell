@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace controllibrary
@@ -15,19 +16,32 @@ namespace controllibrary
         public event Action<long> user_e;
         StackPanel panel = new StackPanel()
         {
-            Orientation = Orientation.Horizontal,
             FlowDirection = FlowDirection.RightToLeft,
-            Margin = new Thickness(20, 0, 20, 0)
+            Margin = new Thickness(20, 0, 20, 20)
         };
+        TextBlock heder = new TextBlock() { Padding = new Thickness(10) };
         public override FrameworkElement element => panel;
         Label lable = new Label();
-        ComboBox combo = new ComboBox() { MinWidth = 250 };
-        public userselector()
+        ComboBox combo = new ComboBox() { MinWidth = 400 };
+        public userselector(string text)
         {
+            heder.Inlines.Add(new Run()
+            {
+                FontWeight = FontWeights.Bold,
+                FontSize = 17,
+                Text = text + " : "
+            });
+            heder.Inlines.Add(new Run()
+            {
+                FontWeight = FontWeights.Regular,
+                FontSize = 12,
+                Text = "انتخاب کاربر"
+            });
+            panel.Children.Add(heder);
             combo.ItemsSource = alluser.list;
             alluser.reset_e += Alluser_reset_e;
             combo.SelectionChanged += Combo_SelectionChanged;
-            panel.Children.Add(lable);
+            //panel2.Children.Add(lable);
             panel.Children.Add(combo);
             lable.Content = "انتخاب کاربر : ";
             autoselect();

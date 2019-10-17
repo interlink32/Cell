@@ -12,5 +12,8 @@ namespace Dna.profile
         public string tell { get; set; }
         public e_gender gender { get; set; }
         public string address { get; set; }
+        public class done : answer { }
+        public class duplicatename : answer { }
+
     }
 }

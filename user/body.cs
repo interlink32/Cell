@@ -18,7 +18,7 @@ namespace user
 {
     class body
     {
-        public StackPanel panel = new StackPanel() { Width = 400 };
+        public StackPanel panel = new StackPanel() { Width = 400, FlowDirection = FlowDirection.RightToLeft };
         ListBox lstaccounts = new ListBox() { MinHeight = 100 };
         Button btnlogout = new Button()
         {
@@ -30,10 +30,9 @@ namespace user
         TextBlock lbl = new TextBlock()
         {
             Padding = new Thickness(5),
-            Margin = new Thickness(5),
-            FlowDirection = FlowDirection.RightToLeft
+            Margin = new Thickness(5)
         };
-        TextBox txt = new TextBox() { Padding = new Thickness(5) };
+        TextBox txt = new TextBox() { Padding = new Thickness(5), FlowDirection = FlowDirection.LeftToRight };
         StackPanel btnpanel = new StackPanel()
         {
             Orientation = Orientation.Horizontal,

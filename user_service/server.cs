@@ -44,18 +44,20 @@ namespace user_service
         {
             myservice<q_getusertoken>.dbuser.Upsert(new r_user()
             {
-                callerid = "firstuser",
+                fullname = "firstuser",
+                general = false,
                 id = 1000 * 1000 * 100
             });
+            var dv = myservice<q_getusertoken>.dbserverinfo.FindAll().ToList();
             createitem(e_chromosome.user, "kfkbfkbfmbmgkbkcmbmfmbkf");
             createitem(e_chromosome.profile, "kgjjjfjbjvjcnvjfjbkndfjbjcnbjcn");
+            createitem(e_chromosome.contact, "mgjdjbjdbkdbkgfvjdjdnvbjdmd");
         }
-
         private static void createitem(e_chromosome chromosome, string password)
         {
             myservice<q_getusertoken>.dbserverinfo.Upsert(new r_serverinfo()
             {
-                chromosome = chromosome,
+                id = (int)chromosome,
                 password = password
             });
         }

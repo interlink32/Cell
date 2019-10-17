@@ -16,7 +16,10 @@ namespace user_service
             await Task.CompletedTask;
             var dv = dbserverinfo.FindOne(i => i.id == (int)question.chromosome && i.password == question.password);
             if (dv == null)
+            {
+                Console.Beep(1000, 1000);
                 return null;
+            }
             else
             {
                 dbtoken.Delete(i => i.user == dv.id);
@@ -30,7 +33,8 @@ namespace user_service
                 {
                     callerid = question.chromosome.ToString(),
                     fullname = question.chromosome.ToString(),
-                    id = (long)question.chromosome
+                    id = (long)question.chromosome,
+                    general = false
                 });
                 return new q_getservertoken.done() { token = token.value };
             }

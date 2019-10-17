@@ -24,7 +24,7 @@ namespace profile
     public partial class MainWindow : Window
     {
         StackPanel panel = new StackPanel();
-        userselector userselector = new userselector();
+        userselector userselector = new userselector("پروفایل");
         List<body> bodies = new List<body>();
         public MainWindow()
         {

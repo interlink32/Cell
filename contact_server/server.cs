@@ -11,8 +11,7 @@ namespace contact_server
 {
     class server : Connection.mainserver
     {
-        public override service[] elements => new service[]
-        { new upsert(), new update(), new loadallcontact(), new loadFcontact() };
+        public override service[] elements => new service[] { new upsert(), new updatecontact() };
         public override byte[] privatekey => resource.all_private_key;
         public override IPEndPoint endpoint => new IPEndPoint(reference.localip(), 10003);
         public override string password => "mgjdjbjdbkdbkgfvjdjdnvbjdmd";

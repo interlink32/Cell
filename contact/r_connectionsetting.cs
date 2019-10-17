@@ -20,11 +20,11 @@ namespace contact
         {
             return text;
         }
-        public readonly static r_connectionsetting any = new r_connectionsetting(e_connectionsetting.any, "Any");
-        public readonly static r_connectionsetting blocked = new r_connectionsetting(e_connectionsetting.blocked, "Blocked");
-        public readonly static r_connectionsetting favorite = new r_connectionsetting(e_connectionsetting.favorite, "Favorite");
-        public readonly static r_connectionsetting none = new r_connectionsetting(e_connectionsetting.none, "None");
-        public readonly static r_connectionsetting ordinary = new r_connectionsetting(e_connectionsetting.ordinary, "Ordinary");
+        public readonly static r_connectionsetting any = new r_connectionsetting(e_connectionsetting.any, "هر کدام");
+        public readonly static r_connectionsetting blocked = new r_connectionsetting(e_connectionsetting.blocked, "مسدود");
+        public readonly static r_connectionsetting favorite = new r_connectionsetting(e_connectionsetting.favorite, "مهم");
+        public readonly static r_connectionsetting none = new r_connectionsetting(e_connectionsetting.none, "هیچ کدام");
+        public readonly static r_connectionsetting ordinary = new r_connectionsetting(e_connectionsetting.ordinary, "عادی");
         public readonly static r_connectionsetting[] list = { none, ordinary, favorite, blocked, any };
         public static r_connectionsetting get(e_connectionsetting val)
         {

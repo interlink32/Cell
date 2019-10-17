@@ -51,6 +51,17 @@ namespace Connection
             var dv = converter.change(data) as gene;
             return dv;
         }
+        public async Task receivenotify()
+        {
+            byte[] buffer = new byte[0];
+            await tcp.GetStream().ReadAsync(buffer, 0, 1);
+            if (buffer[0] != 79)
+                throw new Exception("khkfbkfjnivdkbkckbnfkbkdnvkcd");
+        }
+        public async Task sendnotify()
+        {
+            await tcp.GetStream().WriteAsync(new byte[] { 79 }, 0, 1);
+        }
         public static byte[] Combine(params byte[][] arrays)
         {
             byte[] rv = new byte[arrays.Sum(a => a.Length)];

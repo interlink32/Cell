@@ -14,7 +14,7 @@ namespace user_service
         {
             await Task.CompletedTask;
             nullcheck(ref question.name_filter);
-            var dv = dbuser.FindAll();
+            var dv = dbuser.Find(i => i.general);
             if (question.ids_filter != null)
                 dv = dv.Where(i => question.ids_filter.Contains(i.id));
             if (question.name_filter != null)

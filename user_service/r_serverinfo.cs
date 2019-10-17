@@ -11,7 +11,6 @@ namespace user_service
     public class r_serverinfo
     {
         public int id { get; set; }
-        public e_chromosome chromosome { get; set; }
         public string password { get; set; }
     }
 }

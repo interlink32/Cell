@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dna.contact
+namespace Dna.usercontact
 {
-    public class q_upsert : question
+    public class q_createcontact : question
     {
         public long partner = default;
-        public e_connectionsetting mysetting = default;
     }
 }

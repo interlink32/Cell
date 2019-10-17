@@ -16,8 +16,8 @@ namespace contact
     class usercolumn : DataGridTextColumn
     {
         StackPanel stack = new StackPanel() { MinWidth = 200 };
-        public WatermarkTextBox filter = new WatermarkTextBox() { Watermark = "Search", Padding = new Thickness(4, 2, 4, 2) };
-        Label label = new Label() { Content = "User" };
+        public WatermarkTextBox filter = new WatermarkTextBox() { Watermark = "جستجو", Padding = new Thickness(4, 2, 4, 2) };
+        Label label = new Label() { Content = "کاربران" };
         public usercolumn()
         {
             stack.Children.Add(filter);

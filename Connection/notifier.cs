@@ -53,7 +53,7 @@ namespace Connection
             var dv = l.FirstOrDefault(i => i.gene == rsv.z_gene);
             dv?.action(rsv);
         }
-        internal async void send()
+        internal async void sendpulse()
         {
             try
             {

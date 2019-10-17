@@ -24,7 +24,8 @@ namespace user_service
                 user = new r_user()
                 {
                     callerid = question.callerid,
-                    fullname = question.callerid
+                    fullname = question.callerid,
+                    general = true
                 };
                 dbuser.Insert(user);
             }

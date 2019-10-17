@@ -90,8 +90,10 @@ namespace Connection
                     token = dv.token
                 });
                 if (!(rsv is q_login.done))
+                {
+                    Console.Beep(1000, 500);
                     throw new Exception("bkdkbmfbcmfmbmmbm");
-                   // badanswer();
+                }
             }
             connected = true;
             if (!firstconnect && this is notifier)
@@ -108,16 +110,6 @@ namespace Connection
                 userlogin = s.dbuserlogin.FindOne(i => i.id == userid);
             }
             return userlogin;
-        }
-        async void badanswer()
-        {
-            await Task.CompletedTask;
-            throw new Exception("lvkdlbmfkvkxmkblcc");
-        }
-        async void nullcallerid()
-        {
-            await Task.CompletedTask;
-            throw new Exception("bkkbkbjfkbjkgdkbdnbjkd");
         }
         bool closef = false;
         internal void close()
