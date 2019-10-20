@@ -14,18 +14,17 @@ namespace user_service
         public async override Task<answer> getanswer(q_sendactivecode question)
         {
             await Task.CompletedTask;
-            if (question.randomvalue == 0)
-                return new developererror();
-            var dv = dbactivecode.FindOne(i => i.callerid == question.callerid && i.randomvalue == question.randomvalue);
+            var dv = dbactivecode.FindOne(i => i.device == question.device && i.callerid == question.callerid);
             if (dv == null)
             {
                 dv = new r_activecode()
                 {
                     activecode = "12345",
                     callerid = question.callerid,
-                    randomvalue = question.randomvalue
+                    device = question.device
                 };
                 dbactivecode.Insert(dv);
+                //Requires code to SMS activecode
 
             }
             return new q_sendactivecode.done();

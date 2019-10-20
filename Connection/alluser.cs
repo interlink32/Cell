@@ -11,7 +11,6 @@ namespace Connection
 {
     public class alluser
     {
-        public static event Action reset_e;
         static ObservableCollection<userinfo> listf = null;
         static object lockobject = new object();
         public static ObservableCollection<userinfo> list
@@ -43,17 +42,11 @@ namespace Connection
                     add(i);
             foreach (var i in list.ToArray())
             {
-                if (!newlist.Any(j => j == i.id))
-                    remove(i);
+                //if (!newlist.Any(j => j == i.id))
+                //    remove(i);
             }
             await Task.Delay(200);
             checkusers();
-        }
-        private static void remove(userinfo i)
-        {
-            list.Remove(i);
-            client.remove<n_rename>(i.id, rename);
-
         }
         static void add(long i)
         {
@@ -62,20 +55,11 @@ namespace Connection
                 id = i,
                 fullname = "ID : " + i + " loading ..."
             });
-            client.add<n_rename>(i, rename);
-            rename(new n_rename()
-            {
-                z_receiver = i
-            });
-        }
-        async static void rename(n_rename obj)
-        {
-            var rsv = await client.question(new q_loaduser()
-            {
-                userid = obj.z_receiver
-            }) as q_loaduser.done;
-            list.First(i => i.id == obj.z_receiver).fullname = rsv.user.fullname;
-            reset_e?.Invoke();
+            //client.add<n_rename>(i, rename);
+            //rename(new n_rename()
+            //{
+            //    z_receiver = i
+            //});
         }
     }
 }

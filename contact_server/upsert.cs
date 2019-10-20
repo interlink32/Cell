@@ -24,7 +24,7 @@ namespace contact_server
                 userdb.Upsert(new r_contact()
                 {
                     id = core.id,
-                    partner = question.partner
+                    partner =server.q(new Dna.profile.q_load() { userid=}
                 });
 
                 var partnerdb = s.dbcontact(question.partner);
@@ -33,7 +33,7 @@ namespace contact_server
                     id = core.id,
                     partner = question.z_user,
                 });
-                log.create(core.id, question.z_user, question.partner);
+                log.updatecontact(core.id, question.z_user, question.partner);
             }
             return null;
         }

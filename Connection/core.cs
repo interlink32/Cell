@@ -32,18 +32,21 @@ namespace Connection
                 await tcp.GetStream().WriteAsync(data, 0, data.Length);
             }
         }
+        public event Action pulse_e;
         internal async Task<gene> read()
         {
             var data = new byte[4];
             await tcp.GetStream().ReadAsync(data, 0, data.Length);
             var len = BitConverter.ToInt32(data, 0);
-            var dvv = this is notifier;
-            if (len == 0)
+            switch (len)
             {
-                Console.Beep(2000, 500);
+                case -1: return new voidanswer();
+                case -2:
+                    {
+                        pulse_e.Invoke();
+                        return await read();
+                    }
             }
-            if (len == -1)
-                return new voidanswer();
             data = new byte[len];
             await tcp.GetStream().ReadAsync(data, 0, len);
             if (key32 != null)
@@ -51,16 +54,9 @@ namespace Connection
             var dv = converter.change(data) as gene;
             return dv;
         }
-        public async Task receivenotify()
+        public async void sendnotify()
         {
-            byte[] buffer = new byte[0];
-            await tcp.GetStream().ReadAsync(buffer, 0, 1);
-            if (buffer[0] != 79)
-                throw new Exception("khkfbkfjnivdkbkckbnfkbkdnvkcd");
-        }
-        public async Task sendnotify()
-        {
-            await tcp.GetStream().WriteAsync(new byte[] { 79 }, 0, 1);
+            await tcp.GetStream().WriteAsync(BitConverter.GetBytes(-2), 0, 4);
         }
         public static byte[] Combine(params byte[][] arrays)
         {

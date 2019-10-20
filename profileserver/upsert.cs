@@ -39,12 +39,6 @@ namespace profileserver
             profile.nationalcode = question.nationalcode;
             profile.tell = question.tell;
             dbprofile.Upsert(profile);
-            if (fullnamechange)
-                await mainserver.q(new q_rename()
-                {
-                    user = question.z_user,
-                    fullname = question.fullname
-                });
             notify(question.z_user, new n_update());
             return null;
         }

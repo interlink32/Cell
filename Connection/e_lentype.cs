@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dna.common
+namespace Connection
 {
-    public class n_change : notify
+    enum e_lentype
     {
+        voidanswer = -1,
+        notify = -2
     }
 }

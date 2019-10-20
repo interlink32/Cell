@@ -29,7 +29,7 @@ namespace contact_server
             contact.partnersetting = question.mysetting;
             db.Update(contact);
 
-            log.create(question.contact, question.z_user, partner);
+            log.updatecontact(question.contact, question.z_user, partner);
 
             return null;
         }

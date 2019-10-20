@@ -23,10 +23,10 @@ namespace user_service
             else
             {
                 dbtoken.Delete(i => i.user == dv.id);
-                r_token token = new r_token()
+                r_login token = new r_login()
                 {
                     user = dv.id,
-                    value = basic.random.Next() + basic.random.Next().ToString()
+                    token = basic.random.Next() + basic.random.Next().ToString()
                 };
                 dbtoken.Insert(token);
                 dbuser.Upsert(new r_user()
@@ -36,7 +36,7 @@ namespace user_service
                     id = (long)question.chromosome,
                     general = false
                 });
-                return new q_getservertoken.done() { token = token.value };
+                return new q_getservertoken.done() { token = token.token };
             }
         }
     }

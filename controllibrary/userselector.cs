@@ -39,9 +39,8 @@ namespace controllibrary
             });
             panel.Children.Add(heder);
             combo.ItemsSource = alluser.list;
-            alluser.reset_e += Alluser_reset_e;
+            //alluser.reset_e += Alluser_reset_e;
             combo.SelectionChanged += Combo_SelectionChanged;
-            //panel2.Children.Add(lable);
             panel.Children.Add(combo);
             lable.Content = "انتخاب کاربر : ";
             autoselect();

@@ -12,7 +12,7 @@ namespace user_service
     {
         public long id { get; set; }
         public string callerid { get; set; }
-        public long randomvalue { get; set; }
+        public long device { get; set; }
         public string activecode { get; set; }
         public DateTime time { get; set; } = DateTime.Now;
     }

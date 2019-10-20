@@ -1,5 +1,6 @@
 ﻿using Connection;
 using Dna;
+using Dna.user;
 using LiteDB;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,8 @@ namespace user_service
         static LiteDatabase db = new LiteDatabase(reference.root("userserver.db"));
         public static LiteCollection<r_activecode> dbactivecode => db.GetCollection<r_activecode>();
         public static LiteCollection<r_user> dbuser => db.GetCollection<r_user>();
-        public static LiteCollection<r_token> dbtoken => db.GetCollection<r_token>();
+        public static LiteCollection<r_login> dbtoken => db.GetCollection<r_login>();
         public static LiteCollection<r_serverinfo> dbserverinfo => db.GetCollection<r_serverinfo>();
+        public static LiteCollection<r_device> dbdevice => db.GetCollection<r_device>();
     }
 }

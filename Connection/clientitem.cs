@@ -54,10 +54,14 @@ namespace Connection
                 disconnect();
             }
         }
-        public async Task<answer> q(question question)
+        public async Task<T> q<T>(question question) where T : answer
         {
             await write(question);
-            return await read() as answer;
+            return await read() as T;
+        }
+        public async Task<answer> q(question question)
+        {
+            return await q<answer>(question);
         }
         public bool connected { get; private set; }
         public string chromosome { get; }
@@ -86,7 +90,6 @@ namespace Connection
                 userlogin dv = await getlogin();
                 var rsv = await q(new q_login()
                 {
-                    notifyconnection = this is notifier,
                     token = dv.token
                 });
                 if (!(rsv is q_login.done))
@@ -96,7 +99,7 @@ namespace Connection
                 }
             }
             connected = true;
-            if (!firstconnect && this is notifier)
+            if (!firstconnect)
                 reconnect_e?.Invoke();
             firstconnect = true;
         }

@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    public class r_token
+    public class r_login
     {
-        [BsonId]
-        public string value { get; set; }
+        public long id { get; set; }
         public long user { get; set; }
-        public DateTime time { get; set; } = DateTime.Now;
+        public long device { get; set; }
+        public string token { get; set; }
     }
 }

@@ -21,11 +21,8 @@ namespace Connection
             get_Answer = get_answer;
             ThreadPool.QueueUserWorkItem(reading);
         }
-        bool stopreading = false;
         async void reading(object o)
         {
-            if (stopreading)
-                return;
             question question = null;
             try
             {
@@ -78,11 +75,7 @@ namespace Connection
                         if (userid == 0 && rsv is q_login.done done)
                         {
                             userid = done.user.id;
-                            if (dv.notifyconnection)
-                            {
-                                server.addnotify(this);
-                                stopreading = true;
-                            }
+                            server.add(this);
                         }
                         localwrite(rsv);
                     }

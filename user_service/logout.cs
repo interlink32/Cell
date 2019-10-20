@@ -14,7 +14,7 @@ namespace user_service
         public async override Task<answer> getanswer(q_logout question)
         {
             await Task.CompletedTask;
-            dbtoken.Delete(i => i.value == question.token);
+            dbtoken.Delete(i => i.token == question.token);
             return new voidanswer();
         }
     }

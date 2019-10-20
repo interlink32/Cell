@@ -32,7 +32,6 @@ namespace Connection
             listener.Start();
             listen();
             login();
-            removepulse();
         }
         async void login()
         {
@@ -49,9 +48,9 @@ namespace Connection
         }
         internal async void remove(responder val)
         {
-            await notifylock.WaitAsync();
-            notifylist.Remove(val);
-            notifylock.Release();
+            await locker.WaitAsync();
+            list.Remove(val);
+            locker.Release();
         }
         async Task<answer> getanswer(question request)
         {
@@ -61,41 +60,29 @@ namespace Connection
             var dv2 = await dv.z_get_answer(request);
             return dv2;
         }
-        static List<responder> notifylist = new List<responder>();
-        static SemaphoreSlim notifylock = new SemaphoreSlim(1, 1);
-        internal async void addnotify(responder dv)
+        static List<responder> list = new List<responder>();
+        static SemaphoreSlim locker = new SemaphoreSlim(1, 1);
+        internal async void add(responder dv)
         {
-            await notifylock.WaitAsync();
-            if (!notifylist.Contains(dv))
+            await locker.WaitAsync();
+            if (!list.Contains(dv))
             {
-                notifylist.Add(dv);
+                list.Add(dv);
             }
-            notifylock.Release();
+            locker.Release();
         }
-        async void removepulse()
+        static async Task<responder[]> get(long user)
         {
-            responder[] l = null;
-            await notifylock.WaitAsync();
-            l = notifylist.ToArray();
-            notifylock.Release();
-            foreach (var i in l)
-                i.removepulse();
-            await Task.Delay(5000);
-            removepulse();
-        }
-        static async Task<responder[]> getnotify(long user)
-        {
-            await notifylock.WaitAsync();
-            var dv = notifylist.Where(i => i.userid == user).ToArray();
-            notifylock.Release();
+            await locker.WaitAsync();
+            var dv = list.Where(i => i.userid == user).ToArray();
+            locker.Release();
             return dv;
         }
-        public async static void sendnotify(long receiver, notify notify)
+        public async static void sendnotify(long user)
         {
-            notify.z_receiver = receiver;
-            var dv = await getnotify(receiver);
-            foreach (var i in dv)
-                i.localwrite(notify);
+            var all = await get(user);
+            foreach (var i in all)
+                i.sendnotify();
         }
         public static async Task<answer> q(question question)
         {

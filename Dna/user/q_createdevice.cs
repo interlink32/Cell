@@ -4,15 +4,13 @@ using System.Text;
 
 namespace Dna.user
 {
-    public class q_login : question
+    public class q_createdevice : question
     {
-        public s_device device = default;
-        public string token = default;
+        public string devicename = default;
         public override e_permission z_permission => e_permission.free;
         public class done : answer
         {
-            public s_user user = default;
+            public s_device device = default;
         }
-        public class invalid : answer { }
     }
 }

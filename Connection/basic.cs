@@ -11,6 +11,22 @@ namespace Connection
 {
     public static class basic
     {
+        internal static async Task<s_device> getdevice(bool refreshrequired = false)
+        {
+            s_device device = null;
+            if (refreshrequired)
+                s.dbdevice.Delete(i => i != null);
+            device = s.dbdevice.FindAll().FirstOrDefault();
+            if (device == null)
+            {
+                device = (await defaultitem.q<q_createdevice.done>(new q_createdevice()
+                {
+                    devicename = Environment.MachineName
+                })).device;
+                s.dbdevice.Insert(device);
+            }
+            return device;
+        }
         static questioner defaultitem = new questioner(0, e_chromosome.user.ToString());
         static async Task<answer> q(question question)
         {
@@ -28,40 +44,33 @@ namespace Connection
             });
         }
         public static Random random = new Random();
-        public static async Task sendactivecode(string callerid)
+        public static async Task sendactivecode(string callerid, bool refreshvedice = false)
         {
-            var dv = s.dbrandom.FindOne(i => i.callerid == callerid);
-            if (dv == null)
-                dv = createrandomcode(callerid);
-            await q(new q_sendactivecode()
+            answer rsv = await q(new q_sendactivecode()
             {
                 callerid = callerid,
-                randomvalue = dv.value
+                device = (await getdevice(refreshvedice)).id
             });
-        }
-        private static randomcode createrandomcode(string callerid)
-        {
-            randomcode dv = new randomcode()
+            switch (rsv)
             {
-                callerid = callerid,
-                value = random.Next()
-            };
-            s.dbrandom.Upsert(dv);
-            return dv;
+                case q_sendactivecode.done done: return;
+                case q_sendactivecode.invaliddevice sw:
+                    {
+                        await sendactivecode(callerid, true);
+                    }
+                    break;
+            }
         }
         public static async Task<bool> login(string callerid, string activecode)
         {
             var userlogin = s.dbuserlogin.FindOne(i => i.callerid == callerid);
             if (userlogin != null)
                 return true;
-            var code = s.dbrandom.FindOne(i => i.callerid == callerid);
-            if (code == null)
-                return false;
             var dv = await q(new q_getusertoken()
             {
                 callerid = callerid,
                 activecode = activecode,
-                randomvalue = code.value
+                device = await getdevice()
             }) as q_getusertoken.done;
             if (dv == null)
                 return false;
@@ -72,7 +81,6 @@ namespace Connection
                 token = dv.token,
                 general = true
             });
-            s.dbrandom.Delete(i => i.callerid == callerid);
             return true;
         }
         public static async Task<bool> serverlogin(e_chromosome chromosome, string password)

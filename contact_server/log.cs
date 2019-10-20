@@ -25,7 +25,7 @@ namespace contact_server
             }
             return rt;
         }
-        public static void create(long contact, params long[] users)
+        public static void updatecontact(long contact, params long[] users)
         {
             foreach (var i in users)
             {
@@ -34,9 +34,8 @@ namespace contact_server
                 db.Insert(new r_log()
                 {
                     contact = contact,
-                    type = e_log.update
+                    type = e_log.updatecontact
                 });
-
                 notify(i, new n_logcontact());
             }
         }

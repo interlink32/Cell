@@ -74,7 +74,7 @@ namespace user
             btnlogout.Click += Btnlogout_Click;
             reset();
             reset2();
-            alluser.reset_e += Alluser_reset_e;
+            //alluser.reset_e += Alluser_reset_e;
             lstaccounts.ItemsSource = alluser.list;
         }
 

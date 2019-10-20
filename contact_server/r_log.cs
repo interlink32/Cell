@@ -14,5 +14,11 @@ namespace contact_server
         public long contact { get; set; }
         public e_log type { get; set; }
     }
-    enum e_log { update, delete }
+    enum e_log
+    {
+        updatecontact,
+        updateprofile,
+        deletecontact,
+        deleteprofile
+    }
 }

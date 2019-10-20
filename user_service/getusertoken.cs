@@ -15,9 +15,12 @@ namespace user_service
         public async override Task<answer> getanswer(q_getusertoken question)
         {
             await Task.CompletedTask;
-            var activecode = dbactivecode.FindOne(i => i.callerid == question.callerid && i.randomvalue == question.randomvalue && i.activecode == question.activecode);
+            bool device = dbdevice.Exists(i => i.id == question.device.id && i.randomcode == question.device.randomcode);
+            if (device)
+                return new q_getusertoken.invaliddevice();
+            var activecode = dbactivecode.FindOne(i => i.device == question.device.id && i.callerid == question.callerid && i.activecode == question.activecode);
             if (activecode == null)
-                return new q_getusertoken.invalid();
+                return new q_getusertoken.invalidactivecode();
             var user = dbuser.FindOne(i => i.callerid == question.callerid);
             if (user == null)
             {
@@ -29,15 +32,17 @@ namespace user_service
                 };
                 dbuser.Insert(user);
             }
-            var token = new r_token()
+            dbtoken.Delete(i => i.user == user.id && i.device == question.device.id);
+            var token = new r_login()
             {
                 user = user.id,
-                value = basic.random.Next() + basic.random.Next().ToString()
+                device = question.device.id,
+                token = "" + basic.random.Next(1000, 9999) + basic.random.Next().ToString()
             };
             dbtoken.Insert(token);
             return new q_getusertoken.done()
             {
-                token = token.value,
+                token = token.token,
                 user = user.id
             };
         }
