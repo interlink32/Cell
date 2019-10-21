@@ -10,23 +10,27 @@ namespace Connection
 {
     class responder : core
     {
-        internal long userid = default;
+        public override string ToString()
+        {
+            return "ID : " + userid;
+        }
         private readonly mainserver server;
         Func<question, Task<answer>> get_Answer;
         public responder(mainserver service, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer)
         {
-            this.mainkey = key;
+            mainkey = key;
             this.tcp = tcp;
-            this.server = service;
+            server = service;
             get_Answer = get_answer;
             ThreadPool.QueueUserWorkItem(reading);
+            connected = true;
         }
         async void reading(object o)
         {
             question question = null;
             try
             {
-                if (!(await read() is question q))
+                if (!(await servicread() is question q))
                     throw new Exception("fjbhdjbjdjkgndjgjdkvg");
                 question = q;
             }

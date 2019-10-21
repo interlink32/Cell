@@ -14,7 +14,6 @@ namespace Connection
 {
     public abstract class clientitem : core
     {
-        public long userid { get; private set; }
         internal s_chromosome info { get; private set; }
         public clientitem(long id, string chromosome)
         {
@@ -49,25 +48,21 @@ namespace Connection
             }
             catch (Exception e)
             {
-                Console.Beep();
+                Console.Beep(2000, 500);
                 string dv = e.Message;
                 disconnect();
             }
         }
-        public async Task<T> q<T>(question question) where T : answer
+        protected async Task<T> q<T>(question question) where T : answer
         {
             await write(question);
-            return await read() as T;
+            return await clientread() as T;
         }
-        public async Task<answer> q(question question)
+        protected async Task<answer> q(question question)
         {
             return await q<answer>(question);
         }
-        public bool connected { get; private set; }
         public string chromosome { get; }
-
-        bool firstconnect = false;
-        public event Action reconnect_e;
         async Task connect()
         {
             if (connected)
@@ -83,7 +78,7 @@ namespace Connection
             });
             key32 = keys.key32;
             iv16 = keys.iv16;
-            if (!(await read() is voidanswer))
+            if (!(await clientread() is voidanswer))
                 throw new Exception("lkdkbjkbkfmbkcskbmdkb");
             if (userid != 0)
             {
@@ -99,9 +94,7 @@ namespace Connection
                 }
             }
             connected = true;
-            if (!firstconnect)
-                reconnect_e?.Invoke();
-            firstconnect = true;
+            client.notify(userid);
         }
         async Task<userlogin> getlogin()
         {
@@ -120,7 +113,6 @@ namespace Connection
             disconnect();
             closef = true;
         }
-
         private void disconnect()
         {
             tcp.Close();

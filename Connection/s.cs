@@ -23,7 +23,6 @@ namespace Connection
             Password = get()
         });
         internal static LiteCollection<userlogin> dbuserlogin => db.GetCollection<userlogin>();
-        internal static LiteCollection<s_device> dbdevice => db.GetCollection<s_device>();
     }
     class userlogin
     {

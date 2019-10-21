@@ -15,34 +15,26 @@ namespace user_service
         public async override Task<answer> getanswer(q_getusertoken question)
         {
             await Task.CompletedTask;
-            bool device = dbdevice.Exists(i => i.id == question.device.id && i.randomcode == question.device.randomcode);
-            if (device)
-                return new q_getusertoken.invaliddevice();
-            var activecode = dbactivecode.FindOne(i => i.device == question.device.id && i.callerid == question.callerid && i.activecode == question.activecode);
-            if (activecode == null)
-                return new q_getusertoken.invalidactivecode();
             var user = dbuser.FindOne(i => i.callerid == question.callerid);
-            if (user == null)
+            if (user == null || user.activecode != question.activecode)
+                return new q_getusertoken.invalidactivecode();
+            sendactivecode.changetoken(user);
+            bool update = !user.active;
+            user.active = true;
+            dbuser.Update(user);
+            if (update)
             {
-                user = new r_user()
+                dbdiff.Insert(new r_difference()
                 {
-                    callerid = question.callerid,
-                    fullname = question.callerid,
-                    general = true
-                };
-                dbuser.Insert(user);
+                    state = r_diffstate.update,
+                    userid = user.id
+                });
+                await notify(e_chromosome.profile);
+                await notify(user.id);
             }
-            dbtoken.Delete(i => i.user == user.id && i.device == question.device.id);
-            var token = new r_login()
-            {
-                user = user.id,
-                device = question.device.id,
-                token = "" + basic.random.Next(1000, 9999) + basic.random.Next().ToString()
-            };
-            dbtoken.Insert(token);
             return new q_getusertoken.done()
             {
-                token = token.token,
+                token = user.token,
                 user = user.id
             };
         }

@@ -14,18 +14,11 @@ namespace user_service
         public async override Task<answer> getanswer(q_login request)
         {
             await Task.CompletedTask;
-            if (!dbdevice.Exists(i => i.id == request.device.id))
-                return new q_login.invalid();
-            var dv = dbtoken.FindOne(i => i.device == request.device.id && i.token == request.token);
+            var dv = dbuser.FindOne(i => i.token == request.token);
             if (dv == null)
                 return new q_login.invalid();
             else
-            {
-                var user = dbuser.FindOne(i => i.id == dv.user);
-                if (user == null)
-                    throw new Exception("mvxdjbdjhdhvhxgsbvxnvndmv");
-                return new q_login.done() { user = user.clone() };
-            }
+                return new q_login.done() { user = dv.clone() };
         }
     }
 }

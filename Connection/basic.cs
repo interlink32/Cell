@@ -11,55 +11,27 @@ namespace Connection
 {
     public static class basic
     {
-        internal static async Task<s_device> getdevice(bool refreshrequired = false)
-        {
-            s_device device = null;
-            if (refreshrequired)
-                s.dbdevice.Delete(i => i != null);
-            device = s.dbdevice.FindAll().FirstOrDefault();
-            if (device == null)
-            {
-                device = (await defaultitem.q<q_createdevice.done>(new q_createdevice()
-                {
-                    devicename = Environment.MachineName
-                })).device;
-                s.dbdevice.Insert(device);
-            }
-            return device;
-        }
+        public static Random random = new Random();
         static questioner defaultitem = new questioner(0, e_chromosome.user.ToString());
         static async Task<answer> q(question question)
         {
             return await defaultitem.question(question);
         }
-        public static async Task logout(long userid)
+        public static void logout(long userid)
         {
             var dv = s.dbuserlogin.FindOne(i => i.id == userid);
             if (dv == null)
                 return;
             s.dbuserlogin.Delete(i => i.id == userid);
-            await q(new q_logout()
-            {
-                token = dv.token
-            });
         }
-        public static Random random = new Random();
-        public static async Task sendactivecode(string callerid, bool refreshvedice = false)
+        public static async Task sendactivecode(string callerid)
         {
             answer rsv = await q(new q_sendactivecode()
             {
-                callerid = callerid,
-                device = (await getdevice(refreshvedice)).id
+                callerid = callerid
             });
-            switch (rsv)
-            {
-                case q_sendactivecode.done done: return;
-                case q_sendactivecode.invaliddevice sw:
-                    {
-                        await sendactivecode(callerid, true);
-                    }
-                    break;
-            }
+            if (!(rsv is q_sendactivecode.done))
+                throw new Exception("lkfkbfjbjdjbjkdbjfkvb");
         }
         public static async Task<bool> login(string callerid, string activecode)
         {
@@ -69,8 +41,7 @@ namespace Connection
             var dv = await q(new q_getusertoken()
             {
                 callerid = callerid,
-                activecode = activecode,
-                device = await getdevice()
+                activecode = activecode
             }) as q_getusertoken.done;
             if (dv == null)
                 return false;
@@ -96,7 +67,7 @@ namespace Connection
             {
                 token = dv.token,
                 general = false,
-                id = (int)chromosome
+                id = (int)chromosome,
             });
             return true;
         }

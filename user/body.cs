@@ -74,7 +74,7 @@ namespace user
             btnlogout.Click += Btnlogout_Click;
             reset();
             reset2();
-            //alluser.reset_e += Alluser_reset_e;
+            alluser.reset_e += Alluser_reset_e;
             lstaccounts.ItemsSource = alluser.list;
         }
 
@@ -86,9 +86,9 @@ namespace user
         {
             Application.Current.Dispatcher.Invoke(action);
         }
-        async void Btnlogout_Click(object sender, RoutedEventArgs e)
+        void Btnlogout_Click(object sender, RoutedEventArgs e)
         {
-            await basic.logout(selected.id);
+            basic.logout(selected.id);
         }
         private void Btnback_Click(object sender, RoutedEventArgs e)
         {

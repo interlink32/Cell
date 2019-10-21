@@ -1,4 +1,5 @@
-﻿using Dna.user;
+﻿using Dna;
+using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,7 @@ namespace Connection
 {
     public class alluser
     {
+        public static event Action reset_e;
         static ObservableCollection<userinfo> listf = null;
         static object lockobject = new object();
         public static ObservableCollection<userinfo> list
@@ -42,24 +44,34 @@ namespace Connection
                     add(i);
             foreach (var i in list.ToArray())
             {
-                //if (!newlist.Any(j => j == i.id))
-                //    remove(i);
+                if (!newlist.Any(j => j == i.id))
+                    remove(i);
             }
             await Task.Delay(200);
             checkusers();
         }
-        static void add(long i)
+        static void add(long user)
         {
             list.Add(new userinfo()
             {
-                id = i,
-                fullname = "ID : " + i + " loading ..."
+                id = user,
+                fullname = "ID : " + user + " loading ..."
             });
-            //client.add<n_rename>(i, rename);
-            //rename(new n_rename()
-            //{
-            //    z_receiver = i
-            //});
+            client.notifyadd(user, e_chromosome.user, loaduser);
+        }
+        static void remove(userinfo user)
+        {
+            list.Remove(user);
+            reset_e?.Invoke();
+        }
+        static async void loaduser(long user)
+        {
+            var olduser = list.FirstOrDefault(i => i.id == user);
+            if (olduser == null)
+                return;
+            var newuser = await client.getuser(user);
+            olduser.fullname = newuser.fullname;
+            reset_e?.Invoke();
         }
     }
 }

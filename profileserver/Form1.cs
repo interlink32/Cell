@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Connection;
+using Dna;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,6 +18,11 @@ namespace profileserver
         public Form1()
         {
             InitializeComponent();
+            client.notifyadd((long)e_chromosome.profile, e_chromosome.user, m);
+        }
+        private void m(long obj)
+        {
+            Console.Beep();
         }
     }
 }

@@ -13,6 +13,8 @@ namespace Connection
 {
     public class core
     {
+        public long userid { get; internal set; }
+        public bool connected { get; internal set; }
         static converter converter = new converter();
         internal byte[] mainkey = null;
         internal byte[] key32 = null;
@@ -22,41 +24,88 @@ namespace Connection
         internal async Task write(gene gene)
         {
             if (gene == null)
-                await tcp.GetStream().WriteAsync(BitConverter.GetBytes(-1), 0, 4);
+                await write(getlen(-1));
             else
             {
                 var data = converter.change(gene);
                 if (key32 != null)
                     data = crypto.Encrypt(data, key32, iv16);
-                data = Combine(BitConverter.GetBytes(data.Length), data);
-                await tcp.GetStream().WriteAsync(data, 0, data.Length);
+                data = Combine(getlen(data.Length), data);
+                await write(data);
             }
         }
-        public event Action pulse_e;
-        internal async Task<gene> read()
+        private static byte[] getlen(int val)
         {
-            var data = new byte[4];
-            await tcp.GetStream().ReadAsync(data, 0, data.Length);
-            var len = BitConverter.ToInt32(data, 0);
+            return BitConverter.GetBytes(val);
+        }
+
+        SemaphoreSlim locker = new SemaphoreSlim(1, 1);
+        private async Task write(byte[] data)
+        {
+            await locker.WaitAsync();
+            await tcp.GetStream().WriteAsync(data, 0, data.Length);
+            locker.Release();
+        }
+        internal async Task<gene> servicread()
+        {
+            int len = await getlen();
+            if (len == -3)
+                return await servicread();
+            else
+                return await getgen(len);
+        }
+        internal async Task<gene> clientread()
+        {
+            int len = await getlen();
             switch (len)
             {
                 case -1: return new voidanswer();
                 case -2:
                     {
-                        pulse_e.Invoke();
-                        return await read();
+                        client.notify(userid);
+                        return await clientread();
                     }
+                case -3:
+                    return await clientread();
             }
-            data = new byte[len];
+            return await getgen(len);
+        }
+        private async Task<gene> getgen(int len)
+        {
+            var data = new byte[len];
             await tcp.GetStream().ReadAsync(data, 0, len);
             if (key32 != null)
                 data = crypto.Decrypt(data, key32, iv16);
             var dv = converter.change(data) as gene;
             return dv;
         }
+        private async Task<int> getlen()
+        {
+            var data = new byte[4];
+            await tcp.GetStream().ReadAsync(data, 0, data.Length);
+            var len = BitConverter.ToInt32(data, 0);
+            return len;
+        }
+        internal async Task chacknotify()
+        {
+            if (tcp.Available >= 4)
+            {
+                var dv = await getlen();
+                if (dv == -2)
+                    client.notify(userid);
+                else
+                    throw new Exception("kgkdjbjfjbjcdbjdnvjd");
+            }
+        }
         public async void sendnotify()
         {
-            await tcp.GetStream().WriteAsync(BitConverter.GetBytes(-2), 0, 4);
+            if (connected)
+                await write(getlen(-2));
+        }
+        public async void sendpalse()
+        {
+            if (connected)
+                await write(getlen(-3));
         }
         public static byte[] Combine(params byte[][] arrays)
         {

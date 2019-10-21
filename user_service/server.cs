@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class server : Connection.mainserver
+    class server : mainserver
     {
         public server()
         {
@@ -25,12 +25,12 @@ namespace user_service
                     new getchromosome(),
                     new getusertoken(),
                     new login(),
-                    new logout(),
                     new load(),
                     new loadalluser(),
                     new sendactivecode(),
                     new getservertoken(),
-                    new rename()
+                    new rename(),
+                    new difference()
                 };
             }
         }
@@ -48,7 +48,6 @@ namespace user_service
                 general = false,
                 id = 1000 * 1000 * 100
             });
-            var dv = myservice<q_getusertoken>.dbserverinfo.FindAll().ToList();
             createitem(e_chromosome.user, "kfkbfkbfmbmgkbkcmbmfmbkf");
             createitem(e_chromosome.profile, "kgjjjfjbjvjcnvjfjbkndfjbjcnbjcn");
             createitem(e_chromosome.contact, "mgjdjbjdbkdbkgfvjdjdnvbjdmd");

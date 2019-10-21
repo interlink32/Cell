@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="createdevice.cs" />
+    <Compile Include="difference.cs" />
     <Compile Include="form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -64,7 +64,6 @@
     <Compile Include="loadalluser.cs" />
     <Compile Include="load.cs" />
     <Compile Include="getusertoken.cs" />
-    <Compile Include="logout.cs" />
     <Compile Include="myservice.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -74,12 +73,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="r_activecode.cs" />
-    <Compile Include="r_device.cs" />
+    <Compile Include="r_difference.cs" />
     <Compile Include="sendactivecode.cs" />
     <Compile Include="server.cs" />
     <Compile Include="r_user.cs" />
-    <Compile Include="r_login.cs" />
     <Compile Include="r_serverinfo.cs" />
     <Compile Include="getservertoken.cs" />
     <EmbeddedResource Include="form.resx">

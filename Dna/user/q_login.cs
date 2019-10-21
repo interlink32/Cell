@@ -6,7 +6,6 @@ namespace Dna.user
 {
     public class q_login : question
     {
-        public s_device device = default;
         public string token = default;
         public override e_permission z_permission => e_permission.free;
         public class done : answer

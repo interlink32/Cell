@@ -24,22 +24,11 @@ namespace profileserver
                     id = question.z_user
                 };
             }
-            bool fullnamechange = false;
-            if (profile.fullname != question.fullname)
-            {
-                if (!valid(question.fullname))
-                    return new developererror() { code = "kjdjbdnbkdmsnbjvndmnbnd" };
-                if (dbprofile.Exists(i => i.fullname == question.fullname && i.id != profile.id))
-                    return new q_upsert.duplicatename();
-                profile.fullname = question.fullname;
-                fullnamechange = true;
-            }
             profile.address = question.address;
             profile.gender = question.gender;
             profile.nationalcode = question.nationalcode;
             profile.tell = question.tell;
             dbprofile.Upsert(profile);
-            notify(question.z_user, new n_update());
             return null;
         }
         private bool valid(string fullname)

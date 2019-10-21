@@ -11,8 +11,11 @@ namespace user_service
     {
         public long id { get; set; }
         public string callerid { get; set; }
-        public string fullname { get; set; }
+        public string activecode { get; set; }
         public bool general { get; set; }
+        public bool active { get; set; }
+        public string token { get; set; }
+        public string fullname { get; set; }
         internal s_user clone()
         {
             return new s_user()
@@ -20,6 +23,10 @@ namespace user_service
                 id = id,
                 fullname = fullname
             };
+        }
+        public override string ToString()
+        {
+            return id + " : " + callerid;
         }
     }
 }

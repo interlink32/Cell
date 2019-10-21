@@ -1,4 +1,5 @@
-﻿using Dna;
+﻿using Connection;
+using Dna;
 using Dna.common;
 using Dna.user;
 using System;
@@ -14,20 +15,34 @@ namespace user_service
         public async override Task<answer> getanswer(q_sendactivecode question)
         {
             await Task.CompletedTask;
-            var dv = dbactivecode.FindOne(i => i.device == question.device && i.callerid == question.callerid);
+            var dv = dbuser.FindOne(i => i.callerid == question.callerid);
             if (dv == null)
             {
-                dv = new r_activecode()
+                dv = new r_user()
                 {
-                    activecode = "12345",
                     callerid = question.callerid,
-                    device = question.device
+                    fullname = question.callerid,
+                    general = true,
                 };
-                dbactivecode.Insert(dv);
-                //Requires code to SMS activecode
-
-            }
+                changetoken(dv);
+                changeactivecode(dv);
+                dbuser.Insert(dv);
+            };
+            //sms activecode to caller id
             return new q_sendactivecode.done();
+        }
+        internal static void changetoken(r_user user)
+        {
+            string newtoken = null;
+            do
+            {
+                newtoken = "" + basic.random.Next() + basic.random.Next(1000, 9999);
+            } while (dbuser.Exists(i => i.token == newtoken));
+            user.token = newtoken;
+        }
+        internal static void changeactivecode(r_user user)
+        {
+            user.activecode = "12345";// basic.random.Next(10000, 99999).ToString();
         }
     }
 }

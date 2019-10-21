@@ -78,7 +78,7 @@ namespace Connection
             locker.Release();
             return dv;
         }
-        public async static void sendnotify(long user)
+        public async static Task sendnotify(long user)
         {
             var all = await get(user);
             foreach (var i in all)

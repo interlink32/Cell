@@ -23,8 +23,14 @@ namespace user_service
                     return new q_rename.duplicate();
                 user.fullname = question.fullname;
                 dbuser.Update(user);
-                notify(question.z_user);
-                notify(e_chromosome.profile);
+                dbdiff.Delete(i => i.userid == user.id);
+                dbdiff.Insert(new r_difference()
+                {
+                    state = r_diffstate.update,
+                    userid = user.id
+                });
+                await notify(e_chromosome.profile);
+                await notify(question.z_user);
             }
             return null;
         }

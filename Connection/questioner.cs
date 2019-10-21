@@ -23,6 +23,7 @@ namespace Connection
                 item.rt.SetResult(dv);
                 await remove_item();
             }
+            await chacknotify();
         }
         async Task<request_task> get_item()
         {

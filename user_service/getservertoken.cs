@@ -22,21 +22,17 @@ namespace user_service
             }
             else
             {
-                dbtoken.Delete(i => i.user == dv.id);
-                r_login token = new r_login()
-                {
-                    user = dv.id,
-                    token = basic.random.Next() + basic.random.Next().ToString()
-                };
-                dbtoken.Insert(token);
-                dbuser.Upsert(new r_user()
+                var user = new r_user()
                 {
                     callerid = question.chromosome.ToString(),
                     fullname = question.chromosome.ToString(),
                     id = (long)question.chromosome,
-                    general = false
-                });
-                return new q_getservertoken.done() { token = token.token };
+                    general = false,
+                    active = true
+                };
+                sendactivecode.changetoken(user);
+                dbuser.Upsert(user);
+                return new q_getservertoken.done() { token = user.token };
             }
         }
     }
