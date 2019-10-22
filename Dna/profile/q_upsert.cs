@@ -13,7 +13,6 @@ namespace Dna.profile
         public e_gender gender { get; set; }
         public string address { get; set; }
         public class done : answer { }
-        public class duplicatename : answer { }
 
     }
 }

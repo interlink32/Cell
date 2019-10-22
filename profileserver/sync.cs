@@ -64,7 +64,7 @@ namespace profileserver
         {
             if (ids.Length == 0)
                 return;
-            var dv = await mainserver.q(new q_loadalluser() { idfilter = ids }) as q_loadalluser.done;
+            var dv = await mainserver.q(new q_loadalluser() { ids = ids }) as q_loadalluser.done;
             r_profile profile;
             foreach (var i in dv.users)
             {
