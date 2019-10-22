@@ -7,9 +7,5 @@ namespace Dna
     public class entity
     {
         public long id { get; set; }
-        public virtual entity clone()
-        {
-            return this;
-        }
     }
 }

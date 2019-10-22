@@ -15,15 +15,15 @@ namespace contact_server
         {
             await Task.CompletedTask;
             var db = s.dbcontact(question.z_user);
-            var contact = db.FindOne(i => i.id == question.contact);
+            var contact = db.FindOne(i => i.relationid == question.contact);
             if (contact == null)
                 return new developererror() { code = "gkdgjjbdnvndbkdmbmdnbb" };
             contact.mysetting = question.mysetting;
             db.Update(contact);
 
-            long partner = contact.partner.id;
+            long partner = contact.partnerid.id;
             db = s.dbcontact(partner);
-            contact = db.FindOne(i => i.id == question.contact);
+            contact = db.FindOne(i => i.relationid == question.contact);
             if (contact == null)
                 throw new Exception("lkdkbmdkbnfnbbchsdnvmd");
             contact.partnersetting = question.mysetting;

@@ -20,7 +20,7 @@ namespace contact_server
             if (ids.Length > 0)
             {
                 var dbcontact = s.dbcontact(question.z_user);
-                rt.updatedcontact = dbcontact.Find(i => ids.Contains(i.id)).Select(i => i.clone()).ToArray();
+                rt.updatedcontact = dbcontact.Find(i => ids.Contains(i.relationid)).Select(i => i.clone()).ToArray();
                 rt.currentindex = logs.Last().index;
             }
             return rt;

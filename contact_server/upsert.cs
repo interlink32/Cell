@@ -20,22 +20,27 @@ namespace contact_server
                 core = new r_core() { memebers = new long[] { question.z_user, question.partner } };
                 s.dbcore.Insert(core);
 
-                var userdb = s.dbcontact(question.z_user);
-                userdb.Upsert(new r_contact()
-                {
-                    id = core.id,
-                    partner =server.q(new Dna.profile.q_load() { userid=}
-                });
+                NewMethod(question, core);
 
                 var partnerdb = s.dbcontact(question.partner);
                 partnerdb.Upsert(new r_contact()
                 {
-                    id = core.id,
-                    partner = question.z_user,
+                    relationid = core.id,
+                    partnerid = question.z_user,
                 });
                 log.updatecontact(core.id, question.z_user, question.partner);
             }
             return null;
+        }
+
+        private static void NewMethod(long relationid, long partnerid)
+        {
+            var userdb = s.dbcontact(partnerid);
+            userdb.Upsert(new r_contact()
+            {
+                relationid = relationid,
+                partnerid = partnerid
+            });
         }
     }
 }

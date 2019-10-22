@@ -4,9 +4,8 @@ using System.Text;
 
 namespace Dna.user
 {
-    public class s_user
+    public class s_user : entity
     {
-        public long id { get; set; }
         public string fullname { get; set; }
         public override string ToString()
         {

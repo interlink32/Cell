@@ -10,7 +10,7 @@ namespace Dna.usercontact
     public class s_usercontact
     {
         public long id { get; set; }
-        public s_profile partner { get; set; }
+        public long partner { get; set; }
         public e_contactsetting mysetting { get; set; }
         public e_contactsetting partnersetting { get; set; }
     }
