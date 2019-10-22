@@ -9,8 +9,9 @@ using Dna;
 
 namespace profileserver
 {
-    class server : Connection.mainserver
+    class server : mainserver
     {
+        sync sync = new sync();
         public override service[] elements => new service[]
         {
             new upsert(),
@@ -19,6 +20,6 @@ namespace profileserver
         public override byte[] privatekey => resource.all_private_key;
         public override IPEndPoint endpoint => new IPEndPoint(reference.localip(), 10002);
         public override string password => "kgjjjfjbjvjcnvjfjbkndfjbjcnbjcn";
-        public override e_chromosome id => e_chromosome.profile;
+        public override e_chromosome chromosome => e_chromosome.profile;
     }
 }

@@ -14,17 +14,21 @@ namespace Connection
 {
     public abstract class mainserver
     {
+        internal static mainserver ds = default;
         public abstract service[] elements { get; }
         public abstract byte[] privatekey { get; }
         public abstract IPEndPoint endpoint { get; }
-        public abstract e_chromosome id { get; }
+        public abstract e_chromosome chromosome { get; }
         public abstract string password { get; }
 
         TcpListener listener;
         static long serverid = default;
         public mainserver()
         {
-            serverid = (long)id;
+            if (ds != null)
+                throw new Exception("lbkdkbmfkbjdnfdjbncjvndbjn");
+            ds = this;
+            serverid = (long)chromosome;
             elementsF = elements;
             foreach (var i in elementsF)
                 i.server = this;
@@ -35,8 +39,8 @@ namespace Connection
         }
         async void login()
         {
-            if (!s.dbuserlogin.Exists(i => i.id == (int)id))
-                await basic.serverlogin(id, password);
+            if (!s.dbuserlogin.Exists(i => i.id == (int)chromosome))
+                await basic.serverlogin(chromosome, password);
         }
 
         service[] elementsF = null;
@@ -78,11 +82,15 @@ namespace Connection
             locker.Release();
             return dv;
         }
-        public async static Task sendnotify(long user)
+        public async static void sendnotify(long user)
         {
             var all = await get(user);
             foreach (var i in all)
                 i.sendnotify();
+        }
+        public static void sendnotify(e_chromosome chromosome)
+        {
+            sendnotify((long)chromosome);
         }
         public static async Task<answer> q(question question)
         {

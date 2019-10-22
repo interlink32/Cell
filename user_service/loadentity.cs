@@ -1,4 +1,5 @@
 ﻿using Dna;
+using Dna.common;
 using Dna.user;
 using System;
 using System.Collections.Generic;
@@ -8,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class difference : myservice<q_differenceusers>
+    class loadentity : myservice<q_loadentity>
     {
-        public async override Task<answer> getanswer(q_differenceusers question)
+        public async override Task<answer> getanswer(q_loadentity question)
         {
             await Task.CompletedTask;
             var dv = dbdiff.Find(i => i.index > question.index).Take(100).ToArray();
             var updated = dv.Where(i => i.state == r_diffstate.update).Select(i => i.userid).ToArray();
             var deleted = dv.Where(i => i.state == r_diffstate.delete).Select(i => i.userid).ToArray();
-            return new q_differenceusers.doen()
+            return new q_loadentity.doen()
             {
-                updated = dbuser.Find(i => updated.Contains(i.id)).Select(i => i.clone()).ToArray(),
-                deleted = deleted,
+                updatedentity = updated,
+                deletedentity = deleted,
                 currentindex = dv.LastOrDefault()?.index ?? question.index
             };
         }

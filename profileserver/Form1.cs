@@ -18,11 +18,6 @@ namespace profileserver
         public Form1()
         {
             InitializeComponent();
-            client.notifyadd((long)e_chromosome.profile, e_chromosome.user, m);
-        }
-        private void m(long obj)
-        {
-            Console.Beep();
         }
     }
 }

@@ -72,7 +72,7 @@ namespace Connection
                 case q_login dv:
                     {
                         answer rsv = null;
-                        if (server.id == e_chromosome.user)
+                        if (server.chromosome == e_chromosome.user)
                             rsv = await get_Answer(dv);
                         else
                             rsv = await mainserver.q(dv);

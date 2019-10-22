@@ -6,7 +6,7 @@ namespace Dna
 {
     public enum e_chromosome
     {
-        none,
+        common,
         user,
         profile,
         contact,

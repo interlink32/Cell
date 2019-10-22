@@ -52,7 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="difference.cs" />
+    <Compile Include="loadentity.cs" />
     <Compile Include="form.cs">
       <SubType>Form</SubType>
     </Compile>

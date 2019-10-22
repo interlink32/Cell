@@ -74,7 +74,8 @@ namespace Connection
         {
             if (user == 0 && question.z_permission != e_permission.free)
                 throw new Exception("kgjdjrbjcnbjfjnfjvbixjbjdkvb");
-            var dv = await get(user, question.z_chromosome);
+            string chromosome = question.z_redirect == null ? question.z_chromosome : question.z_redirect.ToString();
+            var dv = await get(user, chromosome);
             return await dv.question(question) as T;
         }
         public static async Task<answer> question(question question, long user = 0)

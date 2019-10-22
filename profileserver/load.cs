@@ -13,7 +13,7 @@ namespace profileserver
         public async override Task<answer> getanswer(q_load question)
         {
             await Task.CompletedTask;
-            var profile = dbprofile.FindOne(i => i.id == question.userid);
+            var profile = s.dbprofile.FindOne(i => i.id == question.userid);
             if (profile == null)
                 profile = new r_profile();
             return new q_load.done()

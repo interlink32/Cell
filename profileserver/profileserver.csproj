@@ -67,8 +67,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>resource.resx</DependentUpon>
     </Compile>
+    <Compile Include="r_diff.cs" />
     <Compile Include="r_profile.cs" />
+    <Compile Include="r_singlevalue.cs" />
     <Compile Include="server.cs" />
+    <Compile Include="sync.cs" />
     <Compile Include="upsert.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

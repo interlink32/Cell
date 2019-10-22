@@ -16,7 +16,7 @@ namespace profileserver
         public async override Task<answer> getanswer(q_upsert question)
         {
             await Task.CompletedTask;
-            var profile = dbprofile.FindOne(i => i.id == question.z_user);
+            var profile =s. dbprofile.FindOne(i => i.id == question.z_user);
             if (profile == null)
             {
                 profile = new r_profile()
@@ -28,7 +28,7 @@ namespace profileserver
             profile.gender = question.gender;
             profile.nationalcode = question.nationalcode;
             profile.tell = question.tell;
-            dbprofile.Upsert(profile);
+          s.  dbprofile.Upsert(profile);
             return null;
         }
         private bool valid(string fullname)

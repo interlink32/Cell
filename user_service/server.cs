@@ -30,7 +30,7 @@ namespace user_service
                     new sendactivecode(),
                     new getservertoken(),
                     new rename(),
-                    new difference()
+                    new loadentity()
                 };
             }
         }
@@ -38,7 +38,7 @@ namespace user_service
         public override IPEndPoint endpoint => new IPEndPoint(reference.localip(), 10001);
         public override string password => "kfkbfkbfmbmgkbkcmbmfmbkf";
 
-        public override e_chromosome id => e_chromosome.user;
+        public override e_chromosome chromosome => e_chromosome.user;
 
         private void ini()
         {

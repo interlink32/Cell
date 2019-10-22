@@ -7,8 +7,8 @@ namespace Dna.user
     public class q_loadalluser : question
     {
         public int skep = default;
-        public string name_filter = default;
-        public long[] ids_filter = default;
+        public string fullnamefilter = default;
+        public long[] idfilter = default;
         public override e_permission z_permission => e_permission.free;
         public class done : answer
         {

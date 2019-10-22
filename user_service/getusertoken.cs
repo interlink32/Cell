@@ -29,8 +29,8 @@ namespace user_service
                     state = r_diffstate.update,
                     userid = user.id
                 });
-                await notify(e_chromosome.profile);
-                await notify(user.id);
+                notify(e_chromosome.profile);
+                notify(user.id);
             }
             return new q_getusertoken.done()
             {

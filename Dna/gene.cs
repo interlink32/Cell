@@ -9,6 +9,7 @@ namespace Dna
     {
         public string z_gene = null;
         public string z_chromosome = null;
+        public e_chromosome? z_redirect = null;
         public gene()
         {
             var dv = get(GetType());

@@ -20,13 +20,13 @@ namespace Connection
         {
             z_gene = typeof(T).Name;
         }
-        public static async Task notify(long receiver)
+        public static void notify(long receiver)
         {
-            await mainserver.sendnotify(receiver);
+             mainserver.sendnotify(receiver);
         }
-        public static async Task notify(e_chromosome chromosome)
+        public static void notify(e_chromosome chromosome)
         {
-            await mainserver.sendnotify((long)chromosome);
+            mainserver.sendnotify((long)chromosome);
         }
         public abstract Task<answer> getanswer(T question);
         internal sealed async override Task<answer> z_get_answer(question question)
