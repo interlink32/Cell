@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    class rename : myservice<q_rename>
+    class rename : myservice<q_renameuser>
     {
-        public async override Task<answer> getanswer(q_rename question)
+        public async override Task<answer> getanswer(q_renameuser question)
         {
             await Task.CompletedTask;
             var user = dbuser.FindOne(i => i.id == question.z_user);
@@ -20,7 +20,7 @@ namespace user_service
                 if (!valid(question.fullname))
                     return new developererror() { code = "kjdjbdnbkdmsnbjvndmnbnd" };
                 if (dbuser.Exists(i => i.fullname == question.fullname && i.id != user.id))
-                    return new q_rename.duplicate();
+                    return new q_renameuser.done() { p_duplicate = true };
                 user.fullname = question.fullname;
                 dbuser.Update(user);
                 dbdiff.Delete(i => i.userid == user.id);
@@ -32,7 +32,7 @@ namespace user_service
                 notify(e_chromosome.profile);
                 notify(question.z_user);
             }
-            return null;
+            return new q_renameuser.done();
         }
         private bool valid(string fullname)
         {

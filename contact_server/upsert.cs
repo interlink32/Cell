@@ -9,37 +9,35 @@ using System.Threading.Tasks;
 
 namespace contact_server
 {
-    class upsert : myservice<q_createcontact>
+    class upsert : myservice<q_upsertcontact>
     {
-        public async override Task<answer> getanswer(q_createcontact question)
+        public async override Task<answer> getanswer(q_upsertcontact question)
         {
             await Task.CompletedTask;
-            var core = s.dbcore.FindOne(i => i.include(question.z_user, question.partner));
-            if (core == null)
-            {
-                core = new r_core() { memebers = new long[] { question.z_user, question.partner } };
-                s.dbcore.Insert(core);
-
-                NewMethod(question, core);
-
-                var partnerdb = s.dbcontact(question.partner);
-                partnerdb.Upsert(new r_contact()
-                {
-                    relationid = core.id,
-                    partnerid = question.z_user,
-                });
-                log.updatecontact(core.id, question.z_user, question.partner);
-            }
+            create(question.z_user, question.partner, question.mysetting, null);
+            create(question.partner, question.z_user, null, question.mysetting);
             return null;
         }
-
-        private static void NewMethod(long relationid, long partnerid)
+        private static void create(long owner, long partnerid, e_contactsetting? mysetting, e_contactsetting? partnersetting)
         {
-            var userdb = s.dbcontact(partnerid);
-            userdb.Upsert(new r_contact()
+            var dbcontact = s.dbcontact(owner);
+            var dv = dbcontact.FindOne(i => i.partnerid == partnerid);
+            if (dv == null)
+                dv = new r_contact()
+                {
+                    partnerid = partnerid,
+                };
+            if (mysetting != null)
+                dv.mysetting = mysetting.Value;
+            if (partnersetting != null)
+                dv.partnersetting = partnersetting.Value;
+            dbcontact.Upsert(dv);
+            var dbdiff = s.dbdiff(owner);
+            dbdiff.Delete(i => i.partnerid == partnerid && i.diiftype != difftype.entityupdate);
+            dbdiff.Upsert(new r_diff()
             {
-                relationid = relationid,
-                partnerid = partnerid
+                partnerid = partnerid,
+                diiftype = difftype.contactupdate
             });
         }
     }

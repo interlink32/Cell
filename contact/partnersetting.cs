@@ -1,4 +1,4 @@
-﻿using Dna.contact;
+﻿using Dna.usercontact;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,14 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Xceed.Wpf.Toolkit;
 
 namespace contact
 {
     class partnersetting : DataGridTextColumn
     {
         StackPanel pannel = new StackPanel();
-        public WatermarkComboBox filter = new WatermarkComboBox() { Watermark = "جستجو" };
+        public ComboBox filter = new ComboBox();
         Label label = new Label() { Content = "تنظیمات مخاطبان" };
         public partnersetting()
         {
@@ -25,7 +24,7 @@ namespace contact
             pannel.MinWidth = 120;
             Binding = new Binding(nameof(row.partnersettin));
         }
-        public e_connectionsetting connectionsetting
+        public e_contactsetting connectionsetting
         {
             get
             {

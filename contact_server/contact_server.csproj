@@ -53,13 +53,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="load.cs" />
-    <Compile Include="log.cs" />
-    <Compile Include="r_core.cs" />
-    <Compile Include="r_log.cs" />
+    <Compile Include="loadcontact.cs" />
+    <Compile Include="r_diff.cs" />
+    <Compile Include="sync.cs" />
     <Compile Include="upsert.cs" />
     <Compile Include="r_contact.cs" />
-    <Compile Include="p.cs" />
-    <Compile Include="state.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,7 +73,6 @@
       <DependentUpon>resource.resx</DependentUpon>
     </Compile>
     <Compile Include="server.cs" />
-    <Compile Include="updatecontact.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

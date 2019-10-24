@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "profileserver", "profileser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "controllibrary", "controllibrary\controllibrary.csproj", "{ABC1526D-E3DD-41B4-BBBA-4BB64619BC12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "classlibrary", "classlibrary\classlibrary.csproj", "{FA8DCBC3-ED95-4E82-B45C-EC04160D7D40}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{ABC1526D-E3DD-41B4-BBBA-4BB64619BC12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABC1526D-E3DD-41B4-BBBA-4BB64619BC12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABC1526D-E3DD-41B4-BBBA-4BB64619BC12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA8DCBC3-ED95-4E82-B45C-EC04160D7D40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA8DCBC3-ED95-4E82-B45C-EC04160D7D40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA8DCBC3-ED95-4E82-B45C-EC04160D7D40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA8DCBC3-ED95-4E82-B45C-EC04160D7D40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

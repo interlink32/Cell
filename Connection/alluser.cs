@@ -57,12 +57,15 @@ namespace Connection
                 id = user,
                 fullname = "ID : " + user + " loading ..."
             });
-            client.notifyadd(user, e_chromosome.user, loaduser);
+            client.notifyadd(e_chromosome.user, user, loaduser);
         }
+        public static event Action<long> remove_e;
         static void remove(userinfo user)
         {
             list.Remove(user);
             reset_e?.Invoke();
+            client.close(user.id);
+            remove_e?.Invoke(user.id);
         }
         static async void loaduser(long user)
         {

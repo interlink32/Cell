@@ -15,7 +15,7 @@ namespace Connection
     public abstract class clientitem : core
     {
         internal s_chromosome info { get; private set; }
-        public clientitem(long id, string chromosome)
+        public clientitem(long id, string chromosome) : base(chromosome)
         {
             ini(id, chromosome);
             this.chromosome = chromosome;
@@ -94,7 +94,7 @@ namespace Connection
                 }
             }
             connected = true;
-            client.notify(userid);
+            client.notify(userid, chromosome);
         }
         async Task<userlogin> getlogin()
         {

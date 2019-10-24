@@ -18,7 +18,7 @@ namespace profileserver
             var dv = s.dbsingle.FindOne(i => i.id == nameof(index));
             if (dv == null)
             {
-                dv = new r_singlevalue()
+                dv = new singlevalue()
                 {
                     id = nameof(index),
                     value = "0"
@@ -26,7 +26,7 @@ namespace profileserver
                 s.dbsingle.Insert(dv);
             }
             index = long.Parse(dv.value);
-            client.notifyadd((long)e_chromosome.profile, e_chromosome.user, reset);
+            client.notifyadd(e_chromosome.user, e_chromosome.profile, reset);
         }
         async void reset(long obj)
         {
@@ -38,7 +38,7 @@ namespace profileserver
         }
         private void saveindex()
         {
-            s.dbsingle.Upsert(new r_singlevalue()
+            s.dbsingle.Upsert(new singlevalue()
             {
                 id = nameof(index),
                 value = index.ToString()
@@ -70,7 +70,7 @@ namespace profileserver
             {
                 profile = s.dbprofile.FindOne(j => j.id == i.id);
                 if (profile == null)
-                    profile = new r_profile();
+                    profile = new r_profile() { id = i.id };
                 profile.fullname = i.fullname;
                 s.dbprofile.Upsert(profile);
                 s.dbdiff.Delete(j => j.itemid == i.id);

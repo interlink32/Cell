@@ -1,5 +1,4 @@
-﻿using Dna.contact;
-using Dna.user;
+﻿using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Linq;

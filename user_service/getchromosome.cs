@@ -19,13 +19,13 @@ namespace user_service
             list.Add(reference.userchromosome);
             list.Add(new s_chromosome()
             {
-                type = e_chromosome.profile,
+                chromosome = e_chromosome.profile,
                 endpoint = new IPEndPoint(reference.validip(), 10002).ToString(),
                 publickey = resource.all_public_key
             });
             list.Add(new s_chromosome()
             {
-                type = e_chromosome.contact,
+                chromosome = e_chromosome.contact,
                 endpoint = new IPEndPoint(reference.validip(), 10003).ToString(),
                 publickey = resource.all_public_key
             });

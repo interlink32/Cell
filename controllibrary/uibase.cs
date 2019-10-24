@@ -14,5 +14,6 @@ namespace controllibrary
         {
             Application.Current.Dispatcher.Invoke(action);
         }
+        public virtual void close() { }
     }
 }

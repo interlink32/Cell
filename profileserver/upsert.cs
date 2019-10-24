@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace profileserver
 {
-    class upsert : myservice<q_upsert>
+    class upsert : myservice<q_updateprofile>
     {
-        public async override Task<answer> getanswer(q_upsert question)
+        public async override Task<answer> getanswer(q_updateprofile question)
         {
             await Task.CompletedTask;
-            var profile =s. dbprofile.FindOne(i => i.id == question.z_user);
+            var profile = s.dbprofile.FindOne(i => i.id == question.z_user);
             if (profile == null)
             {
                 profile = new r_profile()
@@ -28,7 +28,15 @@ namespace profileserver
             profile.gender = question.gender;
             profile.nationalcode = question.nationalcode;
             profile.tell = question.tell;
-          s.  dbprofile.Upsert(profile);
+            s.dbprofile.Upsert(profile);
+            s.dbdiff.Delete(i => i.itemid == question.z_user);
+            s.dbdiff.Insert(new r_diff()
+            {
+                itemid = question.z_user,
+                state = 1
+            });
+            notify(e_chromosome.contact);
+            notify(question.z_user);
             return null;
         }
         private bool valid(string fullname)

@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 
 namespace contact_server
 {
-    class server : Connection.mainserver
+    class server : mainserver
     {
-        public override service[] elements => new service[] { new upsert(), new updatecontact() };
+        sync sync = new sync();
+        public override service[] elements => new service[] { new upsert(), new loadcontact(), new load() };
         public override byte[] privatekey => resource.all_private_key;
         public override IPEndPoint endpoint => new IPEndPoint(reference.localip(), 10003);
         public override string password => "mgjdjbjdbkdbkgfvjdjdnvbjdmd";
-        public override e_chromosome id => e_chromosome.contact;
+        public override e_chromosome chromosome => e_chromosome.contact;
     }
 }

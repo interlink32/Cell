@@ -7,11 +7,14 @@ using System.Text;
 
 namespace Dna.usercontact
 {
-    public class s_usercontact
+    public class s_usercontact : entityrelation
     {
-        public long id { get; set; }
-        public long partner { get; set; }
         public e_contactsetting mysetting { get; set; }
         public e_contactsetting partnersetting { get; set; }
+        public void copy(s_usercontact i)
+        {
+            mysetting = i.mysetting;
+            partnersetting = i.partnersetting;
+        }
     }
 }

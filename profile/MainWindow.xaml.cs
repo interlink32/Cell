@@ -23,40 +23,13 @@ namespace profile
     /// </summary>
     public partial class MainWindow : Window
     {
-        StackPanel panel = new StackPanel();
-        userselector userselector = new userselector("پروفایل");
-        List<body> bodies = new List<body>();
+        app app = new app();
         public MainWindow()
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
             SizeToContent = SizeToContent.WidthAndHeight;
-            Content = panel;
-            panel.Children.Add(userselector.element);
-            userselector.user_e += Userselector_user_e;
-        }
-        body body = null;
-        private void Userselector_user_e(long obj)
-        {
-            if (body != null)
-            {
-                panel.Children.Remove(body.panel);
-                body = null;
-            }
-            if (obj != 0)
-            {
-                body = bodies.FirstOrDefault(i => i.userid == obj);
-                if (body == null)
-                {
-                    body = new body(obj);
-                    bodies.Add(body);
-                }
-                panel.Children.Add(body.panel);
-            }
-        }
-        void run(Action action)
-        {
-            Application.Current.Dispatcher.Invoke(action);
+            Content = app.element;
         }
     }
 }

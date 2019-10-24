@@ -16,7 +16,7 @@ namespace Connection
         }
         private readonly mainserver server;
         Func<question, Task<answer>> get_Answer;
-        public responder(mainserver service, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer)
+        public responder(mainserver service, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer) : base(null)
         {
             mainkey = key;
             this.tcp = tcp;

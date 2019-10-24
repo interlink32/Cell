@@ -18,8 +18,7 @@ namespace contact_server
         {
             return new s_usercontact()
             {
-                id = relationid,
-                partner = partnerid,
+                partnerid = partnerid,
                 mysetting = mysetting,
                 partnersetting = partnersetting
             };

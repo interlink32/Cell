@@ -21,10 +21,28 @@ namespace contact_server
         {
             return db.GetCollection<r_contact>("contact_" + user);
         }
-        public static LiteCollection<r_core> dbcore => db.GetCollection<r_core>();
-        public static LiteCollection<r_log> dblog(long user)
+        public static LiteCollection<r_diff> dbdiff(long user)
         {
-            return db.GetCollection<r_log>("log_" + user);
+            return db.GetCollection<r_diff>("diff_" + user);
+        }
+        public static LiteCollection<singlevalue> dbsingle => db.GetCollection<singlevalue>();
+        public static long index
+        {
+            get
+            {
+                var dv = dbsingle.FindOne(i => i.id == nameof(index));
+                if (dv == null)
+                    return 0;
+                return long.Parse(dv.value);
+            }
+            set
+            {
+                singlevalue dv = new singlevalue()
+                {
+                    id = nameof(index),
+                    value = value.ToString()
+                };
+            }
         }
     }
 }

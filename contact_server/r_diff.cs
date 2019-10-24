@@ -7,18 +7,17 @@ using System.Threading.Tasks;
 
 namespace contact_server
 {
-    class r_log
+    class r_diff
     {
         [BsonId]
         public long index { get; set; }
-        public long contact { get; set; }
-        public e_log type { get; set; }
+        public long partnerid { get; set; }
+        public difftype diiftype { get; set; }
     }
-    enum e_log
+    enum difftype
     {
-        updatecontact,
-        updateprofile,
-        deletecontact,
-        deleteprofile
+        contactupdate,
+        entityupdate,
+        contactdeleted
     }
 }

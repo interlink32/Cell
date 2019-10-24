@@ -5,13 +5,11 @@ using System.Text;
 
 namespace Dna.profile
 {
-    public class q_upsert : question
+    public class q_updateprofile : question
     {
         public string nationalcode { get; set; }
         public string tell { get; set; }
         public e_gender gender { get; set; }
         public string address { get; set; }
-        public class done : answer { }
-
     }
 }

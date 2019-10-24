@@ -8,17 +8,15 @@ using System.Threading.Tasks;
 
 namespace profileserver
 {
-    class load : myservice<q_load>
+    class load : myservice<q_loadprofile>
     {
-        public async override Task<answer> getanswer(q_load question)
+        public async override Task<answer> getanswer(q_loadprofile question)
         {
             await Task.CompletedTask;
-            var profile = s.dbprofile.FindOne(i => i.id == question.userid);
-            if (profile == null)
-                profile = new r_profile();
-            return new q_load.done()
+            var dv = s.dbprofile.FindOne(i => i.id == question.id);
+            return new q_loadprofile.done()
             {
-                profile = profile.clone()
+                profile = dv.clone()
             };
         }
     }

@@ -4,12 +4,12 @@ using System.Text;
 
 namespace Dna.profile
 {
-    public class q_load : question
+    public class q_loadallprofile : question
     {
-        public long userid = default;
+        public long[] ids = default;
         public class done : answer
         {
-            public s_profile profile = default;
+            public s_profile[] profiles = default;
         }
     }
 }

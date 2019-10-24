@@ -18,7 +18,7 @@ namespace profileserver
     {
         static LiteDatabase db = new LiteDatabase(reference.root("profileserver.db"));
         public static LiteCollection<r_profile> dbprofile => db.GetCollection<r_profile>();
-        public static LiteCollection<r_singlevalue> dbsingle => db.GetCollection<r_singlevalue>();
+        public static LiteCollection<singlevalue> dbsingle => db.GetCollection<singlevalue>();
         public static LiteCollection<r_diff> dbdiff => db.GetCollection<r_diff>();
     }
 }

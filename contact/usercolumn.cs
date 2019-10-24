@@ -9,14 +9,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using Xceed.Wpf.Toolkit;
 
 namespace contact
 {
     class usercolumn : DataGridTextColumn
     {
         StackPanel stack = new StackPanel() { MinWidth = 200 };
-        public WatermarkTextBox filter = new WatermarkTextBox() { Watermark = "جستجو", Padding = new Thickness(4, 2, 4, 2) };
+        public TextBox filter = new TextBox() { Padding = new Thickness(4, 2, 4, 2) };
         Label label = new Label() { Content = "کاربران" };
         public usercolumn()
         {

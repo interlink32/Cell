@@ -1,9 +1,12 @@
 ﻿using Connection;
+using controllibrary;
 using Dna.profile;
+using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,9 +15,9 @@ using System.Windows.Media;
 
 namespace profile
 {
-    class body
+    class body : uiapp
     {
-        public StackPanel panel = new StackPanel()
+        StackPanel panel = new StackPanel()
         {
             Margin = new Thickness(20, 0, 20, 20),
             FlowDirection = FlowDirection.RightToLeft
@@ -40,9 +43,24 @@ namespace profile
             MinWidth = 200
         };
         client client;
-        public readonly long userid;
-
         public body(long userid)
+        {
+            designing();
+            this.useridf = userid;
+            client = new client(userid);
+            btnsave.Click += Btnsave_Click;
+            client.notifyadd(Dna.e_chromosome.profile, userid, reset);
+        }
+        public override void close()
+        {
+            client.notifyremove(reset);
+        }
+        private void reset(long obj)
+        {
+            run(load);
+            Console.Beep();
+        }
+        private void designing()
         {
             panel.Children.Add(lblfullname);
             panel.Children.Add(txtfullname);
@@ -60,21 +78,30 @@ namespace profile
                 i.Margin = new Thickness(2);
             }
             btnsave.Margin = new Thickness(10);
-
-            this.userid = userid;
-            client = new client(userid);
-            run(load);
-            btnsave.Click += Btnsave_Click;
-            client.add<n_update>(userid, load);
         }
-
         async void Btnsave_Click(object sender, RoutedEventArgs e)
         {
             panel.IsEnabled = false;
-            q_upsert q = new q_upsert()
+            await savefullname();
+            await saveprofile();
+            panel.IsEnabled = true;
+        }
+
+        async Task savefullname()
+        {
+            if (txtfullname.Text == profile.fullname)
+                return;
+            if (!valid())
+                return;
+            var dv = await client.question(new q_renameuser() { fullname = txtfullname.Text }) as q_renameuser.done;
+            if (dv.p_duplicate)
+                MessageBox.Show("این نام قبلا به ثبت رسیده است. لطفا آن را تغییر دهید");
+        }
+        async Task saveprofile()
+        {
+            q_updateprofile q = new q_updateprofile()
             {
                 address = txtaddress.Text,
-                fullname = txtfullname.Text,
                 gender = (e_gender)cmbgender.SelectedIndex,
                 nationalcode = txtnationalcode.Text,
                 tell = txttell.Text
@@ -85,20 +112,6 @@ namespace profile
                 return;
             }
             var rsv = await client.question(q);
-            switch (rsv)
-            {
-                case q_upsert.done done:
-                    {
-
-                    }
-                    break;
-                case q_upsert.duplicatename duplicatename:
-                    {
-                        MessageBox.Show("این نام قبلا به ثبت رسیده است. لطفا یک نام دیگر انتخاب کنید");
-                    }
-                    break;
-            }
-            panel.IsEnabled = true;
         }
         bool valid()
         {
@@ -135,24 +148,20 @@ namespace profile
             }
             return true;
         }
-        void run(Action action)
-        {
-            Application.Current.Dispatcher.Invoke(action);
-        }
-        void load(n_update update)
-        {
-            run(load);
-        }
+        s_profile profile = null;
+        long useridf = default;
+        public override long userid => useridf;
+        public override FrameworkElement element => panel;
         async void load()
         {
             panel.IsEnabled = false;
-            var dv = await client.question(new q_load() { userid = userid }) as q_load.done;
-            var pro = dv.profile;
-            txtaddress.Text = pro.address;
-            txtfullname.Text = pro.fullname;
-            txtnationalcode.Text = pro.nationalcode;
-            cmbgender.SelectedIndex = (int)pro.gender;
-            txttell.Text = pro.tell;
+            var dv = await client.question(new q_loadprofile() { id = userid }) as q_loadprofile.done;
+            profile = dv.profile;
+            txtaddress.Text = profile.address;
+            txtfullname.Text = profile.fullname;
+            txtnationalcode.Text = profile.nationalcode;
+            cmbgender.SelectedIndex = (int)profile.gender;
+            txttell.Text = profile.tell;
             panel.IsEnabled = true;
         }
     }

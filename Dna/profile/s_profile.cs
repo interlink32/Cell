@@ -12,5 +12,13 @@ namespace Dna.profile
         public string tell { get; set; }
         public e_gender gender { get; set; }
         public string address { get; set; }
+        public void copy(s_profile i)
+        {
+            fullname = i.fullname;
+            nationalcode = i.nationalcode;
+            tell = i.tell;
+            gender = i.gender;
+            address = i.address;
+        }
     }
 }

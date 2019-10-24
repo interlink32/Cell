@@ -37,35 +37,51 @@ namespace Connection
             qlock.Release();
             return dv;
         }
-        public static async void notifyadd(long user, e_chromosome chromosome, Action<long> action)
+        internal async static void close(long userid)
+        {
+            await qlock.WaitAsync();
+            var dv = list.Where(i => i.userid == userid).ToArray();
+            foreach (var i in dv)
+            {
+                i.close();
+                list.Remove(i);
+            }
+            qlock.Release();
+        }
+        public static async void notifyadd(e_chromosome sender, long receiver, Action<long> action)
         {
             await nlock.WaitAsync();
             nlist.Add(new notifyaction()
             {
                 action = action,
-                user = user
+                user = receiver,
+                chromosome = sender.ToString()
             });
             nlock.Release();
-            await get(user, chromosome.ToString());
+            await get(receiver, sender.ToString());
+        }
+        public static void notifyadd(e_chromosome sender, e_chromosome receiver, Action<long> action)
+        {
+            notifyadd(sender, (long)receiver, action);
         }
         public static async void notifyremove(Action<long> action)
         {
             await nlock.WaitAsync();
-            var dv = nlist.FirstOrDefault(i => i.action == action);
-            nlist.Remove(dv);
+            var dv = nlist.RemoveAll(i => i.action == action);
             nlock.Release();
         }
         class notifyaction
         {
             public long user = default;
             public Action<long> action = default;
+            internal string chromosome = default;
         }
         static SemaphoreSlim nlock = new SemaphoreSlim(1, 1);
         static List<notifyaction> nlist = new List<notifyaction>();
-        internal async static void notify(long userid)
+        internal async static void notify(long userid, string chromosome)
         {
             await nlock.WaitAsync();
-            var dv = nlist.Where(i => i.user == userid).ToArray();
+            var dv = nlist.Where(i => i.user == userid && i.chromosome == chromosome).ToArray();
             foreach (var i in dv)
                 i.action(userid);
             nlock.Release();

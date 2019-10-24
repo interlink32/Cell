@@ -15,6 +15,8 @@ namespace profileserver
         public override service[] elements => new service[]
         {
             new upsert(),
+            new loadall(),
+            new loadentity(),
             new load()
         };
         public override byte[] privatekey => resource.all_private_key;

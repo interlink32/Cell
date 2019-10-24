@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Dna.usercontact
 {
-    public class q_updatecontact : question
+    public class q_upsertcontact : question
     {
-        public long contact = default;
+        public long partner = default;
         public e_contactsetting mysetting = default;
     }
 }

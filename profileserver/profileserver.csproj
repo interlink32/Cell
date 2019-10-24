@@ -59,6 +59,8 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="load.cs" />
+    <Compile Include="loadall.cs" />
+    <Compile Include="loadentity.cs" />
     <Compile Include="myservice.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,7 +71,6 @@
     </Compile>
     <Compile Include="r_diff.cs" />
     <Compile Include="r_profile.cs" />
-    <Compile Include="r_singlevalue.cs" />
     <Compile Include="server.cs" />
     <Compile Include="sync.cs" />
     <Compile Include="upsert.cs" />

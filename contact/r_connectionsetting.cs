@@ -1,4 +1,4 @@
-﻿using Dna.contact;
+﻿using Dna.usercontact;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +10,8 @@ namespace contact
     class r_connectionsetting
     {
         public string text = default;
-        public e_connectionsetting setting = e_connectionsetting.none;
-        r_connectionsetting(e_connectionsetting setting, string text)
+        public e_contactsetting setting = e_contactsetting.none;
+        r_connectionsetting(e_contactsetting setting, string text)
         {
             this.setting = setting;
             this.text = text;
@@ -20,13 +20,13 @@ namespace contact
         {
             return text;
         }
-        public readonly static r_connectionsetting any = new r_connectionsetting(e_connectionsetting.any, "هر کدام");
-        public readonly static r_connectionsetting blocked = new r_connectionsetting(e_connectionsetting.blocked, "مسدود");
-        public readonly static r_connectionsetting favorite = new r_connectionsetting(e_connectionsetting.favorite, "مهم");
-        public readonly static r_connectionsetting none = new r_connectionsetting(e_connectionsetting.none, "هیچ کدام");
-        public readonly static r_connectionsetting ordinary = new r_connectionsetting(e_connectionsetting.ordinary, "عادی");
+        public readonly static r_connectionsetting any = new r_connectionsetting(e_contactsetting.any, "هر کدام");
+        public readonly static r_connectionsetting blocked = new r_connectionsetting(e_contactsetting.blocked, "مسدود");
+        public readonly static r_connectionsetting favorite = new r_connectionsetting(e_contactsetting.favorite, "مهم");
+        public readonly static r_connectionsetting none = new r_connectionsetting(e_contactsetting.none, "هیچ کدام");
+        public readonly static r_connectionsetting ordinary = new r_connectionsetting(e_contactsetting.ordinary, "عادی");
         public readonly static r_connectionsetting[] list = { none, ordinary, favorite, blocked, any };
-        public static r_connectionsetting get(e_connectionsetting val)
+        public static r_connectionsetting get(e_contactsetting val)
         {
             return list.First(i => i.setting == val);
         }

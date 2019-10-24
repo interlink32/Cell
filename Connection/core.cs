@@ -1,6 +1,7 @@
 ﻿using Converter;
 using Dna;
 using Dna.common;
+using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,10 @@ namespace Connection
         internal byte[] mainkey = null;
         internal byte[] key32 = null;
         internal byte[] iv16 = null;
-
+        public core(string chromosome)
+        {
+            this.chromosome = chromosome;
+        }
         public TcpClient tcp = null;
         internal async Task write(gene gene)
         {
@@ -40,6 +44,8 @@ namespace Connection
         }
 
         SemaphoreSlim locker = new SemaphoreSlim(1, 1);
+        private readonly string chromosome;
+
         private async Task write(byte[] data)
         {
             await locker.WaitAsync();
@@ -62,7 +68,7 @@ namespace Connection
                 case -1: return new voidanswer();
                 case -2:
                     {
-                        client.notify(userid);
+                        client.notify(userid, chromosome);
                         return await clientread();
                     }
                 case -3:
@@ -92,7 +98,7 @@ namespace Connection
             {
                 var dv = await getlen();
                 if (dv == -2)
-                    client.notify(userid);
+                    client.notify(userid, chromosome);
                 else
                     throw new Exception("kgkdjbjfjbjcdbjdnvjd");
             }

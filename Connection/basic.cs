@@ -23,6 +23,7 @@ namespace Connection
             if (dv == null)
                 return;
             s.dbuserlogin.Delete(i => i.id == userid);
+            //client.close(userid);
         }
         public static async Task sendactivecode(string callerid)
         {
@@ -75,7 +76,7 @@ namespace Connection
         {
             if (chromosome == e_chromosome.user.ToString())
                 return reference.userchromosome;
-            return (await allchromosome()).First(i => i.type.ToString() == chromosome);
+            return (await allchromosome()).First(i => i.chromosome.ToString() == chromosome);
         }
         static s_chromosome[] chromosomes = null;
         static SemaphoreSlim getlock = new SemaphoreSlim(1, 1);

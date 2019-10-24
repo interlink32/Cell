@@ -31,7 +31,7 @@ namespace Connection
         }
         public static s_chromosome userchromosome => new s_chromosome()
         {
-            type = e_chromosome.user,
+            chromosome = e_chromosome.user,
             endpoint = new IPEndPoint(validip(), 10001).ToString(),
             publickey = resource.user_public_key
         };
