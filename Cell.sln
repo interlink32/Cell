@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "controllibrary", "controlli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "classlibrary", "classlibrary\classlibrary.csproj", "{FA8DCBC3-ED95-4E82-B45C-EC04160D7D40}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "searchuser", "searchuser\searchuser.csproj", "{807A26D1-2709-4E38-858F-C4F1150D272B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{FA8DCBC3-ED95-4E82-B45C-EC04160D7D40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA8DCBC3-ED95-4E82-B45C-EC04160D7D40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA8DCBC3-ED95-4E82-B45C-EC04160D7D40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{807A26D1-2709-4E38-858F-C4F1150D272B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{807A26D1-2709-4E38-858F-C4F1150D272B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{807A26D1-2709-4E38-858F-C4F1150D272B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{807A26D1-2709-4E38-858F-C4F1150D272B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
