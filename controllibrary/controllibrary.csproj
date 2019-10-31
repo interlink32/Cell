@@ -32,8 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LiteDB, Version=4.1.4.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiteDB.4.1.4\lib\net40\LiteDB.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -48,6 +53,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="button.cs" />
+    <Compile Include="checkcolumn.cs" />
+    <Compile Include="combocolumn.cs" />
+    <Compile Include="db.cs" />
+    <Compile Include="grid.cs" />
+    <Compile Include="heder.cs" />
+    <Compile Include="loadbox.cs" />
+    <Compile Include="messagebox.cs" />
     <Compile Include="panel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -62,6 +75,14 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>resource.resx</DependentUpon>
+    </Compile>
+    <Compile Include="style.cs" />
+    <Compile Include="textbox.cs" />
+    <Compile Include="textcolumn.cs" />
     <Compile Include="uiapp.cs" />
     <Compile Include="uibase.cs" />
     <Compile Include="userselector.cs" />
@@ -69,6 +90,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -79,6 +105,13 @@
       <Project>{2463C0C6-3D96-4D0C-9780-3D70BC5A54D8}</Project>
       <Name>Connection</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dna\Dna.csproj">
+      <Project>{FE1D99EB-3DB7-44D9-B3AF-A54975E57B93}</Project>
+      <Name>Dna</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\loading.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

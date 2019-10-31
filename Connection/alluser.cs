@@ -50,6 +50,7 @@ namespace Connection
             await Task.Delay(200);
             checkusers();
         }
+        public static event Action<bool, long> addremove_e;
         static void add(long user)
         {
             list.Add(new userinfo()
@@ -58,14 +59,14 @@ namespace Connection
                 fullname = "ID : " + user + " loading ..."
             });
             client.notifyadd(e_chromosome.user, user, loaduser);
+            addremove_e?.Invoke(true, user);
         }
-        public static event Action<long> remove_e;
         static void remove(userinfo user)
         {
             list.Remove(user);
             reset_e?.Invoke();
             client.close(user.id);
-            remove_e?.Invoke(user.id);
+            addremove_e?.Invoke(false, user.id);
         }
         static async void loaduser(long user)
         {

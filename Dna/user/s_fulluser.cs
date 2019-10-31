@@ -4,14 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace classlibrary
+namespace Dna.user
 {
-    public class fulluser
+    public class s_fulluser
     {
         public long id { get; set; }
         public s_profile profile { get; set; }
         public s_usercontact usercontact { get; set; }
-        internal void copy(fulluser fulluser)
+        public void copy(s_fulluser fulluser)
         {
             profile.copy(fulluser.profile);
             usercontact.copy(fulluser.usercontact);

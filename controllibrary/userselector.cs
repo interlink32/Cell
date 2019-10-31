@@ -22,7 +22,7 @@ namespace controllibrary
         TextBlock heder = new TextBlock() { Padding = new Thickness(10) };
         public override FrameworkElement element => panel;
         Label lable = new Label();
-        ComboBox combo = new ComboBox() { MinWidth = 400 };
+        ComboBox combo = new ComboBox() { MinWidth = 400, Padding = new Thickness(5) };
         public userselector(string text)
         {
             heder.Inlines.Add(new Run()

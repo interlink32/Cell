@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace contact_server
 {
-    class loadcontact : myservice<q_loadcontact>
+    class loaddiffcontact : myservice<q_loaddiffcontact>
     {
-        public async override Task<answer> getanswer(q_loadcontact question)
+        public async override Task<answer> getanswer(q_loaddiffcontact question)
         {
             await Task.CompletedTask;
             var dblog = s.dbdiff(question.z_user);
             var diff = dblog.Find(i => i.index > question.index).ToArray();
-            var rt = new q_loadcontact.done()
+            var rt = new q_loaddiffcontact.done()
             {
-                currentindex = diff.Last()?.index ?? question.index,
+                currentindex = diff.LastOrDefault()?.index ?? question.index,
                 updatedentity = get(diff, difftype.entityupdate),
                 updatedcontact = get(diff, difftype.contactupdate),
                 deletedcontact = get(diff, difftype.contactdeleted)

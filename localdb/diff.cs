@@ -3,11 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Dna
+namespace localdb
 {
-    public abstract class entityrelation
+    class diff
     {
         [BsonId]
-        public long partnerid { get; set; }
+        public long index { get; set; }
+        public long itemid { get; set; }
     }
 }

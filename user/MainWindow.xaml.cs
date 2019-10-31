@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Connection;
+using localdb;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,13 +22,28 @@ namespace user
     /// </summary>
     public partial class MainWindow : Window
     {
-        body body = new body();
+        body body;
         public MainWindow()
         {
             InitializeComponent();
+            alluser.addremove_e += Alluser_addremove_e;
+            body = new body();
             Content = body.panel;
             ResizeMode = ResizeMode.NoResize;
             SizeToContent = SizeToContent.WidthAndHeight;
+        }
+        List<db> dbs = new List<db>();
+        private void Alluser_addremove_e(bool arg1, long arg2)
+        {
+            if (arg1)
+            {
+                dbusercentral dv = new dbusercentral(arg2);
+                dbs.Add(dv);
+            }
+            else
+            {
+                dbs.RemoveAll(i => i.userid == arg2);
+            }
         }
     }
 }

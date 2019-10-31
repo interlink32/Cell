@@ -47,7 +47,7 @@ namespace user_service
                 if (!char.IsLetter(i))
                     return false;
             }
-            if (fullname.First() == ' ' || fullname.Last() == ' ')
+            if (fullname.FirstOrDefault() == ' ' || fullname.LastOrDefault() == ' ')
                 return false;
             return true;
         }

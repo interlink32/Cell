@@ -12,10 +12,10 @@ namespace contact_server
     class server : mainserver
     {
         sync sync = new sync();
-        public override service[] elements => new service[] { new upsert(), new loadcontact(), new load() };
+        public override service[] elements => new service[] { new upsert(), new loaddiffcontact(), new load() };
         public override byte[] privatekey => resource.all_private_key;
         public override IPEndPoint endpoint => new IPEndPoint(reference.localip(), 10003);
         public override string password => "mgjdjbjdbkdbkgfvjdjdnvbjdmd";
-        public override e_chromosome chromosome => e_chromosome.contact;
+        public override e_chromosome chromosome => e_chromosome.usercontact;
     }
 }

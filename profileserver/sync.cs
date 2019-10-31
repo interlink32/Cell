@@ -30,7 +30,7 @@ namespace profileserver
         }
         async void reset(long obj)
         {
-            var dv = await mainserver.q(new q_loadentity(e_chromosome.user) { index = index }) as q_loadentity.doen;
+            var dv = await mainserver.q(new q_loaddiff(e_chromosome.user) { index = index }) as q_loaddiff.doen;
             await update(dv.updatedentity);
             delete(dv.deletedentity);
             index = dv.currentindex;
@@ -57,7 +57,7 @@ namespace profileserver
                     itemid = i,
                     state = 0
                 });
-                mainserver.sendnotify(e_chromosome.contact);
+                mainserver.sendnotify(e_chromosome.usercontact);
             }
         }
         async Task update(long[] ids)
@@ -79,7 +79,7 @@ namespace profileserver
                     itemid = i.id,
                     state = 1
                 });
-                mainserver.sendnotify((long)e_chromosome.contact);
+                mainserver.sendnotify((long)e_chromosome.usercontact);
                 mainserver.sendnotify(i.id);
             }
         }

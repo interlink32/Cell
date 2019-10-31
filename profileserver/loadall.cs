@@ -17,7 +17,7 @@ namespace profileserver
             List<r_profile> l = new List<r_profile>();
             foreach (var i in question.ids)
             {
-                var ddd = s.dbprofile.FindOne(j => ids.Contains(i));
+                var ddd = s.dbprofile.FindOne(j => ids.Contains(j.id));
                 if (ddd != null)
                     l.Add(ddd);
                 ddd = null;

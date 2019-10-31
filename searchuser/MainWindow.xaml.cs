@@ -1,4 +1,5 @@
-﻿using System;
+﻿using controllibrary;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace searchuser
@@ -20,9 +20,17 @@ namespace searchuser
     /// </summary>
     public partial class MainWindow : Window
     {
+        panel panel = new panel("جستجوی مخاطبان", (id) =>
+        {
+            return new body(id);
+        });
+        internal static MainWindow ds;
         public MainWindow()
         {
+            ds = this;
             InitializeComponent();
+            SizeToContent = SizeToContent.Width;
+            Content = panel.element;
         }
     }
 }

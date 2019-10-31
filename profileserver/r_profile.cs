@@ -10,21 +10,23 @@ namespace profileserver
     class r_profile
     {
         public long id { get; set; }
+        public string slogan { get; set; }
         public string fullname { get; set; }
         public string nationalcode { get; set; }
         public string tell { get; set; }
-        public e_gender gender { get; set; }
-        public string address { get; set; }
+        public e_nature nature { get; set; }
+        public string city { get; set; }
         public s_profile clone()
         {
             return new s_profile()
             {
-                address = address,
+                city = city,
                 fullname = fullname,
-                gender = gender,
+                nature = nature,
                 id = id,
                 nationalcode = nationalcode,
-                tell = tell
+                tell = tell,
+                description = slogan
             };
         }
     }

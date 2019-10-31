@@ -4,19 +4,19 @@ using System.Text;
 
 namespace Dna.common
 {
-    public class q_loadentity : question
+    public class q_loaddiffcontact : question
     {
         public long index = default;
-        public q_loadentity(e_chromosome chromosome)
+        public q_loaddiffcontact(e_chromosome chromosome)
         {
             z_redirect = chromosome;
         }
-        public override e_permission z_permission => e_permission.server;
-        public class doen : answer
+        public class done : answer
         {
             public long currentindex = default;
             public long[] updatedentity = default;
-            public long[] deletedentity = default;
+            public long[] updatedcontact = default;
+            public long[] deletedcontact = default;
         }
     }
 }

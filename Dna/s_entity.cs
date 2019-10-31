@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Dna
 {
-    public class entity
+    public class s_entity
     {
         public long id { get; set; }
+        public Action z_refresh = default;
     }
 }

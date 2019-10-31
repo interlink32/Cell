@@ -9,7 +9,7 @@ namespace Dna.profile
     {
         public string nationalcode { get; set; }
         public string tell { get; set; }
-        public e_gender gender { get; set; }
-        public string address { get; set; }
+        public e_nature gender { get; set; }
+        public string city { get; set; }
     }
 }

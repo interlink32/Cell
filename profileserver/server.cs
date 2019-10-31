@@ -17,7 +17,8 @@ namespace profileserver
             new upsert(),
             new loadall(),
             new loadentity(),
-            new load()
+            new load(),
+            new searchprofile()
         };
         public override byte[] privatekey => resource.all_private_key;
         public override IPEndPoint endpoint => new IPEndPoint(reference.localip(), 10002);

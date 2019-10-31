@@ -15,11 +15,11 @@ namespace contact_server
     {
         public sync()
         {
-            client.notifyadd(e_chromosome.profile, e_chromosome.contact, run);
+            client.notifyadd(e_chromosome.profile, e_chromosome.usercontact, run);
         }
         async void run(long obj)
         {
-            var dv = await mainserver.q(new q_loadentity(e_chromosome.profile) { index = s.index }) as q_loadentity.doen;
+            var dv = await mainserver.q(new q_loaddiff(e_chromosome.profile) { index = s.index }) as q_loaddiff.doen;
             foreach (var i in dv.updatedentity)
                 updateentity(i);
             foreach (var i in dv.deletedentity)

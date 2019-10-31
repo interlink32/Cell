@@ -9,44 +9,45 @@ using System.Windows.Controls;
 
 namespace controllibrary
 {
-    public abstract class panel : uibase
+    public class panel : uibase
     {
         StackPanel stack = new StackPanel();
         userselector userselector;
+        loadbox loadbox = new loadbox();
         public override FrameworkElement element => stack;
-        public panel()
+        public panel(string text, Func<long, uiapp> appcreator)
         {
             userselector = new userselector(text);
-            stack.Children.Add(userselector.element);
             userselector.user_e += Userselector_user_e;
-            alluser.remove_e += Alluser_remove_e;
+            alluser.addremove_e += Alluser_remove_e;
+            this.appcreator = appcreator;
+            stack.Children.Add(userselector.element);
+            stack.Children.Add(loadbox.element);
         }
-        public abstract string text { get; }
-        private void Alluser_remove_e(long obj)
+        private void Alluser_remove_e(bool state, long obj)
         {
-            var dv = list.FirstOrDefault(i => i.userid == obj);
-            dv.close();
-            list.Remove(dv);
+            if (!state)
+            {
+                var dv = list.FirstOrDefault(i => i.userid == obj);
+                dv.close();
+                list.Remove(dv);
+            }
         }
-        public abstract uiapp createapp(long userid);
         List<uiapp> list = new List<uiapp>();
-        uiapp uiapp = null;
+        private readonly Func<long, uiapp> appcreator;
+
         private void Userselector_user_e(long obj)
         {
-            if (uiapp != null)
-            {
-                stack.Children.Remove(uiapp.element);
-                uiapp = null;
-            }
+            loadbox.content = null;
             if (obj == 0)
                 return;
-            uiapp = list.FirstOrDefault(i => i.userid == obj);
+            var uiapp = list.FirstOrDefault(i => i.userid == obj);
             if (uiapp == null)
             {
-                uiapp = createapp(obj);
+                uiapp = appcreator(obj);
                 list.Add(uiapp);
             }
-            stack.Children.Add(uiapp.element);
+            loadbox.content = uiapp.element;
         }
     }
 }

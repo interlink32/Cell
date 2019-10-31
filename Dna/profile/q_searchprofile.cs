@@ -9,12 +9,11 @@ namespace Dna.profile
         public string slogan = default;
         public string fullname = default;
         public string nationalcode = default;
-        public int service = default;
-        public int[] ability = default;
-        public bool Jobstatus = default;
-        public bool maritalstatus = default;
-        public e_gender gender = default;
-        public s_location nearby = default;
-        public e_reliability reliability = default;
+        public e_nature nature = default;
+        public string city = default;
+        public class done : answer
+        {
+            public s_profile[] profiles = default;
+        }
     }
 }

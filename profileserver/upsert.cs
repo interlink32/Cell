@@ -24,8 +24,8 @@ namespace profileserver
                     id = question.z_user
                 };
             }
-            profile.address = question.address;
-            profile.gender = question.gender;
+            profile.city = question.city;
+            profile.nature = question.gender;
             profile.nationalcode = question.nationalcode;
             profile.tell = question.tell;
             s.dbprofile.Upsert(profile);
@@ -35,7 +35,7 @@ namespace profileserver
                 itemid = question.z_user,
                 state = 1
             });
-            notify(e_chromosome.contact);
+            notify(e_chromosome.usercontact);
             notify(question.z_user);
             return null;
         }
@@ -52,7 +52,7 @@ namespace profileserver
                 if (!char.IsLetter(i))
                     return false;
             }
-            if (fullname.First() == ' ' || fullname.Last() == ' ')
+            if (fullname.FirstOrDefault() == ' ' || fullname.LastOrDefault() == ' ')
                 return false;
             return true;
         }

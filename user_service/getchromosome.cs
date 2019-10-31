@@ -25,7 +25,7 @@ namespace user_service
             });
             list.Add(new s_chromosome()
             {
-                chromosome = e_chromosome.contact,
+                chromosome = e_chromosome.usercontact,
                 endpoint = new IPEndPoint(reference.validip(), 10003).ToString(),
                 publickey = resource.all_public_key
             });

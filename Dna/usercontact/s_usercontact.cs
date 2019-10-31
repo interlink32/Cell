@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Dna.usercontact
 {
-    public class s_usercontact : entityrelation
+    public class s_usercontact : s_contact
     {
         public e_contactsetting mysetting { get; set; }
         public e_contactsetting partnersetting { get; set; }

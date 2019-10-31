@@ -4,6 +4,7 @@ using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -102,8 +103,12 @@ namespace Connection
             userlogin = s.dbuserlogin.FindOne(i => i.id == userid);
             while (userlogin == null)
             {
-                await Task.Delay(200);
                 userlogin = s.dbuserlogin.FindOne(i => i.id == userid);
+                if (userlogin == null)
+                {
+                    var dv = s.dbuserlogin.FindAll().ToArray();
+                }
+                await Task.Delay(200);
             }
             return userlogin;
         }

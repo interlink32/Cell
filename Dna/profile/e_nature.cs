@@ -4,7 +4,11 @@ using System.Text;
 
 namespace Dna.profile
 {
-    public class e_maritalstatus
+    public enum e_nature
     {
+        none,
+        male,
+        famele,
+        business,
     }
 }

@@ -10,6 +10,5 @@ namespace Dna.usercontact
         ordinary,
         favorite,
         blocked,
-        any
     }
 }

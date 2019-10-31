@@ -106,12 +106,20 @@ namespace Connection
         public async void sendnotify()
         {
             if (connected)
-                await write(getlen(-2));
+                try
+                {
+                    await write(getlen(-2));
+                }
+                catch { connected = false; }
         }
         public async void sendpalse()
         {
             if (connected)
-                await write(getlen(-3));
+                try
+                {
+                    await write(getlen(-3));
+                }
+                catch { connected = false; }
         }
         public static byte[] Combine(params byte[][] arrays)
         {

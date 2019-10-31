@@ -12,8 +12,13 @@ namespace controllibrary
         public abstract FrameworkElement element { get; }
         public static void run(Action action)
         {
-            Application.Current.Dispatcher.Invoke(action);
+            if (action != null)
+                Application.Current.Dispatcher.Invoke(action);
         }
-        public virtual void close() { }
+        public virtual event Action<uibase> close_e;
+        public virtual void close()
+        {
+            close_e?.Invoke(this);
+        }
     }
 }

@@ -14,21 +14,23 @@ namespace contact_server
         public async override Task<answer> getanswer(q_upsertcontact question)
         {
             await Task.CompletedTask;
-            create(question.z_user, question.partner, question.mysetting, null);
-            create(question.partner, question.z_user, null, question.mysetting);
+            if (question.z_user == question.partner)
+                return new developererror() { code = "lbfkbkfjbjfdjvjdjb" };
+            create(question.z_user, question.mysetting, question.partner, null);
+            create(question.partner, null, question.z_user, question.mysetting);
             return null;
         }
-        private static void create(long owner, long partnerid, e_contactsetting? mysetting, e_contactsetting? partnersetting)
+        private static void create(long owner, e_contactsetting? ownersetting, long partnerid, e_contactsetting? partnersetting)
         {
             var dbcontact = s.dbcontact(owner);
             var dv = dbcontact.FindOne(i => i.partnerid == partnerid);
             if (dv == null)
                 dv = new r_contact()
                 {
-                    partnerid = partnerid,
+                    partnerid = partnerid
                 };
-            if (mysetting != null)
-                dv.mysetting = mysetting.Value;
+            if (ownersetting != null)
+                dv.ownersetting = ownersetting.Value;
             if (partnersetting != null)
                 dv.partnersetting = partnersetting.Value;
             dbcontact.Upsert(dv);
@@ -39,6 +41,7 @@ namespace contact_server
                 partnerid = partnerid,
                 diiftype = difftype.contactupdate
             });
+            notify(owner);
         }
     }
 }

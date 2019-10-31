@@ -23,7 +23,6 @@ namespace contact
             stack.Children.Add(label);
             Header = stack;
             Binding = new Binding(nameof(row.partner));
-
         }
     }
 }

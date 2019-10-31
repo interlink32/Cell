@@ -71,6 +71,7 @@
     </Compile>
     <Compile Include="r_diff.cs" />
     <Compile Include="r_profile.cs" />
+    <Compile Include="searchprofile.cs" />
     <Compile Include="server.cs" />
     <Compile Include="sync.cs" />
     <Compile Include="upsert.cs" />

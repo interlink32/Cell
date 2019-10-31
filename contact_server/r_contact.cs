@@ -10,16 +10,16 @@ using Dna;
 
 namespace contact_server
 {
-    public class r_contact : entityrelation
+    public class r_contact : s_contact
     {
-        public e_contactsetting mysetting { get; set; }
+        public e_contactsetting ownersetting { get; set; }
         public e_contactsetting partnersetting { get; set; }
         internal s_usercontact clone()
         {
             return new s_usercontact()
             {
                 partnerid = partnerid,
-                mysetting = mysetting,
+                mysetting = ownersetting,
                 partnersetting = partnersetting
             };
         }

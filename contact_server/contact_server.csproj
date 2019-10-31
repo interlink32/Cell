@@ -53,7 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="load.cs" />
-    <Compile Include="loadcontact.cs" />
+    <Compile Include="loaddiffcontact.cs" />
     <Compile Include="r_diff.cs" />
     <Compile Include="sync.cs" />
     <Compile Include="upsert.cs" />

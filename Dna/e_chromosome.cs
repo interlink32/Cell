@@ -9,7 +9,7 @@ namespace Dna
         common,
         user,
         profile,
-        contact,
+        usercontact,
         message,
     }
 }

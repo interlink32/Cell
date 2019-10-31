@@ -22,16 +22,16 @@ namespace profile
             Margin = new Thickness(20, 0, 20, 20),
             FlowDirection = FlowDirection.RightToLeft
         };
-        Label lblfullname = new Label() { Content = "نام و نام خانوادگی : " };
+        Label lblfullname = new Label() { Content = "نام کامل : " };
         TextBox txtfullname = new TextBox();
-        Label lblnationalcode = new Label() { Content = "کدملی : " };
+        Label lblnationalcode = new Label() { Content = "شناسه ملی : " };
         TextBox txtnationalcode = new TextBox() { FlowDirection = FlowDirection.LeftToRight };
         Label lbltell = new Label() { Content = "تلفن تماس : " };
         TextBox txttell = new TextBox() { FlowDirection = FlowDirection.LeftToRight };
-        Label lblgender = new Label() { Content = "جنسیت : " };
+        Label lblgender = new Label() { Content = "ماهیت : " };
         ComboBox cmbgender = new ComboBox()
         {
-            ItemsSource = new string[] { "نامشخص", "مرد", "زن" }
+            ItemsSource = new string[] { "نامشخص", "مرد", "زن", "کسب و کار" }
         };
         Label lbladdress = new Label() { Content = "آدرس : " };
         TextBox txtaddress = new TextBox() { AcceptsReturn = true, MinHeight = 50, TextWrapping = TextWrapping.Wrap };
@@ -101,8 +101,8 @@ namespace profile
         {
             q_updateprofile q = new q_updateprofile()
             {
-                address = txtaddress.Text,
-                gender = (e_gender)cmbgender.SelectedIndex,
+                //address = txtaddress.Text,
+                gender = (e_nature)cmbgender.SelectedIndex,
                 nationalcode = txtnationalcode.Text,
                 tell = txttell.Text
             };
@@ -157,10 +157,10 @@ namespace profile
             panel.IsEnabled = false;
             var dv = await client.question(new q_loadprofile() { id = userid }) as q_loadprofile.done;
             profile = dv.profile;
-            txtaddress.Text = profile.address;
+            txtaddress.Text = profile.location?.text;
             txtfullname.Text = profile.fullname;
             txtnationalcode.Text = profile.nationalcode;
-            cmbgender.SelectedIndex = (int)profile.gender;
+            cmbgender.SelectedIndex = (int)profile.nature;
             txttell.Text = profile.tell;
             panel.IsEnabled = true;
         }

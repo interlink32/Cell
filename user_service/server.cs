@@ -50,7 +50,7 @@ namespace user_service
             });
             createitem(e_chromosome.user, "kfkbfkbfmbmgkbkcmbmfmbkf");
             createitem(e_chromosome.profile, "kgjjjfjbjvjcnvjfjbkndfjbjcnbjcn");
-            createitem(e_chromosome.contact, "mgjdjbjdbkdbkgfvjdjdnvbjdmd");
+            createitem(e_chromosome.usercontact, "mgjdjbjdbkdbkgfvjdjdnvbjdmd");
         }
         private static void createitem(e_chromosome chromosome, string password)
         {
