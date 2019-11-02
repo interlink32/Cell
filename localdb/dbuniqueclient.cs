@@ -12,7 +12,7 @@ namespace localdb
 {
     public class dbuniqueclient<entity, contact> : dbunique<entity, contact> where entity : s_entity where contact : s_contact
     {
-        public readonly ObservableCollection<entitycontact<entity, contact>> list = new ObservableCollection<entitycontact<entity, contact>>();
+        public readonly ObservableCollection<fullentity> list = new ObservableCollection<fullentity>();
         public dbuniqueclient(long userid, e_chromosome chromosome) : base(userid, chromosome)
         {
             runing();
@@ -33,81 +33,35 @@ namespace localdb
         private void reset()
         {
             {
-                var rsv = dbentitydiff.Find(i => i.index > localindex).ToArray();
-                foreach (var i in rsv)
+                var entites = dbdiff.Find(i => i.index > localindex).Select(i => i.itemid).ToArray();
+                foreach (var i in entites)
                 {
-                    var dv = list.FirstOrDefault(j => j.partnerid == i.itemid);
-                    if (dv != null)
-                        dv.partner = dbentity.FindOne(j => j.id == i.itemid);
+                    var fullentity = dbentity.FindOne(j => j.id == i);
+                    var dv = list.FirstOrDefault(j => j.id == i);
+                    if (dv == null)
+                    {
+                        if (func != null && func.Compile()(dv))
+                            list.Add(dv);
+                    }
+                    else
+                    {
+                        dv.entity = fullentity.entity;
+                        dv.contact = fullentity.contact;
+                    }
                 }
             }
-            {
-                var rsv = dbcontactdiff.Find(i => i.index > localindex).ToArray();
-                foreach (var i in rsv)
-                {
-                    var dv = list.FirstOrDefault(j => j.partnerid == i.itemid);
-                    if (dv != null)
-                        dv.Contact = dbcontact.FindOne(j => j.partnerid == i.itemid);
-                }
-            }
-
             uibase.run(refresh_e);
         }
-
-        Expression<Func<entity, bool>> entitysearch = default;
-        Expression<Func<contact, bool>> contactsearch = default;
-        public void search(Expression<Func<entity, bool>> entitysearch, Expression<Func<contact, bool>> contactsearch = default)
+        Expression<Func<fullentity, bool>> func;
+        public void search(Expression<Func<fullentity, bool>> func)
         {
-            this.entitysearch = entitysearch;
-            this.contactsearch = contactsearch;
+            this.func = func;
             list.Clear();
-            if (this.entitysearch == null && this.contactsearch == null)
+            if (func == null)
                 return;
-            if (entitysearch == null)
-            {
-                var dv = dbcontact.Find(contactsearch).ToArray();
-                foreach (var i in dv)
-                {
-                    list.Add(new entitycontact<entity, contact>()
-                    {
-                        Contact = i,
-                        partner = dbentity.FindOne(j => j.id == i.partnerid)
-                    });
-                }
-            }
-            else
-            if (contactsearch == null)
-            {
-                var dv = dbentity.Find(entitysearch).ToArray();
-                foreach (var i in dv)
-                {
-                    list.Add(new entitycontact<entity, contact>()
-                    {
-                        partner = i,
-                        Contact = dbcontact.FindOne(j => j.partnerid == i.id)
-                    });
-                }
-            }
-            else
-            {
-                var entity = dbentity.Find(entitysearch);
-                var contacts = dbcontact.Find(contactsearch);
-                var dv = from i in entity
-                         join j in contacts on i.id equals j.partnerid
-                         select new entitycontact<entity, contact>()
-                         {
-                             Contact = j,
-                             partner = i,
-                             partnerid = i.id
-                         };
-                foreach (var i in dv.ToArray())
-                    list.Add(i);
-            }
-        }
-        public bool connectto(long id)
-        {
-            var rsv = dbcontact.FindAll().ToArray();
-            return dbcontact.Exists(i => i.partnerid == id);
+            var dv = dbentity.Find(func);
+            foreach (var i in dv)
+                list.Add(i);
         }
     }
 }

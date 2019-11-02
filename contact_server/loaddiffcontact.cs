@@ -21,7 +21,7 @@ namespace contact_server
                 currentindex = diff.LastOrDefault()?.index ?? question.index,
                 updatedentity = get(diff, difftype.entityupdate),
                 updatedcontact = get(diff, difftype.contactupdate),
-                deletedcontact = get(diff, difftype.contactdeleted)
+                deletedcontact = get(diff, difftype.deleted)
             };
             return rt;
         }

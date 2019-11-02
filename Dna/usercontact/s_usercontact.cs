@@ -16,5 +16,10 @@ namespace Dna.usercontact
             mysetting = i.mysetting;
             partnersetting = i.partnersetting;
         }
+        public override string ToString()
+        {
+            return partnerid + ":My." + mysetting + ",partner." + partnersetting;
+        }
+        public bool valid => mysetting == e_contactsetting.ordinary || mysetting == e_contactsetting.favorite;
     }
 }

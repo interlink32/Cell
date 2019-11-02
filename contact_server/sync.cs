@@ -38,7 +38,7 @@ namespace contact_server
             dbdiff.Insert(new r_diff()
             {
                 partnerid = deleteditem,
-                diiftype = difftype.contactdeleted
+                diiftype = difftype.deleted
             });
         }
         static void updateentity(long updateditem)
@@ -47,9 +47,9 @@ namespace contact_server
             foreach (var partner in s.dbcontact(updateditem).FindAll().Select(k => k.partnerid).ToArray())
                 updateentity(partner, updateditem);
         }
-        static void updateentity(long partner, long updateditem)
+        static void updateentity(long owner, long updateditem)
         {
-            LiteCollection<r_diff> dbdiff = s.dbdiff(partner);
+            LiteCollection<r_diff> dbdiff = s.dbdiff(owner);
             dbdiff.Delete(k => k.partnerid == updateditem && k.diiftype == difftype.entityupdate);
             dbdiff.Insert(new r_diff()
             {

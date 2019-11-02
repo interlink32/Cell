@@ -18,6 +18,6 @@ namespace contact_server
     {
         contactupdate,
         entityupdate,
-        contactdeleted
+        deleted
     }
 }

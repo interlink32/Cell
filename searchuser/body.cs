@@ -44,6 +44,7 @@ namespace searchuser
             add(hdr_city, clm_city);
             add(hdr_des, clm_des);
         }
+
         protected async override void reset()
         {
             loadbox.mainwaiting();
@@ -60,13 +61,17 @@ namespace searchuser
                 item.client = client;
                 item.z_refresh = this.body.Items.Refresh;
                 item.copy(i);
-                item.contactf = db.connectto(i.id);
+                item.contactf = validcontact(i.id);
                 items.Add(item);
             }
             source = items;
             loadbox.mainrelease();
         }
-
+        private bool validcontact(long id)
+        {
+            var dv = db.dbentity.FindOne(i => i.id == id);
+            return dv?.contact?.valid ?? false;
+        }
         public class item : s_profile
         {
             public client client = null;

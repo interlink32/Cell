@@ -17,42 +17,58 @@ namespace localdb
     {
         public dbuniquecenteral(long userid, e_chromosome chromosome) : base(userid, chromosome)
         {
-            dbentitydiff.Delete(i => true);
-            dbcontactdiff.Delete(i => true);
+            dbdiff.Delete(i => true);
             client.notifyadd(chromosome, userid, action);
         }
         async void action(long obj)
         {
-            Console.Beep(500, 1000);
             var rsv = await client.question(new q_loaddiffcontact(chromosome) { index = index })
                 as q_loaddiffcontact.done;
             if (rsv.updatedentity.Length != 0)
             {
                 var entities = await getentities(rsv.updatedentity);
-                var check = dbentitydiff.FindAll().ToArray();
                 foreach (var i in entities)
                 {
-                    dbentity.Upsert(i);
-                    dbentitydiff.Insert(new diff()
-                    {
-                        itemid = i.id
-                    });
+                    fullentity dv = get(i.id, true);
+                    dv.entity = i;
+                    dbentity.Upsert(dv);
+                    setdiff(i.id);
                 }
-                check = dbentitydiff.FindAll().ToArray();
             }
             if (rsv.updatedcontact.Length != 0)
             {
                 var contacts = await getcontacts(rsv.updatedcontact);
                 foreach (var i in contacts)
                 {
-                    dbcontact.Upsert(i);
-                    dbcontactdiff.Insert(new diff()
-                    {
-                        itemid = i.partnerid
-                    });
+                    var dv = get(i.partnerid, false);
+                    dv.contact = i;
+                    dbentity.Upsert(dv);
+                    var dvv = dbentity.FindAll().ToArray();
+                    setdiff(i.partnerid);
                 }
             }
             index = rsv.currentindex;
+        }
+        private fullentity get(long id, bool cannull)
+        {
+            var dv = dbentity.FindOne(i => i.id == id);
+            if (dv == null)
+                if (cannull)
+                    dv = new fullentity()
+                    {
+                        id = id
+                    };
+                else
+                    throw new Exception("lbkfkbjfjbjcnbdbjcmfl");
+            return dv;
+        }
+        private void setdiff(long id)
+        {
+            dbdiff.Delete(i => i.itemid == id);
+            dbdiff.Insert(new diff()
+            {
+                itemid = id
+            });
         }
         public abstract Task<entity[]> getentities(long[] ids);
         public abstract Task<contact[]> getcontacts(long[] ids);

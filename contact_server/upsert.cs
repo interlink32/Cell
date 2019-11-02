@@ -23,25 +23,38 @@ namespace contact_server
         private static void create(long owner, e_contactsetting? ownersetting, long partnerid, e_contactsetting? partnersetting)
         {
             var dbcontact = s.dbcontact(owner);
-            var dv = dbcontact.FindOne(i => i.partnerid == partnerid);
-            if (dv == null)
-                dv = new r_contact()
+            var contact = dbcontact.FindOne(i => i.partnerid == partnerid);
+            bool newcontact = contact == null;
+            if (newcontact)
+            {
+                contact = new r_contact()
                 {
                     partnerid = partnerid
                 };
+            }
             if (ownersetting != null)
-                dv.ownersetting = ownersetting.Value;
+                contact.ownersetting = ownersetting.Value;
             if (partnersetting != null)
-                dv.partnersetting = partnersetting.Value;
-            dbcontact.Upsert(dv);
+                contact.partnersetting = partnersetting.Value;
+            dbcontact.Upsert(contact);
+            if (newcontact)
+                setdiff(owner, partnerid, difftype.entityupdate);
+            setdiff(owner, partnerid, difftype.contactupdate);
+            notify(owner);
+        }
+
+        private static void setdiff(long owner, long partner, difftype diff)
+        {
             var dbdiff = s.dbdiff(owner);
-            dbdiff.Delete(i => i.partnerid == partnerid && i.diiftype != difftype.entityupdate);
+            if (diff == difftype.deleted)
+                dbdiff.Delete(i => i.partnerid == partner);
+            else
+                dbdiff.Delete(i => i.partnerid == partner && i.diiftype == diff);
             dbdiff.Upsert(new r_diff()
             {
-                partnerid = partnerid,
-                diiftype = difftype.contactupdate
+                partnerid = partner,
+                diiftype = diff
             });
-            notify(owner);
         }
     }
 }

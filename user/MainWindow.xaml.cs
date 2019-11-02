@@ -32,7 +32,7 @@ namespace user
             ResizeMode = ResizeMode.NoResize;
             SizeToContent = SizeToContent.WidthAndHeight;
         }
-        List<db> dbs = new List<db>();
+        List<clientdb> dbs = new List<clientdb>();
         private void Alluser_addremove_e(bool arg1, long arg2)
         {
             if (arg1)
