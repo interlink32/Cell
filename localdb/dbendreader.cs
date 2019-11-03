@@ -1,5 +1,7 @@
-﻿using controllibrary;
+﻿using Connection;
+using controllibrary;
 using Dna;
+using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace localdb
 {
-    public class dbuniqueclient<entity, contact> : dbunique<entity, contact> where entity : s_entity where contact : s_contact
+    public class dbendreader<entity, contact> : dbend<entity, contact> where entity : s_entity where contact : s_contact
     {
         public readonly ObservableCollection<fullentity> list = new ObservableCollection<fullentity>();
-        public dbuniqueclient(long userid, e_chromosome chromosome) : base(userid, chromosome)
+        public dbendreader(long userid) : base(userid)
         {
             runing();
         }

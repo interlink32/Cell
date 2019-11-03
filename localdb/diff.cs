@@ -5,10 +5,17 @@ using System.Text;
 
 namespace localdb
 {
-    class diff
+    public class diffend
     {
         [BsonId]
         public long index { get; set; }
         public long itemid { get; set; }
+    }
+    public class diffentity
+    {
+        [BsonId]
+        public long index { get; set; }
+        public long itemid { get; set; }
+        public bool state { get; set; }
     }
 }

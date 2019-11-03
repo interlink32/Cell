@@ -32,12 +32,12 @@ namespace user
             ResizeMode = ResizeMode.NoResize;
             SizeToContent = SizeToContent.WidthAndHeight;
         }
-        List<clientdb> dbs = new List<clientdb>();
+        List<dbend> dbs = new List<dbend>();
         private void Alluser_addremove_e(bool arg1, long arg2)
         {
             if (arg1)
             {
-                dbusercentral dv = new dbusercentral(arg2);
+                dbendwriteruser dv = new dbendwriteruser(arg2);
                 dbs.Add(dv);
             }
             else

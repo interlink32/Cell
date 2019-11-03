@@ -13,12 +13,14 @@ using System.Threading.Tasks;
 
 namespace localdb
 {
-    public abstract class dbuniquecenteral<entity, contact> : dbunique<entity, contact> where entity : s_entity where contact : s_contact
+    public abstract class dbendwriter<entity, contact> : dbend<entity, contact> where entity : s_entity where contact : s_contact
     {
-        public dbuniquecenteral(long userid, e_chromosome chromosome) : base(userid, chromosome)
+        private readonly e_chromosome chromosome;
+        public dbendwriter(long userid, e_chromosome chromosome) : base(userid)
         {
             dbdiff.Delete(i => true);
             client.notifyadd(chromosome, userid, action);
+            this.chromosome = chromosome;
         }
         async void action(long obj)
         {
@@ -65,7 +67,7 @@ namespace localdb
         private void setdiff(long id)
         {
             dbdiff.Delete(i => i.itemid == id);
-            dbdiff.Insert(new diff()
+            dbdiff.Insert(new diffend()
             {
                 itemid = id
             });

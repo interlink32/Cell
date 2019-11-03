@@ -9,26 +9,24 @@ using System.Threading.Tasks;
 
 namespace localdb
 {
-    public class clientdb
+    public class dbend
     {
-        protected LiteDatabase database;
+        protected LiteDatabase db;
         public readonly long userid;
-        protected readonly e_chromosome chromosome;
         protected client client;
-        public clientdb(long userid, e_chromosome chromosome)
+        public dbend(long userid)
         {
-            database = new LiteDatabase(reference.root("localdb" + userid + ".db"));
-            this.chromosome = chromosome;
             this.userid = userid;
             client = new client(userid);
+            db = new LiteDatabase(reference.root("dbclient" + userid + ".db"));
         }
     }
-    public abstract class dbunique<entity, contact> : clientdb where entity : s_entity where contact : s_contact
+    public abstract class dbend<entity, contact> : dbend where entity : s_entity where contact : s_contact
     {
-        public string uniquename => ((long)chromosome).ToString();
-        public dbunique(long userid, e_chromosome chromosome) : base(userid, chromosome)
+        public string uniquename => "dbend" + typeof(contact).FullName;
+        public dbend(long userid) : base(userid)
         {
-
+            
         }
         public class fullentity
         {
@@ -36,9 +34,9 @@ namespace localdb
             public entity entity { get; set; }
             public contact contact { get; set; }
         }
-        public LiteCollection<fullentity> dbentity => database.GetCollection<fullentity>("entity" + uniquename);
-        internal LiteCollection<diff> dbdiff => database.GetCollection<diff>("diff" + uniquename);
-        internal LiteCollection<s_index> dbindex => database.GetCollection<s_index>("index" + uniquename);
+        public LiteCollection<fullentity> dbentity => db.GetCollection<fullentity>("entity" + uniquename);
+        internal LiteCollection<diffend> dbdiff => db.GetCollection<diffend>("diff" + uniquename);
+        internal LiteCollection<s_index> dbindex => db.GetCollection<s_index>("index" + uniquename);
         internal long index
         {
             get

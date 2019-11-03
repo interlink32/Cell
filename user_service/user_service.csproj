@@ -36,6 +36,9 @@
     <Reference Include="LiteDB, Version=4.1.4.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.4.1.4\lib\net40\LiteDB.dll</HintPath>
     </Reference>
+    <Reference Include="localdb">
+      <HintPath>..\localdb\bin\Debug\netstandard2.0\localdb.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -73,7 +76,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="r_difference.cs" />
     <Compile Include="sendactivecode.cs" />
     <Compile Include="server.cs" />
     <Compile Include="r_user.cs" />

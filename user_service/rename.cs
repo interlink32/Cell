@@ -22,13 +22,7 @@ namespace user_service
                 if (dbuser.Exists(i => i.fullname == question.fullname && i.id != user.id))
                     return new q_renameuser.done() { p_duplicate = true };
                 user.fullname = question.fullname;
-                dbuser.Update(user);
-                dbdiff.Delete(i => i.userid == user.id);
-                dbdiff.Insert(new r_difference()
-                {
-                    state = r_diffstate.update,
-                    userid = user.id
-                });
+                db.upsert(user);
                 notify(e_chromosome.profile);
                 notify(question.z_user);
             }

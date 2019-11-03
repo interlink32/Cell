@@ -2,16 +2,17 @@
 using Dna.profile;
 using Dna.user;
 using Dna.usercontact;
+using localdb;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace localdb
+namespace user
 {
-    public class dbusercentral : dbuniquecenteral<s_profile, s_usercontact>
+    public class dbendwriteruser : dbendwriter<s_profile, s_usercontact>
     {
-        public dbusercentral(long userid) : base(userid, e_chromosome.usercontact)
+        public dbendwriteruser(long userid) : base(userid, e_chromosome.usercontact)
         {
         }
         public override async Task<s_usercontact[]> getcontacts(long[] ids)

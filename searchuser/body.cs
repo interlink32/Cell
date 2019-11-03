@@ -33,10 +33,10 @@ namespace searchuser
 
         textheder hdr_des = new textheder("توضیحات") { MinWidth = 300 };
         textcolumn clm_des = new textcolumn(nameof(item.description), style.textblock(), style.textbox());
-        dbuserclient db;
+        dbendreaderuser db;
         public body(long user) : base(user)
         {
-            db = new dbuserclient(user);
+            db = new dbendreaderuser(user);
             body.SelectionMode = DataGridSelectionMode.Single;
             add(hdr_contact, clm_contact);
             add(hdr_fullname, clm_fulname);

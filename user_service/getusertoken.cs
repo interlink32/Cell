@@ -18,19 +18,10 @@ namespace user_service
             var user = dbuser.FindOne(i => i.callerid == question.callerid);
             if (user == null || user.activecode != question.activecode)
                 return new q_getusertoken.invalidactivecode();
-            sendactivecode.changetoken(user);
-            bool update = !user.active;
-            user.active = true;
-            dbuser.Update(user);
-            if (update)
+            if (!user.active)
             {
-                dbdiff.Insert(new r_difference()
-                {
-                    state = r_diffstate.update,
-                    userid = user.id
-                });
-                notify(e_chromosome.profile);
-                notify(user.id);
+                user.active = true;
+                dbuser.Update(user);
             }
             return new q_getusertoken.done()
             {

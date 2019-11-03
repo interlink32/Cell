@@ -1,4 +1,5 @@
-﻿using Dna.user;
+﻿using Dna;
+using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace user_service
 {
-    public class r_user
+    public class r_user : s_entity
     {
-        public long id { get; set; }
         public string callerid { get; set; }
         public string activecode { get; set; }
         public bool general { get; set; }

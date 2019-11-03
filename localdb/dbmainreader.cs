@@ -6,12 +6,12 @@ using System.Text;
 
 namespace localdb
 {
-    public class serverdb
+    public class dbmainreader<entity> where entity : s_entity
     {
-        LiteDatabase db;
-        public serverdb(e_chromosome chromosome)
+        LiteDatabase db=new LiteDatabase()
+        public dbmainreader()
         {
-            
+
         }
     }
 }
