@@ -17,7 +17,7 @@ namespace profileserver
             nullcheck(ref question.slogan);
 
             await Task.CompletedTask;
-            var qu = s.dbprofile.FindAll();
+            var qu = sync.dbentity.getall();
             if (question.fullname != null)
                 qu = qu.Where(i => i.fullname.Contains(question.fullname));
             if (question.nationalcode != null)
@@ -25,7 +25,7 @@ namespace profileserver
             if (question.nature != e_nature.none)
                 qu = qu.Where(i => i.nature == question.nature);
             if (question.slogan != null)
-                qu = qu.Where(i => i.slogan.Contains(question.slogan));
+                qu = qu.Where(i => i.description.Contains(question.slogan));
             var dv = qu.Take(10).ToArray();
             return new q_searchprofile.done()
             {

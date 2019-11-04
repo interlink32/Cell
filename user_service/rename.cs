@@ -14,12 +14,12 @@ namespace user_service
         public async override Task<answer> getanswer(q_renameuser question)
         {
             await Task.CompletedTask;
-            var user = dbuser.FindOne(i => i.id == question.z_user);
+            var user = db.load(question.z_user);
             if (user.fullname != question.fullname)
             {
                 if (!valid(question.fullname))
                     return new developererror() { code = "kjdjbdnbkdmsnbjvndmnbnd" };
-                if (dbuser.Exists(i => i.fullname == question.fullname && i.id != user.id))
+                if (db.exists(i => i.fullname == question.fullname && i.id != user.id))
                     return new q_renameuser.done() { p_duplicate = true };
                 user.fullname = question.fullname;
                 db.upsert(user);

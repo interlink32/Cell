@@ -115,6 +115,10 @@
       <Project>{FE1D99EB-3DB7-44D9-B3AF-A54975E57B93}</Project>
       <Name>Dna</Name>
     </ProjectReference>
+    <ProjectReference Include="..\localdb\localdb.csproj">
+      <Project>{15965E42-263C-4C39-993E-0C37743AA91D}</Project>
+      <Name>localdb</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

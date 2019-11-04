@@ -1,7 +1,7 @@
 ﻿using Connection;
 using Dna;
-using Dna.common;
 using Dna.user;
+using localdb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,78 +10,32 @@ using System.Threading.Tasks;
 
 namespace profileserver
 {
-    class sync
+    class sync : synchronizer<s_user>
     {
-        long index = default;
-        public sync()
+        internal static dbentity<r_profile> dbentity = new dbentity<r_profile>();
+        public sync() : base(e_chromosome.user, (long)e_chromosome.profile)
         {
-            var dv = s.dbsingle.FindOne(i => i.id == nameof(index));
+        }
+        protected override string indexid => "profilesync";
+        protected override void apply(s_user entity)
+        {
+            var dv = dbentity.load(entity.id);
             if (dv == null)
-            {
-                dv = new singlevalue()
+                dv = new r_profile()
                 {
-                    id = nameof(index),
-                    value = "0"
+                    id = entity.id
                 };
-                s.dbsingle.Insert(dv);
-            }
-            index = long.Parse(dv.value);
-            client.notifyadd(e_chromosome.user, e_chromosome.profile, reset);
+            dv.fullname = entity.fullname;
+            dbentity.upsert(dv);
         }
-        async void reset(long obj)
+        protected override void delete(long entity)
         {
-            var dv = await mainserver.q(new q_loaddiff(e_chromosome.user) { index = index }) as q_loaddiff.doen;
-            await update(dv.updatedentity);
-            delete(dv.deletedentity);
-            index = dv.currentindex;
-            saveindex();
+            dbentity.delete(entity);
         }
-        private void saveindex()
+        protected async override Task<s_user[]> getentities(long[] ids)
         {
-            s.dbsingle.Upsert(new singlevalue()
-            {
-                id = nameof(index),
-                value = index.ToString()
-            });
-        }
-        private void delete(long[] ids)
-        {
-            if (ids.Length == 0)
-                return;
-            foreach (var i in ids)
-            {
-                s.dbprofile.Delete(j => j.id == i);
-                s.dbdiff.Delete(j => j.itemid == i);
-                s.dbdiff.Insert(new r_diff()
-                {
-                    itemid = i,
-                    state = 0
-                });
-                mainserver.sendnotify(e_chromosome.usercontact);
-            }
-        }
-        async Task update(long[] ids)
-        {
-            if (ids.Length == 0)
-                return;
-            var dv = await mainserver.q(new q_loadalluser() { ids = ids }) as q_loadalluser.done;
-            r_profile profile;
-            foreach (var i in dv.users)
-            {
-                profile = s.dbprofile.FindOne(j => j.id == i.id);
-                if (profile == null)
-                    profile = new r_profile() { id = i.id };
-                profile.fullname = i.fullname;
-                s.dbprofile.Upsert(profile);
-                s.dbdiff.Delete(j => j.itemid == i.id);
-                s.dbdiff.Insert(new r_diff()
-                {
-                    itemid = i.id,
-                    state = 1
-                });
-                mainserver.sendnotify((long)e_chromosome.usercontact);
-                mainserver.sendnotify(i.id);
-            }
+            var dv = await client.question(new q_loadalluser() { ids = ids }) as q_loadalluser.done;
+            return dv.users;
         }
     }
 }

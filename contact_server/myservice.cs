@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace contact_server
+namespace contactserver
 {
     abstract class myservice<T> : service<T> where T : question
     {

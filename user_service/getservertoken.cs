@@ -31,7 +31,7 @@ namespace user_service
                     active = true
                 };
                 sendactivecode.changetoken(user);
-                dbuser.Upsert(user);
+                db.upsert(user, false);
                 return new q_getservertoken.done() { token = user.token };
             }
         }

@@ -43,10 +43,11 @@ namespace profile
             MinWidth = 200
         };
         client client;
-        public body(long userid)
+        long userid = default;
+        public override void create(long userid)
         {
+            this.userid = userid;
             designing();
-            this.useridf = userid;
             client = new client(userid);
             btnsave.Click += Btnsave_Click;
             client.notifyadd(Dna.e_chromosome.profile, userid, reset);
@@ -149,15 +150,12 @@ namespace profile
             return true;
         }
         s_profile profile = null;
-        long useridf = default;
-        public override long userid => useridf;
         public override FrameworkElement element => panel;
         async void load()
         {
             panel.IsEnabled = false;
             var dv = await client.question(new q_loadprofile() { id = userid }) as q_loadprofile.done;
             profile = dv.profile;
-            txtaddress.Text = profile.location?.text;
             txtfullname.Text = profile.fullname;
             txtnationalcode.Text = profile.nationalcode;
             cmbgender.SelectedIndex = (int)profile.nature;

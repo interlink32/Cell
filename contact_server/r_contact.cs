@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dna;
 
-namespace contact_server
+namespace contactserver
 {
     public class r_contact : s_contact
     {

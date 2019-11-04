@@ -15,7 +15,7 @@ namespace user_service
         public async override Task<answer> getanswer(q_sendactivecode question)
         {
             await Task.CompletedTask;
-            var dv = dbuser.FindOne(i => i.callerid == question.callerid);
+            var dv = db.findone(i => i.callerid == question.callerid);
             if (dv == null)
             {
                 dv = new r_user()
@@ -26,7 +26,7 @@ namespace user_service
                 };
                 changetoken(dv);
                 changeactivecode(dv);
-                dbuser.Insert(dv);
+                db.upsert(dv, false);
             };
             //sms activecode to caller id
             return new q_sendactivecode.done();
@@ -37,7 +37,7 @@ namespace user_service
             do
             {
                 newtoken = "" + basic.random.Next() + basic.random.Next(1000, 9999);
-            } while (dbuser.Exists(i => i.token == newtoken));
+            } while (db.exists(i => i.token == newtoken));
             user.token = newtoken;
         }
         internal static void changeactivecode(r_user user)

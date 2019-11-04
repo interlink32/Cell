@@ -31,8 +31,6 @@ namespace controllibrary
         public readonly long user;
         public override FrameworkElement element => body;
 
-        public override long userid => user;
-
         protected client client = default;
         public grid(long user)
         {

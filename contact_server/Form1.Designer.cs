@@ -1,4 +1,4 @@
-﻿namespace contact_server
+﻿namespace contactserver
 {
     partial class Form1
     {

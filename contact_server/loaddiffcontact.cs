@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace contact_server
+namespace contactserver
 {
     class loaddiffcontact : myservice<q_loaddiffcontact>
     {

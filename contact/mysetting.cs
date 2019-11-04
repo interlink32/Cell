@@ -14,13 +14,13 @@ namespace contact
     class mysetting : DataGridComboBoxColumn
     {
         StackPanel heder = new StackPanel();
-        public ComboBox filter = new ComboBox() ;
+        public ComboBox filter = new ComboBox();
         Label label = new Label() { Content = "تنظیمات من" };
         public mysetting()
         {
             filter.ItemsSource = r_connectionsetting.list;
             filter.SelectedIndex = 0;
-            ItemsSource = r_connectionsetting.list.Where(i => i.setting != e_contactsetting.any).ToArray();
+            ItemsSource = r_connectionsetting.list.Where(i => i.setting != e_contactsetting.none).ToArray();
             heder.Children.Add(filter);
             heder.Children.Add(label);
             heder.MinWidth = 120;

@@ -1,27 +1,54 @@
 ﻿using Connection;
 using Dna;
 using Dna.common;
+using Dna.user;
 using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace localdb
 {
-    public abstract class dbentity<entity> where entity : s_entity
+    public class dbentity<entity> where entity : s_entity
     {
-        public abstract LiteCollection<entity> table { get; }
-        protected abstract LiteCollection<diffentity> tablediff { get; }
-        public void upsert(entity entity)
+        LiteDatabase db;
+        public dbentity()
+        {
+            db = new LiteDatabase(reference.root(typeof(entity).FullName));
+        }
+        LiteCollection<entity> table => db.GetCollection<entity>();
+        public LiteCollection<T> GetCollection<T>(string name)
+        {
+            return db.GetCollection<T>(name);
+        }
+        LiteCollection<diffentity> tablediff => db.GetCollection<diffentity>();
+
+        public bool exists(Expression<Func<entity, bool>> func)
+        {
+            return table.Exists(func);
+        }
+
+        public void upsert(entity entity, bool savediff = true)
         {
             table.Upsert(entity);
-            setdiff(entity.id, true);
+            if (savediff)
+                setdiff(entity.id, true);
         }
         public void delete(long id)
         {
             table.Delete(i => i.id == id);
             setdiff(id, false);
+        }
+        private void setdiff(long id, bool state)
+        {
+            tablediff.Delete(i => i.itemid == id);
+            tablediff.Insert(new diffentity()
+            {
+                itemid = id,
+                state = state
+            });
         }
         public q_loaddiff.doen getdiff(long index)
         {
@@ -33,14 +60,30 @@ namespace localdb
                 deletedentity = dv.Where(i => !i.state).Select(i => i.itemid).ToArray()
             };
         }
-        private void setdiff(long id, bool state)
+        public entity load(long id)
         {
-            tablediff.Delete(i => i.itemid == id);
-            tablediff.Insert(new diffentity()
+            return table.FindOne(i => i.id == id);
+        }
+        public entity findone(Expression<Func<entity,bool>> func)
+        {
+            return table.FindOne(func);
+        }
+        public entity[] load(params long[] ids)
+        {
+            List<long> idlist = new List<long>(ids);
+            List<entity> l = new List<entity>();
+            foreach (var i in ids)
             {
-                itemid = id,
-                state = state
-            });
+                var dv = table.FindOne(j => idlist.Contains(j.id));
+                if (dv != null)
+                    l.Add(dv);
+                idlist.Remove(i);
+            }
+            return l.ToArray();
+        }
+        public IEnumerable<entity> getall()
+        {
+            return table.FindAll();
         }
     }
 }

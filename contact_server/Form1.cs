@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace contact_server
+namespace contactserver
 {
     public partial class Form1 : Form
     {

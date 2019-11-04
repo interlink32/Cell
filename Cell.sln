@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "message_server", "message_s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "messanger", "messanger\messanger.csproj", "{1944EBD8-0FBF-4796-B607-942AA8EC25B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "contact_server", "contact_server\contact_server.csproj", "{DFB26110-7C10-4F25-A8D5-9B3A033E87A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "contactserver", "contact_server\contactserver.csproj", "{DFB26110-7C10-4F25-A8D5-9B3A033E87A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "contact", "contact\contact.csproj", "{9412D0FC-5103-4F78-AD23-865CDEBD22C5}"
 EndProject
@@ -29,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "controllibrary", "controlli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "searchuser", "searchuser\searchuser.csproj", "{807A26D1-2709-4E38-858F-C4F1150D272B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "localdb", "localdb\localdb.csproj", "{15965E42-263C-4C39-993E-0C37743AA91D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "localdb", "localdb\localdb.csproj", "{15965E42-263C-4C39-993E-0C37743AA91D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

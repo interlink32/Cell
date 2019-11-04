@@ -23,13 +23,13 @@ namespace profile
     /// </summary>
     public partial class MainWindow : Window
     {
-        app app = new app();
+        panel<body> panel = new panel<body>();
         public MainWindow()
         {
             InitializeComponent();
             ResizeMode = ResizeMode.NoResize;
             SizeToContent = SizeToContent.WidthAndHeight;
-            Content = app.element;
+            Content = panel.element;
         }
     }
 }

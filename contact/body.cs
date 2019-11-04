@@ -13,7 +13,7 @@ using System.Windows.Controls;
 
 namespace contact
 {
-    class body : uibase
+    class body : uiapp
     {
         DataGrid grid = new DataGrid()
         {
@@ -26,14 +26,13 @@ namespace contact
         usercolumn usercolumn = new usercolumn();
         mysetting mysetting = new mysetting();
         partnersetting partnersetting = new partnersetting();
-        public readonly long user;
-
+        long userid;
         public override FrameworkElement element => grid;
         client client = default;
-        public body(long user)
+        public override void create(long userid)
         {
-            client = new client(user);
-            this.user = user;
+            client = new client(this.userid);
+            this.userid = userid;
             grid.Columns.Add(usercolumn);
             grid.Columns.Add(mysetting);
             grid.Columns.Add(partnersetting);

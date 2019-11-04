@@ -13,13 +13,7 @@ namespace profileserver
         public async override Task<answer> getanswer(q_loaddiff question)
         {
             await Task.CompletedTask;
-            var dv = s.dbdiff.Find(i => i.index > question.index).ToArray();
-            return new q_loaddiff.doen()
-            {
-                currentindex = dv.LastOrDefault()?.index ?? 0,
-                updatedentity = dv.Where(i => i.state == 1).Select(i => i.itemid).ToArray(),
-                deletedentity = dv.Where(i => i.state == 0).Select(i => i.itemid).ToArray()
-            };
+            return sync.dbentity.getdiff(question.index);
         }
     }
 }

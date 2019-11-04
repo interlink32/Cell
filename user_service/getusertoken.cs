@@ -15,13 +15,13 @@ namespace user_service
         public async override Task<answer> getanswer(q_getusertoken question)
         {
             await Task.CompletedTask;
-            var user = dbuser.FindOne(i => i.callerid == question.callerid);
+            var user = db.findone(i => i.callerid == question.callerid);
             if (user == null || user.activecode != question.activecode)
                 return new q_getusertoken.invalidactivecode();
             if (!user.active)
             {
                 user.active = true;
-                dbuser.Update(user);
+                s.db.upsert(user, false);
             }
             return new q_getusertoken.done()
             {

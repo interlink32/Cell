@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace contact_server
+namespace contactserver
 {
     class server : mainserver
     {

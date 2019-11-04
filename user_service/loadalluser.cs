@@ -15,7 +15,7 @@ namespace user_service
             await Task.CompletedTask;
             if (question.ids?.Length == 0)
                 return new q_loadalluser.done();
-            var dv = dbuser.Find(i => question.ids.Contains(i.id) && i.general);
+            var dv = db.load(question.ids);
             return new q_loadalluser.done()
             {
                 users = dv.Select(i => i.clone()).ToArray()

@@ -9,6 +9,12 @@ namespace controllibrary
 {
     public abstract class uiapp : uibase
     {
-        public abstract long userid { get; }
+        internal long userid = default;
+        internal void create_(long userid)
+        {
+            this.userid = userid;
+            create(userid);
+        }
+        public abstract void create(long userid);
     }
 }

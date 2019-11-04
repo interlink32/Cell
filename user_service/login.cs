@@ -14,7 +14,7 @@ namespace user_service
         public async override Task<answer> getanswer(q_login request)
         {
             await Task.CompletedTask;
-            var dv = dbuser.FindOne(i => i.token == request.token);
+            var dv = db.findone(i => i.token == request.token);
             if (dv == null)
                 return new q_login.invalid();
             else

@@ -13,7 +13,7 @@ namespace user_service
         public async override Task<answer> getanswer(q_loaduser question)
         {
             await Task.CompletedTask;
-            var dv = dbuser.FindOne(i => i.id == question.userid);
+            var dv = db.load(question.userid);
             return new q_loaduser.done()
             {
                 user = new s_user()

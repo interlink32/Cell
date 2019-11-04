@@ -42,12 +42,12 @@ namespace user_service
 
         private void ini()
         {
-            myservice<q_getusertoken>.dbuser.Upsert(new r_user()
+            s.db.upsert(new r_user()
             {
                 fullname = "firstuser",
                 general = false,
                 id = 1000 * 1000 * 100
-            });
+            }, false);
             createitem(e_chromosome.user, "kfkbfkbfmbmgkbkcmbmfmbkf");
             createitem(e_chromosome.profile, "kgjjjfjbjvjcnvjfjbkndfjbjcnbjcn");
             createitem(e_chromosome.usercontact, "mgjdjbjdbkdbkgfvjdjdnvbjdmd");

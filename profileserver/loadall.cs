@@ -13,19 +13,10 @@ namespace profileserver
         public async override Task<answer> getanswer(q_loadallprofile question)
         {
             await Task.CompletedTask;
-            List<long> ids = new List<long>(question.ids);
-            List<r_profile> l = new List<r_profile>();
-            foreach (var i in question.ids)
-            {
-                var ddd = s.dbprofile.FindOne(j => ids.Contains(j.id));
-                if (ddd != null)
-                    l.Add(ddd);
-                ddd = null;
-                ids.Remove(i);
-            }
+            var dv = sync.dbentity.load(question.ids);
             return new q_loadallprofile.done()
             {
-                profiles = l.Select(i => i.clone()).ToArray()
+                profiles = dv.Select(i => i.clone()).ToArray()
             };
         }
     }

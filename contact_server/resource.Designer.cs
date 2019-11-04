@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace contact_server {
+namespace contactserver {
     using System;
     
     

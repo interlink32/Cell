@@ -16,45 +16,17 @@ namespace profileserver
         public async override Task<answer> getanswer(q_updateprofile question)
         {
             await Task.CompletedTask;
-            var profile = s.dbprofile.FindOne(i => i.id == question.z_user);
+            var profile = sync.dbentity.load(question.z_user);
             if (profile == null)
-            {
-                profile = new r_profile()
-                {
-                    id = question.z_user
-                };
-            }
+                return new developererror() { code = "lblkbjdjvjchdhvjdnvjcjds" };
             profile.city = question.city;
             profile.nature = question.gender;
             profile.nationalcode = question.nationalcode;
             profile.tell = question.tell;
-            s.dbprofile.Upsert(profile);
-            s.dbdiff.Delete(i => i.itemid == question.z_user);
-            s.dbdiff.Insert(new r_diff()
-            {
-                itemid = question.z_user,
-                state = 1
-            });
+            sync.dbentity.upsert(profile);
             notify(e_chromosome.usercontact);
             notify(question.z_user);
             return null;
-        }
-        private bool valid(string fullname)
-        {
-            if (fullname == null || fullname.Length < 5 || fullname.Length > 25)
-                return false;
-            if (fullname.Contains("  "))
-                return false;
-            foreach (var i in fullname)
-            {
-                if (i == ' ')
-                    continue;
-                if (!char.IsLetter(i))
-                    return false;
-            }
-            if (fullname.FirstOrDefault() == ' ' || fullname.LastOrDefault() == ' ')
-                return false;
-            return true;
         }
     }
 }

@@ -32,17 +32,19 @@ namespace user
             ResizeMode = ResizeMode.NoResize;
             SizeToContent = SizeToContent.WidthAndHeight;
         }
-        List<dbend> dbs = new List<dbend>();
+        List<dbendcenter> dbs = new List<dbendcenter>();
         private void Alluser_addremove_e(bool arg1, long arg2)
         {
             if (arg1)
             {
-                dbendwriteruser dv = new dbendwriteruser(arg2);
+                dbendcenter dv = new dbendcenter(arg2);
                 dbs.Add(dv);
             }
             else
             {
-                dbs.RemoveAll(i => i.userid == arg2);
+                var dv = dbs.FirstOrDefault(i => i.userid == arg2);
+                dv.close();
+                dbs.Remove(dv);
             }
         }
     }

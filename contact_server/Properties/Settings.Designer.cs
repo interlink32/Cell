@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace contact_server.Properties
+namespace contactserver.Properties
 {
 
 
