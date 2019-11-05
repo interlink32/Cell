@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{32227A07-E862-4156-825D-E93E6A6A72A6}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>user_service</RootNamespace>
-    <AssemblyName>user_service</AssemblyName>
+    <RootNamespace>userserver</RootNamespace>
+    <AssemblyName>userserver</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -92,6 +92,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="resource.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -13,16 +13,16 @@ namespace user
 {
     public class dbenduser : synchronizer<s_profile, s_usercontact>
     {
-        dbend<s_profile, s_usercontact> dbend;
+        dbendprovider<s_profile, s_usercontact> dbend;
         public dbenduser(long receiver) : base(e_chromosome.usercontact, receiver)
         {
-            dbend = new dbend<s_profile, s_usercontact>(receiver);
+            dbend = new dbendprovider<s_profile, s_usercontact>(receiver);
         }
-        protected override string indexid => nameof(dbenduser);
+        protected override string indexid => nameof(dbenduser) + receiver;
 
         protected override void apply(s_usercontact contact)
         {
-            var dv = dbend.dbfull.FindOne(i => i.id == contact.partnerid);
+            var dv = dbend.load(contact.partnerid);
             if (dv == null)
             {
                 dv = new dbend<s_profile, s_usercontact>.full();
@@ -34,7 +34,7 @@ namespace user
 
         protected override void apply(s_profile entity)
         {
-            var dv = dbend.dbfull.FindOne(i => i.id == entity.id);
+            var dv = dbend.load(entity.id);
             if (dv == null)
             {
                 dv = new dbend<s_profile, s_usercontact>.full();

@@ -12,11 +12,10 @@ namespace profileserver
 {
     class sync : synchronizer<s_user>
     {
-        internal static dbentity<r_profile> dbentity = new dbentity<r_profile>();
+        internal static dbentity<r_profile> dbentity = new dbentity<r_profile>("profile.db");
         public sync() : base(e_chromosome.user, (long)e_chromosome.profile)
         {
         }
-        protected override string indexid => "profilesync";
         protected override void apply(s_user entity)
         {
             var dv = dbentity.load(entity.id);

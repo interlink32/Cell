@@ -14,9 +14,9 @@ namespace localdb
     public class dbentity<entity> where entity : s_entity
     {
         LiteDatabase db;
-        public dbentity()
+        public dbentity(string fileid)
         {
-            db = new LiteDatabase(reference.root(typeof(entity).FullName));
+            db = new LiteDatabase(reference.root(fileid));
         }
         LiteCollection<entity> table => db.GetCollection<entity>();
         public LiteCollection<T> GetCollection<T>(string name)

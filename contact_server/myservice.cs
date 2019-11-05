@@ -25,24 +25,5 @@ namespace contactserver
         {
             return db.GetCollection<r_diff>("diff_" + user);
         }
-        public static LiteCollection<singlevalue> dbsingle => db.GetCollection<singlevalue>();
-        public static long index
-        {
-            get
-            {
-                var dv = dbsingle.FindOne(i => i.id == nameof(index));
-                if (dv == null)
-                    return 0;
-                return long.Parse(dv.value);
-            }
-            set
-            {
-                singlevalue dv = new singlevalue()
-                {
-                    id = nameof(index),
-                    value = value.ToString()
-                };
-            }
-        }
     }
 }

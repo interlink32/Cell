@@ -33,10 +33,10 @@ namespace searchuser
 
         textheder hdr_des = new textheder("توضیحات") { MinWidth = 300 };
         textcolumn clm_des = new textcolumn(nameof(item.description), style.textblock(), style.textbox());
-        dbendreaderuser db;
-        public body(long user) : base(user)
+       
+        public body()
         {
-            db = new dbendreaderuser(user);
+            
             body.SelectionMode = DataGridSelectionMode.Single;
             add(hdr_contact, clm_contact);
             add(hdr_fullname, clm_fulname);
@@ -44,7 +44,15 @@ namespace searchuser
             add(hdr_city, clm_city);
             add(hdr_des, clm_des);
         }
-
+        long userid = default;
+        client client = default;
+        dbendconsumer<s_profile, s_usercontact> db;
+        public override void create(long userid)
+        {
+            this.userid = userid;
+            client = new client(userid);
+            db = new dbendconsumer<s_profile, s_usercontact>(userid);
+        }
         protected async override void reset()
         {
             loadbox.mainwaiting();
@@ -61,17 +69,13 @@ namespace searchuser
                 item.client = client;
                 item.z_refresh = this.body.Items.Refresh;
                 item.copy(i);
-                item.contactf = validcontact(i.id);
+                item.contactf = db.exists(j => j.id == i.id);
                 items.Add(item);
             }
             source = items;
             loadbox.mainrelease();
         }
-        private bool validcontact(long id)
-        {
-            var dv = db.dbentity.FindOne(i => i.id == id);
-            return dv?.contact?.valid ?? false;
-        }
+
         public class item : s_profile
         {
             public client client = null;

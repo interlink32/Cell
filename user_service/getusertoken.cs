@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace user_service
+namespace userserver
 {
     class getusertoken : myservice<q_getusertoken>
     {
@@ -21,7 +21,8 @@ namespace user_service
             if (!user.active)
             {
                 user.active = true;
-                s.db.upsert(user, false);
+                s.db.upsert(user, true);
+                notify(e_chromosome.profile);
             }
             return new q_getusertoken.done()
             {

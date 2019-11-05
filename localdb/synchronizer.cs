@@ -25,7 +25,8 @@ namespace localdb
         }
         protected virtual async void sync(long obj)
         {
-            var rsv = await client.question(new q_loaddiff(sender) { index = dbindex.get(indexid) }) as q_loaddiff.doen;
+            var rsv = await client.question(new q_loaddiff(sender) { index = dbindex.get(indexid) }, receiver)
+                as q_loaddiff.doen;
             if (rsv.updatedentity.Length != 0)
             {
                 var entites = await getentities(rsv.updatedentity);
@@ -33,15 +34,13 @@ namespace localdb
                     apply(i);
             }
             foreach (var i in rsv.deletedentity)
-            {
                 delete(i);
-            }
             dbindex.set(indexid, rsv.currentindex);
         }
         protected abstract Task<entity[]> getentities(long[] ids);
         protected abstract void apply(entity entity);
         protected abstract void delete(long entity);
-        protected abstract string indexid { get; }
+        protected virtual string indexid => "sync" + GetType().FullName + typeof(entity).FullName;
     }
     public abstract class synchronizer<entity, contact> : synchronizer<entity> where entity : s_entity where contact : s_contact
     {

@@ -69,7 +69,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="r_diff.cs" />
     <Compile Include="r_profile.cs" />
     <Compile Include="searchprofile.cs" />
     <Compile Include="server.cs" />

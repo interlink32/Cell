@@ -1,4 +1,4 @@
-﻿namespace user_service
+﻿namespace userserver
 {
     partial class form
     {

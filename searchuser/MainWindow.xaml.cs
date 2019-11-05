@@ -20,10 +20,7 @@ namespace searchuser
     /// </summary>
     public partial class MainWindow : Window
     {
-        panel panel = new panel("جستجوی مخاطبان", (id) =>
-        {
-            return new body(id);
-        });
+        panel<body> panel = new panel<body>("جستجوی کاربران");
         internal static MainWindow ds;
         public MainWindow()
         {

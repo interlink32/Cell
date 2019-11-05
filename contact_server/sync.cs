@@ -1,8 +1,6 @@
-﻿using Connection;
-using Dna;
-using Dna.common;
+﻿using Dna;
 using Dna.profile;
-using LiteDB;
+using localdb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,51 +9,22 @@ using System.Threading.Tasks;
 
 namespace contactserver
 {
-    class sync
+    class sync : synchronizer<s_profile>
     {
-        public sync()
+        public sync() : base(e_chromosome.profile, (long)e_chromosome.usercontact)
         {
-            client.notifyadd(e_chromosome.profile, e_chromosome.usercontact, run);
         }
-        async void run(long obj)
+        protected override void apply(s_profile entity)
         {
-            var dv = await mainserver.q(new q_loaddiff(e_chromosome.profile) { index = s.index }) as q_loaddiff.doen;
-            foreach (var i in dv.updatedentity)
-                updateentity(i);
-            foreach (var i in dv.deletedentity)
-                deleteentity(i);
+            
         }
-        private void deleteentity(long deleteditem)
+        protected override void delete(long entity)
         {
-            foreach (var partner in s.dbcontact(deleteditem).FindAll().Select(i => i.partnerid).ToArray())
-                deleteentity(partner, deleteditem);
+            throw new NotImplementedException();
         }
-        private void deleteentity(long partner, long deleteditem)
+        protected override Task<s_profile[]> getentities(long[] ids)
         {
-            s.dbcontact(partner).Delete(i => i.partnerid == deleteditem);
-            LiteCollection<r_diff> dbdiff = s.dbdiff(partner);
-            dbdiff.Delete(k => k.partnerid == deleteditem);
-            dbdiff.Insert(new r_diff()
-            {
-                partnerid = deleteditem,
-                diiftype = difftype.deleted
-            });
-        }
-        static void updateentity(long updateditem)
-        {
-            updateentity(updateditem, updateditem);
-            foreach (var partner in s.dbcontact(updateditem).FindAll().Select(k => k.partnerid).ToArray())
-                updateentity(partner, updateditem);
-        }
-        static void updateentity(long owner, long updateditem)
-        {
-            LiteCollection<r_diff> dbdiff = s.dbdiff(owner);
-            dbdiff.Delete(k => k.partnerid == updateditem && k.diiftype == difftype.entityupdate);
-            dbdiff.Insert(new r_diff()
-            {
-                partnerid = updateditem,
-                diiftype = difftype.entityupdate
-            });
+            throw new NotImplementedException();
         }
     }
 }

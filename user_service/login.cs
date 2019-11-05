@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace user_service
+namespace userserver
 {
     class login : myservice<q_login>
     {

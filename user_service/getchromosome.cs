@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace user_service
+namespace userserver
 {
     class getchromosome : service<q_getchromosome>
     {

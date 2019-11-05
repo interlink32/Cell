@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace user_service {
+namespace userserver {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace user_service {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("user_service.resource", typeof(resource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("userserver.resource", typeof(resource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -23,7 +23,7 @@ namespace profile
     /// </summary>
     public partial class MainWindow : Window
     {
-        panel<body> panel = new panel<body>();
+        panel<body> panel = new panel<body>("پروفایل");
         public MainWindow()
         {
             InitializeComponent();

@@ -28,15 +28,7 @@ namespace controllibrary
             get => body.ItemsSource;
             set => body.ItemsSource = value;
         }
-        public readonly long user;
         public override FrameworkElement element => body;
-
-        protected client client = default;
-        public grid(long user)
-        {
-            client = new client(user);
-            this.user = user;
-        }
         public void add(heder heder, DataGridColumn column)
         {
             column.Header = heder;

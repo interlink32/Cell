@@ -9,11 +9,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace user_service
+namespace userserver
 {
     class s
     {
-        public static dbentity<r_user> db = new dbentity<r_user>();
+        public static dbentity<r_user> db = new dbentity<r_user>("user.db");
         public static LiteCollection<r_serverinfo> dbserverinfo => db.GetCollection<r_serverinfo>("serverinfo");
     }
     abstract class myservice<T> : service<T> where T : question

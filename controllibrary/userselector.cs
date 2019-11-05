@@ -23,20 +23,8 @@ namespace controllibrary
         public override FrameworkElement element => panel;
         Label lable = new Label();
         ComboBox combo = new ComboBox() { MinWidth = 400, Padding = new Thickness(5) };
-        public userselector()
+        public userselector(string text)
         {
-            panel.Children.Add(heder);
-            combo.ItemsSource = alluser.list;
-            alluser.reset_e += Alluser_reset_e;
-            combo.SelectionChanged += Combo_SelectionChanged;
-            panel.Children.Add(combo);
-            lable.Content = "انتخاب کاربر : ";
-            autoselect();
-            alluser.list.CollectionChanged += List_CollectionChanged;
-        }
-        public void titel(string text)
-        {
-            heder.Inlines.Clear();
             heder.Inlines.Add(new Run()
             {
                 FontWeight = FontWeights.Bold,
@@ -49,6 +37,14 @@ namespace controllibrary
                 FontSize = 12,
                 Text = "انتخاب کاربر"
             });
+            panel.Children.Add(heder);
+            combo.ItemsSource = alluser.list;
+            alluser.reset_e += Alluser_reset_e;
+            combo.SelectionChanged += Combo_SelectionChanged;
+            panel.Children.Add(combo);
+            lable.Content = "انتخاب کاربر : ";
+            autoselect();
+            alluser.list.CollectionChanged += List_CollectionChanged;
         }
         private void List_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {

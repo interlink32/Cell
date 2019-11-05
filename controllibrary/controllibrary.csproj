@@ -56,7 +56,6 @@
     <Compile Include="button.cs" />
     <Compile Include="checkcolumn.cs" />
     <Compile Include="combocolumn.cs" />
-    <Compile Include="db.cs" />
     <Compile Include="grid.cs" />
     <Compile Include="heder.cs" />
     <Compile Include="loadbox.cs" />

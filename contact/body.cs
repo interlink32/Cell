@@ -1,5 +1,8 @@
 ﻿using Connection;
 using controllibrary;
+using Dna;
+using Dna.profile;
+using localdb;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -29,10 +32,12 @@ namespace contact
         long userid;
         public override FrameworkElement element => grid;
         client client = default;
+        dbendconsumer<s_profile, s_contact> db;
         public override void create(long userid)
         {
-            client = new client(this.userid);
             this.userid = userid;
+            client = new client(this.userid);
+            db = new dbendconsumer<s_profile, s_contact>(userid);
             grid.Columns.Add(usercolumn);
             grid.Columns.Add(mysetting);
             grid.Columns.Add(partnersetting);

@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Connection", "Connection\Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Converter", "Converter\Converter.csproj", "{7E269173-C2B9-4370-8182-E0685BBBB7B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "user_service", "user_service\user_service.csproj", "{32227A07-E862-4156-825D-E93E6A6A72A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "userserver", "user_service\userserver.csproj", "{32227A07-E862-4156-825D-E93E6A6A72A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "message_server", "message_server\message_server.csproj", "{58DBCA15-6901-4605-8E89-A4D8C4BD6C78}"
 EndProject

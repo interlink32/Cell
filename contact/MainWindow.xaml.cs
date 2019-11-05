@@ -23,7 +23,7 @@ namespace contact
     /// </summary>
     public partial class MainWindow : Window
     {
-        panel<body> panel = new panel<body>();
+        panel<body> panel = new panel<body>("مخاطبان");
         public MainWindow()
         {
             InitializeComponent();
