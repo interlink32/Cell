@@ -7,20 +7,20 @@ namespace localdb
 {
     public class dbendprovider<entity, contact> : dbend<entity, contact> where entity : s_entity where contact : s_contact
     {
-        public dbendprovider(long receiver) : base(receiver)
+        public dbendprovider(long userid) : base(userid)
         {
+            dbdiff.Delete(i => true);
         }
         public void upsert(full full)
         {
+            var dv = userid;
             dbfull.Upsert(full);
-            dbdiff.Delete(i => i.itemid == full.id);
-            dbdiff.Insert(new diffentity() { itemid = full.id, state = true });
+            diff.set(dbdiff, full.id, difftype.update);
         }
         public void delete(long id)
         {
             dbfull.Delete(i => i.id == id);
-            dbdiff.Delete(i => i.itemid == id);
-            dbdiff.Insert(new diffentity() { itemid = id });
+            diff.set(dbdiff, id, difftype.delete);
         }
         public full load(long id)
         {

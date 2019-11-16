@@ -23,7 +23,7 @@ namespace localdb
         {
             return db.GetCollection<T>(name);
         }
-        LiteCollection<diffentity> tablediff => db.GetCollection<diffentity>();
+        LiteCollection<diff> tablediff => db.GetCollection<diff>();
 
         public bool exists(Expression<Func<entity, bool>> func)
         {
@@ -34,31 +34,16 @@ namespace localdb
         {
             table.Upsert(entity);
             if (savediff)
-                setdiff(entity.id, true);
+                diff.set(tablediff, entity.id, difftype.update);
         }
         public void delete(long id)
         {
             table.Delete(i => i.id == id);
-            setdiff(id, false);
+            diff.set(tablediff, id, difftype.delete);
         }
-        private void setdiff(long id, bool state)
+        public q_loaddiff.done getdiff(long index)
         {
-            tablediff.Delete(i => i.itemid == id);
-            tablediff.Insert(new diffentity()
-            {
-                itemid = id,
-                state = state
-            });
-        }
-        public q_loaddiff.doen getdiff(long index)
-        {
-            var dv = tablediff.Find(i => i.index > index).ToArray();
-            return new q_loaddiff.doen()
-            {
-                currentindex = dv.LastOrDefault()?.index ?? index,
-                updatedentity = dv.Where(i => i.state).Select(i => i.itemid).ToArray(),
-                deletedentity = dv.Where(i => !i.state).Select(i => i.itemid).ToArray()
-            };
+            return diff.getdiff(tablediff, index);
         }
         public entity load(long id)
         {

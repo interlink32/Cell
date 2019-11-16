@@ -33,16 +33,16 @@ namespace searchuser
 
         textheder hdr_des = new textheder("توضیحات") { MinWidth = 300 };
         textcolumn clm_des = new textcolumn(nameof(item.description), style.textblock(), style.textbox());
-       
+
         public body()
         {
-            
             body.SelectionMode = DataGridSelectionMode.Single;
             add(hdr_contact, clm_contact);
             add(hdr_fullname, clm_fulname);
             add(hdr_code, clm_code);
             add(hdr_city, clm_city);
             add(hdr_des, clm_des);
+            source = items;
         }
         long userid = default;
         client client = default;
@@ -52,33 +52,63 @@ namespace searchuser
             this.userid = userid;
             client = new client(userid);
             db = new dbendconsumer<s_profile, s_usercontact>(userid);
+            db.update_e += Db_update_e;
         }
+        private void Db_update_e(dbend<s_profile, s_usercontact>.full obj)
+        {
+            var dv = items.FirstOrDefault(i => i.id == obj.id);
+            if (dv != null)
+            {
+                dv.copy(obj.entity);
+                dv.contactf = obj.contact.valid;
+            }
+            body.Items.Refresh();
+        }
+        List<item> items = new List<item>();
         protected async override void reset()
         {
             loadbox.mainwaiting();
+            items.Clear();
             var dv = await client.question(new q_searchprofile()
             {
                 fullname = hdr_fullname.text,
                 nationalcode = hdr_code.text
             }) as q_searchprofile.done;
-            List<item> items = new List<item>();
             item item;
             foreach (var i in dv.profiles)
             {
-                item = new item();
-                item.client = client;
-                item.z_refresh = this.body.Items.Refresh;
-                item.copy(i);
-                item.contactf = db.exists(j => j.id == i.id);
+                item = new item(userid, i, db.exists(NewMethod(i)));
+                item.effect = effect;
                 items.Add(item);
             }
-            source = items;
+            body.Items.Refresh();
             loadbox.mainrelease();
         }
 
+        private static System.Linq.Expressions.Expression<Func<dbend<s_profile, s_usercontact>.full, bool>> NewMethod(s_profile i)
+        {
+            return j => j.id == i.id && j.contact.valid;
+        }
+
+        async Task effect(item arg)
+        {
+            if (arg.contact)
+                await client.question(new q_upsertcontact() { partner = arg.id, mysetting = e_contactsetting.ordinary });
+            else
+                await client.question(new q_upsertcontact() { partner = arg.id, mysetting = e_contactsetting.none });
+            body.Items.Refresh();
+        }
         public class item : s_profile
         {
-            public client client = null;
+            public Func<item, Task> effect = default;
+            public item(long owner, s_profile profile, bool contact)
+            {
+                copy(profile);
+                this.owner = owner;
+                contactf = contact;
+            }
+
+            private readonly long owner;
             public bool contactf = false;
             public bool contact
             {
@@ -90,26 +120,22 @@ namespace searchuser
             }
             async void set(bool value)
             {
+                if (id == owner)
+                    return;
                 if (contactf)
                 {
                     if (await messagebox.maindilog((null, removemessage()), "حذف شود", "لغو درخواست") == 0)
                     {
-                       
                         contactf = false;
-                        z_refresh?.Invoke();
+                        await effect(this);
                     }
                 }
                 if (value)
                 {
                     if (await messagebox.maindilog((null, addmessage()), "اضافه شود", "لغو درخواست") == 0)
                     {
-                        var dv = await client.question(new q_upsertcontact()
-                        {
-                            partner = id,
-                            mysetting = e_contactsetting.ordinary
-                        });
                         contactf = true;
-                        z_refresh?.Invoke();
+                        await effect(this);
                     }
                 }
             }

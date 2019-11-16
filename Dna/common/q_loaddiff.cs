@@ -12,7 +12,7 @@ namespace Dna.common
             z_redirect = chromosome;
         }
         public override e_permission z_permission => e_permission.server;
-        public class doen : answer
+        public class done : answer
         {
             public long currentindex = default;
             public long[] updatedentity = default;

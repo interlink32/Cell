@@ -13,9 +13,9 @@ namespace localdb
     {
         public dbendconsumer(long receiver) : base(receiver)
         {
-
+            runing();
         }
-        ObservableCollection<full> list => new ObservableCollection<full>();
+        public ObservableCollection<full> list => new ObservableCollection<full>();
         Expression<Func<full, bool>> func;
         public void search(Expression<Func<full, bool>> func)
         {
@@ -29,7 +29,7 @@ namespace localdb
         long localindex = 0;
         async void runing()
         {
-            var newindex = dbindex.get(indexid);
+            var newindex = dbdiff.Max(i => i.index).AsInt64;
             if (newindex != localindex)
             {
                 sync();
@@ -38,11 +38,12 @@ namespace localdb
             await Task.Delay(200);
             runing();
         }
+        public event Action<full> update_e;
         void sync()
         {
             var dv = dbdiff.Find(i => i.index > localindex).ToArray();
-            var updated = dv.Where(i => i.state).Select(i => i.itemid).ToArray();
-            var deleted = dv.Where(i => !i.state).Select(i => i.itemid).ToArray();
+            var updated = dv.Where(i => i.state ==  difftype.update).Select(i => i.itemid).ToArray();
+            var deleted = dv.Where(i => i.state ==  difftype.delete).Select(i => i.itemid).ToArray();
             foreach (var i in deleted)
             {
                 var item = list.FirstOrDefault(j => j.id == i);
@@ -62,6 +63,7 @@ namespace localdb
                     olditem.contact = newitem.contact;
                     olditem.entity = newitem.entity;
                 }
+                update_e?.Invoke(newitem);
             }
         }
         public bool exists(Expression<Func<full, bool>> func)

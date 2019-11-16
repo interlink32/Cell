@@ -16,7 +16,7 @@ namespace Dna.common
             public long currentindex = default;
             public long[] updatedentity = default;
             public long[] updatedcontact = default;
-            public long[] deletedcontact = default;
+            public long[] deleted = default;
         }
     }
 }

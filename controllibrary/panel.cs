@@ -28,8 +28,11 @@ namespace controllibrary
             if (!state)
             {
                 var dv = list.FirstOrDefault(i => i.userid == obj);
-                dv.close();
-                list.Remove(dv);
+                if (dv != null)
+                {
+                    dv.close();
+                    list.Remove(dv);
+                }
             }
         }
         List<T> list = new List<T>();

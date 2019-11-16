@@ -26,10 +26,12 @@ namespace profileserver
                 };
             dv.fullname = entity.fullname;
             dbentity.upsert(dv);
+            mainserver.sendnotify(e_chromosome.usercontact);
         }
         protected override void delete(long entity)
         {
             dbentity.delete(entity);
+            mainserver.sendnotify(e_chromosome.usercontact);
         }
         protected async override Task<s_user[]> getentities(long[] ids)
         {

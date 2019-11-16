@@ -11,13 +11,15 @@ namespace localdb
 {
     public abstract class synchronizer<entity> where entity : s_entity
     {
-        public readonly e_chromosome sender;
-        public readonly long receiver;
-        public synchronizer(e_chromosome sender, long receiver)
+        public readonly e_chromosome server;
+        public readonly long user;
+        public client client = null;
+        public synchronizer(e_chromosome server, long user)
         {
-            this.sender = sender;
-            this.receiver = receiver;
-            client.notifyadd(sender, receiver, sync);
+            this.server = server;
+            this.user = user;
+            client = new client(user);
+            client.notifyadd(server, user, sync);
         }
         public void close()
         {
@@ -25,8 +27,9 @@ namespace localdb
         }
         protected virtual async void sync(long obj)
         {
-            var rsv = await client.question(new q_loaddiff(sender) { index = dbindex.get(indexid) }, receiver)
-                as q_loaddiff.doen;
+            long index = dbindex.get(indexid);
+            var rsv = await client.question(new q_loaddiff(server) { index = index }, user)
+                as q_loaddiff.done;
             if (rsv.updatedentity.Length != 0)
             {
                 var entites = await getentities(rsv.updatedentity);
@@ -44,12 +47,13 @@ namespace localdb
     }
     public abstract class synchronizer<entity, contact> : synchronizer<entity> where entity : s_entity where contact : s_contact
     {
-        public synchronizer(e_chromosome sender, long receiver) : base(sender, receiver)
+        public synchronizer(e_chromosome server, long user) : base(server, user)
         {
         }
         protected async override void sync(long user)
         {
-            var rsv = await client.question(new q_loaddiffcontact(sender) { index = dbindex.get(indexid) }, user) as q_loaddiffcontact.done;
+            var rsv1 = await client.question(new q_loaddiffcontact(server) { index = dbindex.get(indexid) }, user);
+            var rsv = rsv1 as q_loaddiffcontact.done;
             if (rsv.updatedentity.Length != 0)
             {
                 var dv = await getentities(rsv.updatedentity);
@@ -58,10 +62,11 @@ namespace localdb
             }
             if (rsv.updatedcontact.Length != 0)
             {
-                var dv = await getcontacts(rsv.updatedentity);
+                var dv = await getcontacts(rsv.updatedcontact);
                 foreach (var i in dv)
                     apply(i);
             }
+            dbindex.set(indexid, rsv.currentindex);
         }
         protected abstract void apply(contact contact);
         protected abstract Task<contact[]> getcontacts(long[] ids);

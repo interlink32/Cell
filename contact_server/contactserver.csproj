@@ -54,7 +54,6 @@
   <ItemGroup>
     <Compile Include="load.cs" />
     <Compile Include="loaddiffcontact.cs" />
-    <Compile Include="r_diff.cs" />
     <Compile Include="sync.cs" />
     <Compile Include="upsert.cs" />
     <Compile Include="r_contact.cs" />

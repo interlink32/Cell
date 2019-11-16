@@ -18,8 +18,7 @@ namespace user
         {
             dbend = new dbendprovider<s_profile, s_usercontact>(receiver);
         }
-        protected override string indexid => nameof(dbenduser) + receiver;
-
+        protected override string indexid => nameof(dbenduser) + user;
         protected override void apply(s_usercontact contact)
         {
             var dv = dbend.load(contact.partnerid);
@@ -31,7 +30,6 @@ namespace user
             dv.contact = contact;
             dbend.upsert(dv);
         }
-
         protected override void apply(s_profile entity)
         {
             var dv = dbend.load(entity.id);
@@ -43,19 +41,16 @@ namespace user
             dv.entity = entity;
             dbend.upsert(dv);
         }
-
         protected override void delete(long entity)
         {
             dbend.delete(entity);
         }
-
         protected async override Task<s_usercontact[]> getcontacts(long[] ids)
         {
             var rsv = await client.question(new q_loadusercontact() { partnerids = ids })
                  as q_loadusercontact.done;
             return rsv.usercontacts;
         }
-
         protected async override Task<s_profile[]> getentities(long[] ids)
         {
             var rsv = await client.question(new q_loadallprofile() { ids = ids })

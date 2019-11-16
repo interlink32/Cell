@@ -26,7 +26,7 @@ namespace user
         public MainWindow()
         {
             InitializeComponent();
-            //alluser.addremove_e += Alluser_addremove_e;
+            alluser.addremove_e += Alluser_addremove_e;
             body = new body();
             Content = body.panel;
             ResizeMode = ResizeMode.NoResize;

@@ -1,6 +1,7 @@
 ﻿using Dna;
 using Dna.common;
 using Dna.usercontact;
+using localdb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,23 +39,19 @@ namespace contactserver
                 contact.partnersetting = partnersetting.Value;
             dbcontact.Upsert(contact);
             if (newcontact)
-                setdiff(owner, partnerid, difftype.entityupdate);
-            setdiff(owner, partnerid, difftype.contactupdate);
+                setdiff(owner, partnerid, difftype.update);
+            setdiff(owner, partnerid, difftype.updatecontact);
+            //if (contact.ownersetting == e_contactsetting.none && contact.partnersetting == e_contactsetting.none)
+            //{
+            //    dbcontact.Delete(i => i.partnerid == contact.partnerid);
+            //    setdiff(owner, partnerid, difftype.delete);
+            //}
             notify(owner);
         }
-
-        private static void setdiff(long owner, long partner, difftype diff)
+        private static void setdiff(long owner, long partner, difftype difftype)
         {
             var dbdiff = s.dbdiff(owner);
-            if (diff == difftype.deleted)
-                dbdiff.Delete(i => i.partnerid == partner);
-            else
-                dbdiff.Delete(i => i.partnerid == partner && i.diiftype == diff);
-            dbdiff.Upsert(new r_diff()
-            {
-                partnerid = partner,
-                diiftype = diff
-            });
+            diff.set(dbdiff, partner, difftype);
         }
     }
 }
