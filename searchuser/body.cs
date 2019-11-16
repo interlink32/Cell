@@ -60,7 +60,7 @@ namespace searchuser
             if (dv != null)
             {
                 dv.copy(obj.entity);
-                dv.contactf = obj.contact.valid;
+                dv.contactf = obj.contact?.valid ?? false;
             }
             body.Items.Refresh();
         }
