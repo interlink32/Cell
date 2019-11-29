@@ -1,4 +1,7 @@
 ﻿using Connection;
+using Dna.user;
+using Dna.userdata;
+using localdb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +16,6 @@ namespace controllibrary
 {
     public class userselector : uibase
     {
-        public event Action<long> user_e;
         StackPanel panel = new StackPanel()
         {
             FlowDirection = FlowDirection.RightToLeft,
@@ -23,8 +25,10 @@ namespace controllibrary
         public override FrameworkElement element => panel;
         Label lable = new Label();
         ComboBox combo = new ComboBox() { MinWidth = 400, Padding = new Thickness(5) };
-        public userselector(string text)
+        private readonly Action<long> userselect;
+        public userselector(string text, Action<long> userselect)
         {
+            this.userselect = userselect;
             heder.Inlines.Add(new Run()
             {
                 FontWeight = FontWeights.Bold,
@@ -38,17 +42,17 @@ namespace controllibrary
                 Text = "انتخاب کاربر"
             });
             panel.Children.Add(heder);
-            combo.ItemsSource = alluser.list;
-            alluser.reset_e += Alluser_reset_e;
             combo.SelectionChanged += Combo_SelectionChanged;
             panel.Children.Add(combo);
             lable.Content = "انتخاب کاربر : ";
+            combo.ItemsSource = alluser.list;
+            alluser.list.reset_e += List_reset_e;
             autoselect();
-            alluser.list.CollectionChanged += List_CollectionChanged;
         }
-        private void List_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+
+        private void List_reset_e(ocollection<s_user> obj)
         {
-            autoselect();
+            run(refresh);
         }
         private void autoselect()
         {
@@ -61,23 +65,21 @@ namespace controllibrary
                 return;
             var dv = selected;
             if (dv == null)
-                user_e?.Invoke(0);
+                userselect?.Invoke(0);
             else
-                user_e?.Invoke(dv.id);
+                userselect?.Invoke(dv.id);
         }
         bool inp = false;
-        private void Alluser_reset_e()
+        void refresh()
         {
-            run(delegate ()
-            {
-                var dv = selected;
-                inp = true;
-                combo.ItemsSource = null;
-                combo.ItemsSource = alluser.list;
-                inp = false;
-                combo.SelectedItem = dv;
-            });
+            autoselect();
+            var dv = selected;
+            inp = true;
+            combo.ItemsSource = null;
+            combo.ItemsSource = alluser.list;
+            inp = false;
+            combo.SelectedItem = dv;
         }
-        public userinfo selected => combo.SelectedValue as userinfo;
+        public s_user selected => combo.SelectedValue as s_user;
     }
 }

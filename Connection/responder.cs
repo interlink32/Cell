@@ -16,7 +16,7 @@ namespace Connection
         }
         private readonly mainserver server;
         Func<question, Task<answer>> get_Answer;
-        public responder(mainserver service, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer) : base(null)
+        public responder(mainserver service, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer) : base(service.chromosome.ToString())
         {
             mainkey = key;
             this.tcp = tcp;
@@ -45,7 +45,7 @@ namespace Connection
                     {
                         if (userid > 100)
                         {
-                            localwrite(new developererror() { code = "flfbfblflblfgfbndhvhdc" });
+                            localwrite(new error() { code = "flfbfblflblfgfbndhvhdc" });
                             return;
                         }
                     }
@@ -54,7 +54,7 @@ namespace Connection
                     {
                         if (userid == 0)
                         {
-                            localwrite(new developererror() { code = "gkdjbjbkvmdmvbkvdkv" });
+                            localwrite(new error() { code = "gkdjbjbkvmdmvbkvdkv" });
                             return;
                         }
                     }

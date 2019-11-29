@@ -9,7 +9,7 @@ namespace Dna
     {
         public string z_gene = null;
         public string z_chromosome = null;
-        public e_chromosome? z_redirect = null;
+        public string z_redirect = null;
         public gene()
         {
             var dv = get(GetType());
@@ -23,6 +23,27 @@ namespace Dna
                 full_name = full_name.Replace("Dna.", "");
             var dv = full_name.Split('.');
             return (dv[0], dv[1]);
+        }
+        static List<string> list = new List<string>();
+        public static e_chromosome get(string chromosom)
+        {
+            if (list.Count == 0)
+            {
+                lock (list)
+                {
+                    if (list.Count == 0)
+                    {
+                        for (int i = 0; i < 100; i++)
+                        {
+                            string dv = ((e_chromosome)i).ToString();
+                            if (dv == i.ToString())
+                                break;
+                            list.Add(dv);
+                        }
+                    }
+                }
+            }
+            return (e_chromosome)list.IndexOf(chromosom);
         }
     }
 }

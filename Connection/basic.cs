@@ -89,21 +89,4 @@ namespace Connection
             return chromosomes;
         }
     }
-    public class userinfo
-    {
-        public long id { get; internal set; }
-        public string fullname { get; internal set; }
-        public override string ToString() => fullname;
-        public override int GetHashCode()
-        {
-            return 0;
-        }
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return false;
-            var dv = obj as userinfo;
-            return id == dv.id;
-        }
-    }
 }

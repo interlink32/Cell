@@ -69,9 +69,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="body.cs" />
+    <Compile Include="userbody.cs" />
     <Compile Include="dbendcenter.cs" />
-    <Compile Include="dbenduser.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

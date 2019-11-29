@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Converter\Converter.csproj" />
     <ProjectReference Include="..\Dna\Dna.csproj" />
   </ItemGroup>
 

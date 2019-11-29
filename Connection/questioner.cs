@@ -61,7 +61,7 @@ namespace Connection
             list.Add(dv);
             locking.Release();
             var rsv = await dv.rt.Task;
-            if (rsv is developererror error)
+            if (rsv is error error)
                 throw new Exception(error.code);
             var space = DateTime.Now - time;
             ThreadPool.QueueUserWorkItem((o) =>

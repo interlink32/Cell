@@ -20,6 +20,13 @@ namespace controllibrary
                 Value = value
             });
         }
+        public static style combobox(bool isreadonly = true)
+        {
+            style dv = new style(typeof(ComboBox));
+            dv.add(FrameworkElement.MarginProperty, new Thickness(4));
+            dv.add(ComboBox.IsEnabledProperty, isreadonly);
+            return dv;
+        }
         public static style checkbox(string value = default)
         {
             style dv = new style(typeof(CheckBox));

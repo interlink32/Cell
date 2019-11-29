@@ -54,8 +54,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="button.cs" />
-    <Compile Include="checkcolumn.cs" />
-    <Compile Include="combocolumn.cs" />
+    <Compile Include="columncombo.cs" />
+    <Compile Include="columncheck.cs" />
+    <Compile Include="comboadapter.cs" />
     <Compile Include="grid.cs" />
     <Compile Include="heder.cs" />
     <Compile Include="loadbox.cs" />
@@ -81,7 +82,7 @@
     </Compile>
     <Compile Include="style.cs" />
     <Compile Include="textbox.cs" />
-    <Compile Include="textcolumn.cs" />
+    <Compile Include="columntext.cs" />
     <Compile Include="uiapp.cs" />
     <Compile Include="uibase.cs" />
     <Compile Include="userselector.cs" />
@@ -107,6 +108,10 @@
     <ProjectReference Include="..\Dna\Dna.csproj">
       <Project>{FE1D99EB-3DB7-44D9-B3AF-A54975E57B93}</Project>
       <Name>Dna</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\localdb\localdb.csproj">
+      <Project>{15965E42-263C-4C39-993E-0C37743AA91D}</Project>
+      <Name>localdb</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

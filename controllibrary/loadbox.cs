@@ -75,6 +75,7 @@ namespace controllibrary
             cover.Background = new SolidColorBrush() { Color = Colors.White, Opacity = .5 };
             release();
         }
+
         RotateTransform transform = new RotateTransform()
         {
             CenterX = 32,

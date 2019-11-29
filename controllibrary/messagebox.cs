@@ -90,5 +90,10 @@ namespace controllibrary
                 buttompanel.Children.Clear();
             });
         }
+
+        public static async Task maindilog(string v)
+        {
+            await maindilog((null, v));
+        }
     }
 }

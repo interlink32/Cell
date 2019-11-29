@@ -9,10 +9,4 @@
     <ProjectReference Include="..\Dna\Dna.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="controllibrary">
-      <HintPath>..\controllibrary\bin\Debug\controllibrary.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

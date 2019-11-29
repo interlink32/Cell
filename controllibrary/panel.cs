@@ -1,4 +1,5 @@
 ﻿using Connection;
+using localdb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,7 @@ namespace controllibrary
         public override FrameworkElement element => stack;
         public panel(string text)
         {
-            userselector = new userselector(text);
-            userselector.user_e += Userselector_user_e;
+            userselector = new userselector(text, userselect);
             alluser.addremove_e += Alluser_remove_e;
             stack.Children.Add(userselector.element);
             stack.Children.Add(loadbox.element);
@@ -36,7 +36,7 @@ namespace controllibrary
             }
         }
         List<T> list = new List<T>();
-        private void Userselector_user_e(long userid)
+        private void userselect(long userid)
         {
             loadbox.content = null;
             if (userid == 0)

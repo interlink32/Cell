@@ -1,5 +1,7 @@
-﻿using Dna.common;
+﻿using Dna;
+using Dna.common;
 using LiteDB;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,39 +13,33 @@ namespace localdb
     {
         [BsonId]
         public long index { get; set; }
-        public long itemid { get; set; }
+        public long entity { get; set; }
         public difftype state { get; set; }
-        public static void set(LiteCollection<diff> collection, long partnerid, difftype state)
+        public static void set(LiteCollection<diff> collection, long entity, difftype state)
         {
             if (state == difftype.delete)
-                collection.Delete(i => i.itemid == partnerid);
+                collection.Delete(i => i.entity == entity);
             else
-                collection.Delete(i => i.itemid == partnerid && i.state == state);
+                collection.Delete(i => i.entity == entity && i.state == state);
             collection.Insert(new diff()
             {
-                itemid = partnerid,
+                entity = entity,
                 state = state
             });
         }
-        public static q_loaddiff.done getdiff(LiteCollection<diff> collection, long index)
+        public static q_loaddiff.done loaddiff<T>(LiteCollection<T> dbmain, LiteCollection<diff> dbdiff, long index) where T : s_entity
         {
-            var dv = collection.Find(i => i.index > index);
+            var dv = dbdiff.Find(i => i.index > index).ToArray();
+            var updated = dv.Where(i => i.state == difftype.update).Select(i => i.entity).ToArray();
+            string entitis = null;
+            if (updated.Length != 0)
+                entitis = JsonConvert.SerializeObject(dbmain.Find(i => updated.Contains(i.id)).ToArray());
+            var deleted = dv.Where(i => i.state == difftype.delete).Select(i => i.entity).ToArray();
             return new q_loaddiff.done()
             {
                 currentindex = dv.LastOrDefault()?.index ?? index,
-                deletedentity = dv.Where(i => i.state == difftype.delete).Select(i => i.itemid).ToArray(),
-                updatedentity = dv.Where(i => i.state == difftype.update).Select(i => i.itemid).ToArray()
-            };
-        }
-        public static q_loaddiffcontact.done getdiffcontact(LiteCollection<diff> collection, long index)
-        {
-            var dv = collection.Find(i => i.index > index);
-            return new q_loaddiffcontact.done()
-            {
-                currentindex = dv.LastOrDefault()?.index ?? index,
-                deleted = dv.Where(i => i.state == difftype.delete).Select(i => i.itemid).ToArray(),
-                updatedentity = dv.Where(i => i.state == difftype.update).Select(i => i.itemid).ToArray(),
-                updatedcontact = dv.Where(i => i.state == difftype.updatecontact).Select(i => i.itemid).ToArray()
+                entites = entitis,
+                deleted = deleted
             };
         }
     }

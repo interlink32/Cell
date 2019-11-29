@@ -4,8 +4,12 @@ using System.Text;
 
 namespace Dna
 {
-    public class s_entity
+    public class s_entity : gene, Is_entity
     {
         public long id { get; set; }
+        public virtual void update(long owner, s_entity entity)
+        {
+            id = entity.id;
+        }
     }
 }

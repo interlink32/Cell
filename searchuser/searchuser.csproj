@@ -68,9 +68,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="body.cs" />
+    <Compile Include="bodysearch.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="item.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

@@ -8,8 +8,7 @@ namespace Dna
     {
         common,
         user,
-        profile,
-        usercontact,
+        userdata,
         message,
     }
 }

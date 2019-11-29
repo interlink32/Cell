@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
+using Dna.userdata;
 
 namespace Connection
 {
@@ -16,9 +18,10 @@ namespace Connection
         {
             this.userid = userid;
         }
+        static bool start = false;
         public async Task<answer> question(question question)
         {
-            return await client.question(question, userid);
+            return await client.question(userid, question);
         }
 
         //------------------------------------------------------------------------
@@ -28,6 +31,11 @@ namespace Connection
         static async Task<questioner> get(long user, string chromosome)
         {
             await qlock.WaitAsync();
+            if (!start)
+            {
+                start = true;
+                sendpulse();
+            }
             var dv = list.FirstOrDefault(i => i.userid == user && i.chromosome == chromosome);
             if (dv == null)
             {
@@ -37,7 +45,7 @@ namespace Connection
             qlock.Release();
             return dv;
         }
-        internal async static void close(long userid)
+        public async static void close(long userid)
         {
             await qlock.WaitAsync();
             var dv = list.Where(i => i.userid == userid).ToArray();
@@ -80,6 +88,10 @@ namespace Connection
         static List<notifyaction> nlist = new List<notifyaction>();
         internal async static void notify(long userid, string chromosome)
         {
+            if (userid == 3)
+            {
+
+            }
             await nlock.WaitAsync();
             var dv = nlist.Where(i => i.user == userid && i.chromosome == chromosome).ToArray();
             foreach (var i in dv)
@@ -94,16 +106,11 @@ namespace Connection
             var dv = await get(user, chromosome);
             return await dv.question(question) as T;
         }
-        public static async Task<answer> question(question question, long user = 0)
+        public static async Task<answer> question(long user, question question)
         {
             return await question<answer>(question, user);
         }
-        internal static async Task<s_user> getuser(long user)
-        {
-            var dv = await question<q_loaduser.done>(new q_loaduser() { userid = user });
-            return dv?.user;
-        }
-        internal static async void sendpulse()
+        public static async void sendpulse()
         {
             await qlock.WaitAsync();
             var dv = list.ToArray();
@@ -112,6 +119,10 @@ namespace Connection
                 i.sendpalse();
             await Task.Delay(5000);
             sendpulse();
+        }
+        public static long[] getalluser()
+        {
+            return s.dbuserlogin.Find(i => i.general).Select(i => i.id).ToArray();
         }
     }
 }

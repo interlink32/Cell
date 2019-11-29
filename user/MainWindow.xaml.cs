@@ -1,5 +1,9 @@
 ﻿using Connection;
+using Dna;
+using Dna.common;
+using Dna.userdata;
 using localdb;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,16 +26,22 @@ namespace user
     /// </summary>
     public partial class MainWindow : Window
     {
-        body body;
+        userbody body;
         public MainWindow()
         {
             InitializeComponent();
-            alluser.addremove_e += Alluser_addremove_e;
-            body = new body();
-            Content = body.panel;
-            ResizeMode = ResizeMode.NoResize;
-            SizeToContent = SizeToContent.WidthAndHeight;
+            Title = "مرکزی";
+            SizeToContent = SizeToContent.Width;
+            WindowState = WindowState.Minimized;
+            ini();
         }
+        private void ini()
+        {
+            alluser.addremove_e += Alluser_addremove_e;
+            body = new userbody();
+            Content = body.panel;
+        }
+
         List<dbendcenter> dbs = new List<dbendcenter>();
         private void Alluser_addremove_e(bool arg1, long arg2)
         {

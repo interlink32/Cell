@@ -20,13 +20,15 @@ namespace searchuser
     /// </summary>
     public partial class MainWindow : Window
     {
-        panel<body> panel = new panel<body>("جستجوی کاربران");
+        private const string title = "جستجوی کاربران";
+        panel<bodysearch> panel = new panel<bodysearch>(title);
         internal static MainWindow ds;
         public MainWindow()
         {
             ds = this;
             InitializeComponent();
-            SizeToContent = SizeToContent.Width;
+            Title = title;
+            SizeToContent = SizeToContent.WidthAndHeight;
             Content = panel.element;
         }
     }

@@ -82,19 +82,15 @@ namespace Connection
             locker.Release();
             return dv;
         }
-        public async static void sendnotify(long user)
+        public static async void notify(long user)
         {
             var all = await get(user);
             foreach (var i in all)
                 i.sendnotify();
         }
-        public static void sendnotify(e_chromosome chromosome)
-        {
-            sendnotify((long)chromosome);
-        }
         public static async Task<answer> q(question question)
         {
-            return await client.question(question, serverid);
+            return await client.question(serverid, question);
         }
     }
 }

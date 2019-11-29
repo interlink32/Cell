@@ -55,7 +55,7 @@ namespace controllibrary
         {
             get
             {
-                return filter.Text == "" ? null : filter.Text;
+                return filter.Text;
             }
         }
     }
@@ -73,6 +73,7 @@ namespace controllibrary
 
         combo filterf = new combo();
         public override combo filter => filterf;
+        public int selectedindex => filter.SelectedIndex;
     }
 
 }

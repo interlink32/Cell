@@ -23,10 +23,12 @@ namespace profile
     /// </summary>
     public partial class MainWindow : Window
     {
-        panel<body> panel = new panel<body>("پروفایل");
+        private const string title = "پروفایل";
+        panel<profilebody> panel = new panel<profilebody>(title);
         public MainWindow()
         {
             InitializeComponent();
+            Title = title;
             ResizeMode = ResizeMode.NoResize;
             SizeToContent = SizeToContent.WidthAndHeight;
             Content = panel.element;

@@ -28,13 +28,17 @@ namespace controllibrary
             get => body.ItemsSource;
             set => body.ItemsSource = value;
         }
+        public void refresh()
+        {
+            body.Items.Refresh();
+        }
         public override FrameworkElement element => body;
         public void add(heder heder, DataGridColumn column)
         {
             column.Header = heder;
-            heder.reset_e += reset;
+            heder.reset_e += resetsearch;
             body.Columns.Add(column);
         }
-        protected abstract void reset();
+        protected abstract void resetsearch();
     }
 }

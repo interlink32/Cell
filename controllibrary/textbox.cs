@@ -12,14 +12,14 @@ namespace controllibrary
     {
         public textbox()
         {
-            Padding = new Thickness(4, 2, 4, 2);
+            Padding = new Thickness(6);
         }
     }
     public class combo : ComboBox
     {
         public combo()
         {
-            Padding = new Thickness(4, 2, 4, 2);
+            Padding = new Thickness(6);
         }
     }
 }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Dna.message;
+using Dna.userdata;
+using localdb;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,15 +12,18 @@ namespace user
     class dbendcenter
     {
         internal long userid;
-        dbenduser dbenduser;
+        synccenter<s_fulluser> dbuser;
+        synccenter<s_message> dbmessage;
         public dbendcenter(long userid)
         {
             this.userid = userid;
-            dbenduser = new dbenduser(userid);
+            dbuser = new synccenter<s_fulluser>(userid);
+            dbmessage = new synccenter<s_message>(userid);
         }
         public void close()
         {
-            dbenduser.close();
+            dbuser.close();
+            dbmessage.close();
         }
     }
 }
