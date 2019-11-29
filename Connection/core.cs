@@ -13,6 +13,9 @@ namespace Connection
 {
     public class core
     {
+        const int pulseconnect = -3;
+        const int pulsevoid = -1;
+        protected const int pulsenotify = -2;
         public long userid { get; internal set; }
         public bool connected { get; internal set; }
         static converter converter = new converter();
@@ -27,7 +30,7 @@ namespace Connection
         internal async Task write(gene gene)
         {
             if (gene == null)
-                await write(getlen(-1));
+                await write(getlen(pulsevoid));
             else
             {
                 var data = converter.change(gene);
@@ -43,39 +46,30 @@ namespace Connection
         }
 
         SemaphoreSlim locker = new SemaphoreSlim(1, 1);
-        private readonly string chromosome;
-
+        public readonly string chromosome;
         private async Task write(byte[] data)
         {
             await locker.WaitAsync();
             await tcp.GetStream().WriteAsync(data, 0, data.Length);
             locker.Release();
         }
-        internal async Task<gene> servicread()
+        internal async Task<gene> serverread()
         {
             int len = await getlen();
-            if (len == -3)
-                return await servicread();
+            if (len == pulseconnect)
+                return await serverread();
             else
-                return await getgen(len);
+                return await readgene(len);
         }
         internal async Task<gene> clientread()
         {
             int len = await getlen();
-            switch (len)
-            {
-                case -1: return new voidanswer();
-                case -2:
-                    {
-                        client.notify(userid, chromosome);
-                        return await clientread();
-                    }
-                case -3:
-                    return await clientread();
-            }
-            return await getgen(len);
+            if (len == pulsevoid)
+                return new voidanswer();
+            else
+                return await readgene(len);
         }
-        private async Task<gene> getgen(int len)
+        private async Task<gene> readgene(int len)
         {
             var data = new byte[len];
             await tcp.GetStream().ReadAsync(data, 0, len);
@@ -84,30 +78,19 @@ namespace Connection
             var dv = converter.change(data) as gene;
             return dv;
         }
-        private async Task<int> getlen()
+        public async Task<int> getlen()
         {
             var data = new byte[4];
             await tcp.GetStream().ReadAsync(data, 0, data.Length);
             var len = BitConverter.ToInt32(data, 0);
             return len;
         }
-        internal async Task chacknotify()
-        {
-            if (tcp.Available >= 4)
-            {
-                var dv = await getlen();
-                if (dv == -2)
-                    client.notify(userid, chromosome);
-                else
-                    throw new Exception("kgkdjbjfjbjcdbjdnvjd");
-            }
-        }
         public async void sendnotify()
         {
             if (connected)
                 try
                 {
-                    await write(getlen(-2));
+                    await write(getlen(pulsenotify));
                 }
                 catch { connected = false; }
         }
@@ -116,7 +99,7 @@ namespace Connection
             if (connected)
                 try
                 {
-                    await write(getlen(-3));
+                    await write(getlen(pulseconnect));
                 }
                 catch { connected = false; }
         }

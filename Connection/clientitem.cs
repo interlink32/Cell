@@ -16,16 +16,15 @@ namespace Connection
     public abstract class clientitem : core
     {
         internal s_chromosome info { get; private set; }
-        public clientitem(long id, string chromosome) : base(chromosome)
+        public clientitem(long userid, string chromosome) : base(chromosome)
         {
-            ini(id, chromosome);
-            this.chromosome = chromosome;
+            base.userid = userid;
+            ini();
         }
-        async void ini(long userid, string chromosome)
+        async void ini()
         {
             info = await basic.getchromosome(chromosome);
             mainkey = info.publickey;
-            this.userid = userid;
             runing();
         }
         protected abstract Task cycle();
@@ -54,16 +53,11 @@ namespace Connection
                 disconnect();
             }
         }
-        protected async Task<T> q<T>(question question) where T : answer
-        {
-            await write(question);
-            return await clientread() as T;
-        }
         protected async Task<answer> q(question question)
         {
-            return await q<answer>(question);
+            await write(question);
+            return await clientread() as answer;
         }
-        public string chromosome { get; }
         async Task connect()
         {
             if (connected)
@@ -86,6 +80,7 @@ namespace Connection
                 userlogin dv = await getlogin();
                 var rsv = await q(new q_login()
                 {
+                    notifier = isnotifier,
                     token = dv.token
                 });
                 if (!(rsv is q_login.done))
@@ -95,24 +90,21 @@ namespace Connection
                 }
             }
             connected = true;
-            client.notify(userid, chromosome);
+            notifier.notifyevent(userid, chromosome);
         }
         async Task<userlogin> getlogin()
         {
             userlogin userlogin = null;
-            userlogin = s.dbuserlogin.FindOne(i => i.id == userid);
             while (userlogin == null)
             {
                 userlogin = s.dbuserlogin.FindOne(i => i.id == userid);
-                if (userlogin == null)
-                {
-                    var dv = s.dbuserlogin.FindAll().ToArray();
-                }
                 await Task.Delay(200);
             }
             return userlogin;
         }
         bool closef = false;
+        protected bool isnotifier;
+
         internal void close()
         {
             disconnect();

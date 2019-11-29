@@ -21,11 +21,11 @@ namespace localdb
             this.server = gene.get(typeof(entity)).chromosom;
             this.userid = userid;
             client = new client(userid);
-            client.notifyadd(gene.get(server), userid, sync);
+            notifier.notifyadd(gene.get(server), userid, sync);
         }
         public void close()
         {
-            client.notifyremove(sync);
+            notifier.notifyremove(sync);
         }
         protected virtual async void sync(long obj)
         {

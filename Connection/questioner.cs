@@ -18,14 +18,13 @@ namespace Connection
         {
             if (list.Count > 0)
             {
-                var item = await get_item();
+                var item = await getitem();
                 var dv = await q(item.question);
                 item.rt.SetResult(dv);
                 await remove_item();
             }
-            await chacknotify();
         }
-        async Task<request_task> get_item()
+        async Task<requesttask> getitem()
         {
             await locking.WaitAsync();
             var dv = list[0];
@@ -38,8 +37,8 @@ namespace Connection
             list.Remove(list[0]);
             locking.Release();
         }
-        List<request_task> list = new List<request_task>();
-        class request_task
+        List<requesttask> list = new List<requesttask>();
+        class requesttask
         {
             public question question = null;
             public TaskCompletionSource<answer> rt = new TaskCompletionSource<answer>();
@@ -53,7 +52,7 @@ namespace Connection
         internal async Task<answer> question(question request)
         {
             DateTime time = DateTime.Now;
-            var dv = new request_task()
+            var dv = new requesttask()
             {
                 question = request
             };

@@ -14,14 +14,14 @@ namespace Connection
         {
             return "ID : " + userid;
         }
-        private readonly mainserver server;
-        Func<question, Task<answer>> get_Answer;
-        public responder(mainserver service, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer) : base(service.chromosome.ToString())
+        private readonly mainserver mainserver;
+        Func<question, Task<answer>> getanswer;
+        public responder(mainserver mainserver, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer) : base(mainserver.chromosome.ToString())
         {
             mainkey = key;
             this.tcp = tcp;
-            server = service;
-            get_Answer = get_answer;
+            this.mainserver = mainserver;
+            getanswer = get_answer;
             ThreadPool.QueueUserWorkItem(reading);
             connected = true;
         }
@@ -30,7 +30,7 @@ namespace Connection
             question question = null;
             try
             {
-                if (!(await servicread() is question q))
+                if (!(await serverread() is question q))
                     throw new Exception("fjbhdjbjdjkgndjgjdkvg");
                 question = q;
             }
@@ -72,14 +72,16 @@ namespace Connection
                 case q_login dv:
                     {
                         answer rsv = null;
-                        if (server.chromosome == e_chromosome.user)
-                            rsv = await get_Answer(dv);
+                        if (mainserver.chromosome == e_chromosome.user)
+                            rsv = await getanswer(dv);
                         else
                             rsv = await mainserver.q(dv);
                         if (userid == 0 && rsv is q_login.done done)
                         {
+                            // set user id by server
                             userid = done.user.id;
-                            server.add(this);
+                            if (dv.notifier)
+                                mainserver.add(this);
                         }
                         localwrite(rsv);
                     }
@@ -87,7 +89,7 @@ namespace Connection
                 default:
                     {
                         question.z_user = userid;
-                        var res = await get_Answer(question);
+                        var res = await getanswer(question);
                         localwrite(res);
                     }
                     break;
@@ -96,8 +98,8 @@ namespace Connection
         }
         private void close()
         {
-            server.remove(this);
-            get_Answer = null;
+            mainserver.remove(this);
+            getanswer = null;
             tcp?.Close();
             tcp = null;
         }
