@@ -38,7 +38,7 @@ namespace controllibrary
         List<T> list = new List<T>();
         private void userselect(long userid)
         {
-            loadbox.content = null;
+            loadbox.child = null;
             if (userid == 0)
                 return;
             var uiapp = list.FirstOrDefault(i => i.userid == userid);
@@ -48,7 +48,7 @@ namespace controllibrary
                 uiapp.create_(userid);
                 list.Add(uiapp);
             }
-            loadbox.content = uiapp.element;
+            loadbox.child = uiapp.element;
         }
     }
 }

@@ -10,7 +10,6 @@ namespace Connection
 {
     public class converter
     {
-        //9053
         public byte[] change(gene gene)
         {
             var dv = JsonConvert.SerializeObject(gene);

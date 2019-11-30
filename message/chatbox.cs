@@ -27,7 +27,6 @@ namespace message
             Margin = new Thickness(4)
         };
         TextBox box = new TextBox() { Padding = new Thickness(2), BorderThickness = new Thickness() };
-        public override FrameworkElement element => panel;
         public readonly long userid;
         public readonly long partnerid;
         client client;
@@ -39,6 +38,7 @@ namespace message
             this.partnerid = partnerid;
             client = new client(userid);
             dbend = new syncdb<s_message, messageui>(userid);
+            child = panel;
             panel.Children.Add(body);
             DockPanel.SetDock(body, Dock.Top);
             border.Child = box;

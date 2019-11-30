@@ -45,13 +45,10 @@ namespace Connection
             return BitConverter.GetBytes(val);
         }
 
-        SemaphoreSlim locker = new SemaphoreSlim(1, 1);
         public readonly string chromosome;
         private async Task write(byte[] data)
         {
-            await locker.WaitAsync();
             await tcp.GetStream().WriteAsync(data, 0, data.Length);
-            locker.Release();
         }
         internal async Task<gene> serverread()
         {

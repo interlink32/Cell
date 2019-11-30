@@ -19,7 +19,7 @@ namespace controllibrary
         Border cover = new Border();
         Border icon = new Border();
         UIElement contentf = default;
-        public UIElement content
+        public UIElement child
         {
             get
             {
