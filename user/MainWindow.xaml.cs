@@ -31,7 +31,7 @@ namespace user
         {
             InitializeComponent();
             Title = "مرکزی";
-            SizeToContent = SizeToContent.Width;
+            SizeToContent = SizeToContent.WidthAndHeight;
             WindowState = WindowState.Minimized;
             ini();
         }

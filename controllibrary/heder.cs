@@ -10,10 +10,10 @@ namespace controllibrary
 {
     public abstract class heder : StackPanel
     {
-        public virtual event Action reset_e = default;
+        public virtual event Action<bool> reset_e = default;
         public heder()
         {
-            reset_e?.Invoke();
+            reset_e?.Invoke(true);
         }
     }
     public class lableheder : heder<Label>
@@ -39,16 +39,15 @@ namespace controllibrary
     }
     public class textheder : heder<textbox>
     {
-        public override event Action reset_e;
+        public override event Action<bool> reset_e;
         textbox filterf = new textbox();
         public textheder(string text) : base(text)
         {
-            filter.KeyDown += Filter_KeyDown;
+            filter.KeyUp += Filter_KeyDown;
         }
         private void Filter_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if (e.Key == System.Windows.Input.Key.Enter)
-                reset_e?.Invoke();
+            reset_e?.Invoke(e.Key == System.Windows.Input.Key.Enter);
         }
         public override textbox filter => filterf;
         public string text
@@ -61,19 +60,18 @@ namespace controllibrary
     }
     public class comboheder : heder<combo>
     {
-        public override event Action reset_e;
+        public override event Action<bool> reset_e;
         public comboheder(string text) : base(text)
         {
             filter.SelectionChanged += Filter_SelectionChanged;
         }
         private void Filter_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            reset_e?.Invoke();
+            reset_e?.Invoke(true);
         }
 
         combo filterf = new combo();
         public override combo filter => filterf;
         public int selectedindex => filter.SelectedIndex;
     }
-
 }

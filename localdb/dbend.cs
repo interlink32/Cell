@@ -28,9 +28,11 @@ namespace localdb
             runing();
         }
         long localindex = 0;
+        public event Action research_e;
         public void search(Expression<Func<entity, bool>> func)
         {
             this.func = func;
+            research_e?.Invoke();
             var dv = dbmain.Find(func).ToList();
             foreach (var i in dv)
                 update(i);

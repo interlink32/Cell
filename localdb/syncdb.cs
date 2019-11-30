@@ -10,10 +10,14 @@ namespace localdb
 {
     public class syncdb<input, output> : dbend<input> where input : s_entity where output : Is_entity, new()
     {
-        public ocollection<output> list = new ocollection<output>();
+        public readonly ocollection<output> list = new ocollection<output>();
         public syncdb(long userid) : base(userid)
         {
-
+            research_e += Syncdb_research_e;
+        }
+        private void Syncdb_research_e()
+        {
+            list.Clear();   
         }
         public override event Action<long> delete_e;
         internal override void delete(long entity)

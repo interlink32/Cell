@@ -39,6 +39,6 @@ namespace controllibrary
             heder.reset_e += resetsearch;
             body.Columns.Add(column);
         }
-        protected abstract void resetsearch();
+        protected abstract void resetsearch(bool online);
     }
 }

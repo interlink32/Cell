@@ -74,10 +74,18 @@ namespace searchuser
         }
 
         ocollection<item> items = new ocollection<item>();
-        protected async override void resetsearch()
+        protected async override void resetsearch(bool online)
         {
+            if (!online)
+                return;
             loadbox.mainwaiting();
-            var rsv = await client.question(userid, new q_searchuser() { }) as q_searchuser.done;
+            var rsv = await client.question(userid, new q_searchuser()
+            {
+                fullname = hdr_fullname.text,
+                city = hdr_city.text,
+                description = hdr_des.text,
+                tell = hdr_tell.text
+            }) as q_searchuser.done;
             items.Clear();
             foreach (var i in rsv.users)
             {

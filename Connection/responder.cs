@@ -33,6 +33,7 @@ namespace Connection
                 if (!(await serverread() is question q))
                     throw new Exception("fjbhdjbjdjkgndjgjdkvg");
                 question = q;
+                question.z_normalize();
             }
             catch
             {

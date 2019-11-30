@@ -26,9 +26,15 @@ namespace usercontact
             db = new syncdb<s_fulluser, item>(userid);
             body.ItemsSource = db.list;
         }
-        protected override void resetsearch()
+        protected override void resetsearch(bool online)
         {
-            db.search(i => true);
+            db.search(i => check(i));
+        }
+        bool check(s_fulluser fulluser)
+        {
+                if (fulluser.user.fullname.Contains(hdr_fullname.text))
+                    return true;
+            return false;
         }
     }
 }
