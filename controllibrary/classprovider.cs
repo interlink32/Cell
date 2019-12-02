@@ -9,16 +9,17 @@ namespace controllibrary
 {
     public class classprovider<T> where T : classp, new()
     {
-        Timer timer;
         public classprovider()
         {
-            timer = new Timer(callback, null, 0, 2000);
+            callback();
         }
-        async void callback(object state)
+        async void callback()
         {
             await locker.WaitAsync();
             list.RemoveAll(i => DateTime.Now - i.lastused > TimeSpan.FromSeconds(10));
             locker.Release();
+            await Task.Delay(1000 * 10);
+            callback();
         }
         List<T> list = new List<T>();
         SemaphoreSlim locker = new SemaphoreSlim(1, 1);
