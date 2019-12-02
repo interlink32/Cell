@@ -55,10 +55,16 @@ namespace Connection
             throw new Exception("No network adapters with an IPv4 address in the system!");
         }
         static string rootf = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Caaa\\";
-        public static string root(string name)
+        public static string root(string name, string subdirectory = null)
         {
             Directory.CreateDirectory(rootf);
-            return rootf + name;
+            if (subdirectory == null)
+                return rootf + name;
+            else
+            {
+                Directory.CreateDirectory(rootf + @"/" + subdirectory);
+                return rootf + @"/" + subdirectory;
+            }
         }
     }
 }

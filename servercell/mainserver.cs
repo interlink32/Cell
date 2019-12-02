@@ -1,4 +1,5 @@
-﻿using Dna;
+﻿using Connection;
+using Dna;
 using Dna.common;
 using Dna.user;
 using System;
@@ -10,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Connection
+namespace servercell
 {
     public abstract class mainserver
     {
@@ -27,7 +28,7 @@ namespace Connection
         {
             if (ds != null)
                 throw new Exception("lbkdkbmfkbjdnfdjbncjvndbjn");
-            ds = this;
+             ds = this;
             serverid = (long)chromosome;
             elementsF = elements;
             foreach (var i in elementsF)
@@ -39,8 +40,7 @@ namespace Connection
         }
         async void login()
         {
-            if (!s.dbuserlogin.Exists(i => i.id == (int)chromosome))
-                await basic.serverlogin(chromosome, password);
+            await basic.serverlogin(chromosome, password);
         }
 
         service[] elementsF = null;

@@ -129,6 +129,10 @@
       <Project>{15965E42-263C-4C39-993E-0C37743AA91D}</Project>
       <Name>localdb</Name>
     </ProjectReference>
+    <ProjectReference Include="..\servercell\servercell.csproj">
+      <Project>{1AE8A055-B69F-4C86-BE3D-852BAA64F79E}</Project>
+      <Name>servercell</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

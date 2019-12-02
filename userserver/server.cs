@@ -1,6 +1,7 @@
 ﻿using Connection;
 using Dna;
 using Dna.user;
+using servercell;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +51,7 @@ namespace userserver
             }, false);
             createitem(e_chromosome.user, "kfkbfkbfmbmgkbkcmbmfmbkf");
             createitem(e_chromosome.message, "lhlflbkfbkdbcdvdcfhdhvgdgvhdbvhdnvjcjsd");
+            createitem(e_chromosome.file, "kgkdlbfmbjgnbcmsbmdvmxmsmbdngndmvlx");
         }
         private static void createitem(e_chromosome chromosome, string password)
         {

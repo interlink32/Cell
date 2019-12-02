@@ -54,9 +54,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="button.cs" />
+    <Compile Include="classprovider.cs" />
     <Compile Include="columncombo.cs" />
     <Compile Include="columncheck.cs" />
     <Compile Include="comboadapter.cs" />
+    <Compile Include="database.cs" />
     <Compile Include="grid.cs" />
     <Compile Include="heder.cs" />
     <Compile Include="loadbox.cs" />

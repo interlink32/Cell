@@ -63,11 +63,6 @@ namespace Connection
             if (rsv is error error)
                 throw new Exception(error.code);
             var space = DateTime.Now - time;
-            ThreadPool.QueueUserWorkItem((o) =>
-            {
-                report.answer_time_e?.Invoke((long)space.TotalMilliseconds, request.z_chromosome);
-            });
-            report.cunter++;
             return rsv;
         }
     }

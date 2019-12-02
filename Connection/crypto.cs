@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Connection
 {
-    class crypto
+    public class crypto
     {
         public static (byte[] public_key, byte[] private_key) create_asymmetrical_keys()
         {

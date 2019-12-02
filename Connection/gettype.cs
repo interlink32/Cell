@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Connection
 {
-    class get_type
+    class gettype
     {
         static List<Type> list = new List<Type>();
         static Assembly assembly = Assembly.GetAssembly(typeof(Dna.gene));

@@ -5,8 +5,9 @@ using System;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
+using Connection;
 
-namespace Connection
+namespace servercell
 {
     class responder : core
     {
@@ -24,6 +25,14 @@ namespace Connection
             getanswer = get_answer;
             ThreadPool.QueueUserWorkItem(reading);
             connected = true;
+        }
+        internal async Task<gene> serverread()
+        {
+            int len = await getlen();
+            if (len == pulseconnect)
+                return await serverread();
+            else
+                return await readgene(len);
         }
         async void reading(object o)
         {

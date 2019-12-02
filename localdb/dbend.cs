@@ -68,8 +68,13 @@ namespace localdb
                 var newitem = dbmain.FindOne(j => j.id == i);
                 if (i == notifyf.id)
                     notifyf.action(newitem);
-                if (func != null && func.Compile().Invoke(newitem))
+                var dvfunc = func;
+                if (dvfunc == null)
+                    dvfunc = j => true;
+                if (dvfunc.Compile().Invoke(newitem))
                     update(newitem);
+                else
+                    delete(newitem.id);
             }
         }
     }

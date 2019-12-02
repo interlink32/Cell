@@ -10,5 +10,6 @@ namespace Dna
         user,
         userdata,
         message,
+        file,
     }
 }

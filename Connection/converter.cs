@@ -21,7 +21,7 @@ namespace Connection
         {
             var dv = Encoding.UTF8.GetString(data);
             var dv2 = JsonConvert.DeserializeObject(dv, type) as gene;
-            var t = get_type.GetType(dv2.z_chromosome, dv2.z_gene);
+            var t = gettype.GetType(dv2.z_chromosome, dv2.z_gene);
             dv2 = JsonConvert.DeserializeObject(dv, t) as gene;
             return dv2;
         }

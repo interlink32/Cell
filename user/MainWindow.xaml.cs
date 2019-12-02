@@ -32,14 +32,15 @@ namespace user
             InitializeComponent();
             Title = "مرکزی";
             SizeToContent = SizeToContent.WidthAndHeight;
-            WindowState = WindowState.Minimized;
             ini();
         }
-        private void ini()
+        async void ini()
         {
             alluser.addremove_e += Alluser_addremove_e;
             body = new userbody();
             Content = body.panel;
+            await Task.Delay(2000);
+            WindowState = WindowState.Minimized;
         }
 
         List<dbendcenter> dbs = new List<dbendcenter>();
