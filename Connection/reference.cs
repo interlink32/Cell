@@ -35,7 +35,7 @@ namespace Connection
             endpoint = new IPEndPoint(validip(), 10001).ToString(),
             publickey = resource.user_public_key
         };
-        static bool local = true;
+        static bool local = false;
         public static IPAddress validip()
         {
             if (local)

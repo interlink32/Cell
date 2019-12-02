@@ -16,7 +16,12 @@ namespace controllibrary
         async void callback()
         {
             await locker.WaitAsync();
-            list.RemoveAll(i => DateTime.Now - i.lastused > TimeSpan.FromSeconds(10));
+            var dv = list.Where(i => DateTime.Now - i.lastused > TimeSpan.FromSeconds(10)).ToArray();
+            foreach (var i in dv)
+            {
+                i.dispose();
+                list.Remove(i);
+            }
             locker.Release();
             await Task.Delay(1000 * 10);
             callback();
