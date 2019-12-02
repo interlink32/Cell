@@ -57,14 +57,10 @@ namespace Connection
         static string rootf = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Caaa\\";
         public static string root(string name, string subdirectory = null)
         {
-            Directory.CreateDirectory(rootf);
             if (subdirectory == null)
                 return rootf + name;
             else
-            {
-                Directory.CreateDirectory(rootf + @"/" + subdirectory);
                 return rootf + subdirectory + @"/" + name;
-            }
         }
     }
 }

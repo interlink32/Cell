@@ -6,6 +6,7 @@ using localdb;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +33,9 @@ namespace user
             InitializeComponent();
             Title = "مرکزی";
             SizeToContent = SizeToContent.WidthAndHeight;
+            Directory.CreateDirectory(reference.root(""));
+            Directory.CreateDirectory(reference.root("", "message"));
+            Directory.CreateDirectory(reference.root("", "allapps"));
             ini();
             allapps.start();
         }
