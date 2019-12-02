@@ -22,6 +22,7 @@ namespace message
 
         public override void create(long userid)
         {
+            loadbox.element.Height = 500;
             this.userid = userid;
             members.create(userid);
             members.select_e += Members_select_e;

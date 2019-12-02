@@ -14,8 +14,7 @@ namespace messageserver
     {
         public async override Task<answer> getanswer(q_loaddiff question)
         {
-            await Task.CompletedTask;
-            return db.loaddiff(question.z_user, question.index);
+            return await db.loaddiff(question.z_user, question.index);
         }
     }
 }

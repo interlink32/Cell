@@ -51,6 +51,7 @@ namespace Connection
                 Console.Beep(2000, 500);
                 string dv = e.Message;
                 disconnect();
+                //9053 is close cycle?
             }
         }
         protected async Task<answer> q(question question)

@@ -33,6 +33,7 @@ namespace user
             Title = "مرکزی";
             SizeToContent = SizeToContent.WidthAndHeight;
             ini();
+            allapps.start();
         }
         async void ini()
         {

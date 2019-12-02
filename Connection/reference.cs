@@ -63,7 +63,7 @@ namespace Connection
             else
             {
                 Directory.CreateDirectory(rootf + @"/" + subdirectory);
-                return rootf + @"/" + subdirectory;
+                return rootf + subdirectory + @"/" + name;
             }
         }
     }

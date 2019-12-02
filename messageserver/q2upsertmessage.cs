@@ -15,7 +15,6 @@ namespace messageserver
     {
         public async override Task<answer> getanswer(q_upsertmessage question)
         {
-            await Task.CompletedTask;
             if (question.text == null || question.text == "")
                 return error.create("kgkdkdkvmfmdmvmfmmcmsdmbmd");
             s_message message = new s_message();
@@ -32,7 +31,7 @@ namespace messageserver
                 message.edited = true;
             }
             message.text = question.text;
-            db.upsert(question.z_user, question.partner, message);
+            await db.upsert(question.z_user, question.partner, message);
             return new q_upsertmessage.done();
         }
     }

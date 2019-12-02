@@ -1,4 +1,5 @@
 ﻿using Connection;
+using controllibrary;
 using Dna.common;
 using Dna.message;
 using LiteDB;
@@ -17,8 +18,22 @@ namespace messageserver
     {
         static LiteDatabase database = new LiteDatabase(reference.root("message.db"));
         static LiteCollection<s_id> dbid => database.GetCollection<s_id>("id");
-        static LiteCollection<s_message> dbmain(long owner) => database.GetCollection<s_message>("main" + owner);
-        static LiteCollection<diff> dbdiff(long owner) => database.GetCollection<diff>("diff" + owner);
+
+        static classprovider<database> dbp = new classprovider<database>();
+        static async Task<LiteDatabase> getdb(long owner)
+        {
+            return (await dbp.get(reference.root("db_" + owner + ".db", "message"))).db;
+        }
+        static async Task<LiteCollection<s_message>> dbmain(long owner)
+        {
+            var dv = await getdb(owner);
+            return dv.GetCollection<s_message>("main");
+        }
+        async static Task<LiteCollection<diff>> dbdiff(long owner)
+        {
+            var dv = await getdb(owner);
+            return dv.GetCollection<diff>("diff");
+        }
         internal static s_id getid(long messageid)
         {
             return dbid.FindOne(i => i.id == messageid);
@@ -33,22 +48,22 @@ namespace messageserver
             dbid.Insert(dv);
             return dv.id;
         }
-        public static void upsert(long sender, long reciver, s_message message)
+        public static async Task upsert(long sender, long reciver, s_message message)
         {
-            upsert_(sender, reciver, message, e_messagestate.send);
-            upsert_(reciver, sender, message, e_messagestate.receive);
+            await upsert_(sender, reciver, message, e_messagestate.send);
+            await upsert_(reciver, sender, message, e_messagestate.receive);
         }
-        static void upsert_(long owner, long partner, s_message message, e_messagestate messagestate)
+        static async Task upsert_(long owner, long partner, s_message message, e_messagestate messagestate)
         {
             message.partner = partner;
             message.messagestate = messagestate;
-            dbmain(owner).Upsert(message);
-            diff.set(dbdiff(owner), message.id, difftype.update);
+            (await dbmain(owner)).Upsert(message);
+            diff.set(await dbdiff(owner), message.id, difftype.update);
             mainserver.notify(owner);
         }
-        public static q_loaddiff.done loaddiff(long owner, long index)
+        public static async Task<q_loaddiff.done> loaddiff(long owner, long index)
         {
-            return diff.loaddiff(dbmain(owner), dbdiff(owner), index);
+            return diff.loaddiff(await dbmain(owner), await dbdiff(owner), index);
         }
     }
 }

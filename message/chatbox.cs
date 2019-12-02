@@ -17,16 +17,8 @@ namespace message
     class chatbox : loadbox
     {
         DockPanel panel = new DockPanel();
-        ListBox body = new ListBox() { BorderThickness = new Thickness(), Height = 500 };
-        Border border = new Border()
-        {
-            Padding = new Thickness(4),
-            BorderThickness = new Thickness(2),
-            CornerRadius = new CornerRadius(10),
-            BorderBrush = Brushes.Gray,
-            Margin = new Thickness(4)
-        };
-        TextBox box = new TextBox() { Padding = new Thickness(2), BorderThickness = new Thickness() };
+        ListBox body = new ListBox() { BorderThickness = new Thickness() };
+        textboxborder border = new textboxborder();
         public readonly long userid;
         public readonly long partnerid;
         client client;
@@ -39,12 +31,15 @@ namespace message
             client = new client(userid);
             dbend = new syncdb<s_message, messageui>(userid);
             child = panel;
+
+            panel.Children.Add(border.element);
+            DockPanel.SetDock(border.element, Dock.Bottom);
             panel.Children.Add(body);
-            DockPanel.SetDock(body, Dock.Top);
-            border.Child = box;
-            panel.Children.Add(border);
-            DockPanel.SetDock(border, Dock.Bottom);
-            box.KeyDown += Box_KeyDown;
+            DockPanel.SetDock(body, Dock.Bottom);
+
+         
+
+            border.textbox.KeyDown += Box_KeyDown;
             body.ItemsSource = dbend.list;
             dbend.list.reset_e += List_reset_e;
             dbend.search(i => i.partner == partnerid);
@@ -70,6 +65,7 @@ namespace message
                 setscroll();
             }
         }
+        textbox box => border.textbox;
         async void Box_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key != System.Windows.Input.Key.Enter || box.Text == "")
