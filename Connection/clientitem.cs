@@ -66,11 +66,11 @@ namespace Connection
             var endpoint = reference.getendpoint(info.endpoint);
             await tcp.ConnectAsync(endpoint.Address, endpoint.Port);
             var keys = crypto.create_symmetrical_keys();
-            var dvsend = new Task[] { sendkey(keys) };
-            if (Task.WaitAny(dvsend, 1000) == -1)
+            await write(new q_setkey()
             {
-                throw new Exception("lkbkdkbmdjbndjbmbdsfc");
-            }
+                key32 = crypto.Encrypt(keys.key32, mainkey),
+                iv16 = crypto.Encrypt(keys.iv16, mainkey)
+            });
             key32 = keys.key32;
             iv16 = keys.iv16;
             if (!(await clientread() is voidanswer))
@@ -93,15 +93,6 @@ namespace Connection
             if (isnotifier)
                 notifier.notifyevent(userid, chromosome);
         }
-        async Task sendkey((byte[] key32, byte[] iv16) keys)
-        {
-            await write(new q_setkey()
-            {
-                key32 = crypto.Encrypt(keys.key32, mainkey),
-                iv16 = crypto.Encrypt(keys.iv16, mainkey)
-            });
-        }
-
         async Task<userlogin> getlogin()
         {
             userlogin userlogin = null;

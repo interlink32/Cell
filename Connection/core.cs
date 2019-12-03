@@ -61,11 +61,18 @@ namespace Connection
         protected async Task<gene> readgene(int len)
         {
             var data = new byte[len];
-            await tcp.GetStream().ReadAsync(data, 0, len);
-            if (key32 != null)
-                data = crypto.Decrypt(data, key32, iv16);
-            var dv = converter.change(data) as gene;
-            return dv;
+            try
+            {
+                await tcp.GetStream().ReadAsync(data, 0, len);
+                if (key32 != null)
+                    data = crypto.Decrypt(data, key32, iv16);
+                var dv = converter.change(data) as gene;
+                return dv;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
         public async Task<int> getlen()
         {
