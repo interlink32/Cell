@@ -63,6 +63,8 @@ namespace Connection
             if (connected)
                 return;
             tcp = new TcpClient();
+            tcp.ReceiveBufferSize = 500;
+            tcp.SendBufferSize = 500;
             var endpoint = reference.getendpoint(info.endpoint);
             await tcp.ConnectAsync(endpoint.Address, endpoint.Port);
             var keys = crypto.create_symmetrical_keys();

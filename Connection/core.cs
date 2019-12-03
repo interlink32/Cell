@@ -46,23 +46,29 @@ namespace Connection
         }
 
         public readonly string chromosome;
+        SemaphoreSlim locker = new SemaphoreSlim(1, 1);
         private async Task write(byte[] data)
         {
             try
             {
-                int n = 0;
-                int m = 0;
-                while (n != data.Length)
-                {
-                    m = data.Length - n;
-                    m = Math.Min(m, 100);
-                    await tcp.GetStream().WriteAsync(data, n, m);
-                    n += m;
-                    await Task.Delay(10);
-                }
+                await locker.WaitAsync();
+                await tcp.GetStream().WriteAsync(data, 0, data.Length);
+                //await tcp.GetStream().WriteAsync(data, 0, 4);
+                //int n = 4;
+                //int m = 0;
+                //while (n != data.Length)
+                //{
+                //    m = data.Length - n;
+                //    m = Math.Min(m, 100);
+                //    await tcp.GetStream().WriteAsync(data, n, m);
+                //    n += m;
+                //    await Task.Delay(10);
+                //}
+                locker.Release();
             }
             catch (Exception e)
             {
+                locker.Release();
                 throw new Exception(e.Message);
             }
         }
@@ -95,9 +101,16 @@ namespace Connection
         public async Task<int> getlen()
         {
             var data = new byte[4];
-            await tcp.GetStream().ReadAsync(data, 0, data.Length);
-            var len = BitConverter.ToInt32(data, 0);
-            return len;
+            try
+            {
+                await tcp.GetStream().ReadAsync(data, 0, data.Length);
+                var len = BitConverter.ToInt32(data, 0);
+                return len;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
         public async void sendnotify()
         {
