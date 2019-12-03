@@ -15,12 +15,9 @@ namespace userserver
         public async override Task<answer> getanswer(q_test question)
         {
             await Task.CompletedTask;
-            byte[] data = new byte[question.outputlength];
-            basic.random.NextBytes(data);
             return new q_test.done()
             {
-                inputlength = question.input.Length,
-                output = data
+                output = question.input
             };
         }
     }

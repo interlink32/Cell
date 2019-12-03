@@ -45,29 +45,31 @@ namespace Connection
         }
         public static byte[] Encrypt(byte[] data, byte[] Key, byte[] IV)
         {
-            MemoryStream memoryStream;
-            CryptoStream cryptoStream;
-            Rijndael rijndael = Rijndael.Create();
-            rijndael.Key = Key;
-            rijndael.IV = IV;
-            memoryStream = new MemoryStream();
-            cryptoStream = new CryptoStream(memoryStream, rijndael.CreateEncryptor(), CryptoStreamMode.Write);
-            cryptoStream.Write(data, 0, data.Length);
-            cryptoStream.Close();
-            return memoryStream.ToArray();
+            return data;
+            //MemoryStream memoryStream;
+            //CryptoStream cryptoStream;
+            //Rijndael rijndael = Rijndael.Create();
+            //rijndael.Key = Key;
+            //rijndael.IV = IV;
+            //memoryStream = new MemoryStream();
+            //cryptoStream = new CryptoStream(memoryStream, rijndael.CreateEncryptor(), CryptoStreamMode.Write);
+            //cryptoStream.Write(data, 0, data.Length);
+            //cryptoStream.Close();
+            //return memoryStream.ToArray();
         }
         public static byte[] Decrypt(byte[] data, byte[] Key, byte[] IV)
         {
-            MemoryStream memoryStream;
-            CryptoStream cryptoStream;
-            Rijndael rijndael = Rijndael.Create();
-            rijndael.Key = Key;
-            rijndael.IV = IV;
-            memoryStream = new MemoryStream();
-            cryptoStream = new CryptoStream(memoryStream, rijndael.CreateDecryptor(), CryptoStreamMode.Write);
-            cryptoStream.Write(data, 0, data.Length);
-            cryptoStream.Close();
-            return memoryStream.ToArray();
+            return data;
+            //MemoryStream memoryStream;
+            //CryptoStream cryptoStream;
+            //Rijndael rijndael = Rijndael.Create();
+            //rijndael.Key = Key;
+            //rijndael.IV = IV;
+            //memoryStream = new MemoryStream();
+            //cryptoStream = new CryptoStream(memoryStream, rijndael.CreateDecryptor(), CryptoStreamMode.Write);
+            //cryptoStream.Write(data, 0, data.Length);
+            //cryptoStream.Close();
+            //return memoryStream.ToArray();
         }
     }
 }
