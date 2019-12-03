@@ -31,7 +31,8 @@ namespace userserver
                     new q2loaddiff(),
                     new q2upsertuser(),
                     new q2searchuser(),
-                    new q2upsertcontact()
+                    new q2upsertcontact(),
+                    new q2test()
                 };
             }
         }

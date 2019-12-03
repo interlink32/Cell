@@ -68,6 +68,7 @@
     <Compile Include="q2login.cs" />
     <Compile Include="myservice.cs" />
     <Compile Include="q2searchuser.cs" />
+    <Compile Include="q2test.cs" />
     <Compile Include="q2upsertcontact.cs" />
     <Compile Include="resource.Designer.cs">
       <AutoGen>True</AutoGen>
