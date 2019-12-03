@@ -52,13 +52,13 @@ namespace Connection
             {
                 int n = 0;
                 int m = 0;
-                while (m != data.Length)
+                while (n != data.Length)
                 {
-                    m = n + 100;
-                    m = Math.Min(m, data.Length);
+                    m = data.Length - n;
+                    m = Math.Min(m, 100);
                     await tcp.GetStream().WriteAsync(data, n, m);
+                    n += m;
                     await Task.Delay(10);
-                    n = m;
                 }
             }
             catch (Exception e)
