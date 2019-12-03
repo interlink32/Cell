@@ -48,7 +48,23 @@ namespace Connection
         public readonly string chromosome;
         private async Task write(byte[] data)
         {
-            await tcp.GetStream().WriteAsync(data, 0, data.Length);
+            try
+            {
+                int n = 0;
+                int m = 0;
+                while (m != data.Length)
+                {
+                    m = n + 100;
+                    m = Math.Min(m, data.Length);
+                    await tcp.GetStream().WriteAsync(data, n, m);
+                    await Task.Delay(10);
+                    n = m;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
         internal async Task<gene> clientread()
         {
@@ -64,6 +80,8 @@ namespace Connection
             await tcp.GetStream().ReadAsync(data, 0, len);
             try
             {
+                if (len == 0)
+                    throw new Exception("data len == 0");
                 if (key32 != null)
                     data = crypto.Decrypt(data, key32, iv16);
             }

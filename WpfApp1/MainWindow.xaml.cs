@@ -29,12 +29,18 @@ namespace WpfApp1
         int n = 3000;
         async void Button_Click(object sender, RoutedEventArgs e)
         {
-            byte[] data = new byte[n];
+            byte[] data = new byte[int.Parse(textbox.Text)];
             basic.random.NextBytes(data);
             var dv = await client.question(client.getalluser()[0], new q_test()
             {
                 input = data
-            });
+            }) as q_test.done;
+            if (data.SequenceEqual(dv.output))
+                Console.Beep(500, 200);
+            else
+            {
+
+            }
         }
     }
 }
