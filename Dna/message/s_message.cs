@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Dna.message
 {
-    public class s_message : s_entity2D
+    public class s_message : s_entity
     {
+        public long partner { get; set; }
         public e_messagestate messagestate { get; set; }
         public string text { get; set; }
         public DateTime time { get; set; }

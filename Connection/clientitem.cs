@@ -73,7 +73,8 @@ namespace Connection
             });
             key32 = keys.key32;
             iv16 = keys.iv16;
-            if (!(await clientread() is textanswer textanswer))
+            var rsv2 = await clientread();
+            if (!(rsv2 is textanswer))
                 throw new Exception("lkdkbjkbkfmbkcskbmdkb");
             if (userid != 0)
             {

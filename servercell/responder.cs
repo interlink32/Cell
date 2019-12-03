@@ -76,7 +76,7 @@ namespace servercell
                     {
                         key32 = crypto.Decrypt(dv.key32, mainkey);
                         iv16 = crypto.Decrypt(dv.iv16, mainkey);
-                        trywrite(new textanswer() { text = "OK" });
+                        trywrite(new textanswer());
                     }
                     break;
                 case q_login dv:

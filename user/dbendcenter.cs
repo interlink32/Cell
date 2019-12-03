@@ -22,8 +22,8 @@ namespace user
         }
         public void close()
         {
-            dbuser.close();
-            dbmessage.close();
+            dbuser?.close();
+            dbmessage?.close();
         }
     }
 }
