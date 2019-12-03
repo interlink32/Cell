@@ -55,7 +55,7 @@ namespace servercell
                     {
                         if (userid > 100)
                         {
-                            localwrite(new error() { code = "flfbfblflblfgfbndhvhdc" });
+                            trywrite(new error() { code = "flfbfblflblfgfbndhvhdc" });
                             return;
                         }
                     }
@@ -64,7 +64,7 @@ namespace servercell
                     {
                         if (userid == 0)
                         {
-                            localwrite(new error() { code = "gkdjbjbkvmdmvbkvdkv" });
+                            trywrite(new error() { code = "gkdjbjbkvmdmvbkvdkv" });
                             return;
                         }
                     }
@@ -76,7 +76,7 @@ namespace servercell
                     {
                         key32 = crypto.Decrypt(dv.key32, mainkey);
                         iv16 = crypto.Decrypt(dv.iv16, mainkey);
-                        localwrite(null);
+                        trywrite(new textanswer() { text = "OK" });
                     }
                     break;
                 case q_login dv:
@@ -93,14 +93,14 @@ namespace servercell
                             if (dv.notifier)
                                 mainserver.add(this);
                         }
-                        localwrite(rsv);
+                        trywrite(rsv);
                     }
                     break;
                 default:
                     {
                         question.z_user = userid;
                         var res = await getanswer(question);
-                        localwrite(res);
+                        trywrite(res);
                     }
                     break;
             }
@@ -128,7 +128,7 @@ namespace servercell
                 close();
             }
         }
-        internal async void localwrite(gene gene)
+        internal async void trywrite(gene gene)
         {
             try
             {
