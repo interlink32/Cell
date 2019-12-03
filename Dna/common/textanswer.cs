@@ -9,7 +9,7 @@ namespace Dna.common
         public byte[] text = null;
         public textanswer()
         {
-            text = new byte[30000];
+            text = new byte[300];
             for (int i = 0; i < text.Length; i++)
             {
                 text[i] = (byte)(i + 5);
