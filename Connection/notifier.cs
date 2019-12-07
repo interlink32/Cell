@@ -16,9 +16,6 @@ namespace Connection
         }
         protected async override Task cycle()
         {
-            var dv = await getlen();
-            if (dv != pulsenotify)
-                throw new Exception("bldfgkkjbjfnjbjgnvjdjbmdfkbk");
             notifyevent(userid, chromosome);
         }
         static SemaphoreSlim nlock = new SemaphoreSlim(1, 1);
@@ -85,6 +82,10 @@ namespace Connection
                 i.sendpalse();
             await Task.Delay(5000);
             sendpulse();
+        }
+        private void sendpalse()
+        {
+            throw new NotImplementedException();
         }
     }
 }
