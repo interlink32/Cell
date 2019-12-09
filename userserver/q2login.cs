@@ -1,4 +1,4 @@
-﻿using Connection;
+﻿using stemcell;
 using Dna;
 using Dna.user;
 using System;
@@ -18,7 +18,7 @@ namespace userserver
             if (dv == null)
                 return new q_login.invalid();
             else
-                return new q_login.done() { user = dv.clone() };
+                return new q_login.done() { userid = dv.id };
         }
     }
 }

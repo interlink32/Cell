@@ -1,142 +1,98 @@
-﻿using Dna;
-using Dna.user;
-using Dna.common;
-using System;
+﻿using System;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
-using Connection;
+using core;
+using Dna;
+using Dna.common;
+using Dna.user;
+using stemcell;
 
 namespace servercell
 {
-    class responder : core
+    internal class responder : tcpserver
     {
-        public override string ToString()
+        private mainserver mainserver;
+        private Func<question, Task<answer>> getanswerf;
+        public long userid { get; private set; }
+        public responder(mainserver mainserver, TcpClient tcp, byte[] privatekey, Func<question, Task<answer>> getanswer) : base(tcp, privatekey)
         {
-            return "ID : " + userid;
-        }
-        private readonly mainserver mainserver;
-        Func<question, Task<answer>> getanswer;
-        public responder(mainserver mainserver, TcpClient tcp, byte[] key, Func<question, Task<answer>> get_answer) : base(mainserver.chromosome.ToString())
-        {
-            mainkey = key;
-            this.tcp = tcp;
             this.mainserver = mainserver;
-            getanswer = get_answer;
-            ThreadPool.QueueUserWorkItem(reading);
-            connected = true;
+            this.getanswerf = getanswer;
         }
-        internal async Task<gene> serverread()
+        protected override void close()
         {
-            int len = await getlen();
-            if (len == pulseconnect)
-                return await serverread();
-            else
-                return await readgene(len);
+            mainserver.remove(this);
         }
-        async void reading(object o)
+        protected override async Task<byte[]> getanswer(byte[] data)
         {
-            question question = null;
-            try
-            {
-                if (!(await serverread() is question q))
-                    throw new Exception("fjbhdjbjdjkgndjgjdkvg");
-                question = q;
-                question.z_normalize();
-            }
-            catch
-            {
-                close();
-                return;
-            }
+            var gene = converter.change(data) as question;
+            answer answer = await answer2(gene);
+            data = converter.change(answer);
+            return data;
+        }
+        async Task<answer> answer2(question question)
+        {
             switch (question.z_permission)
             {
-                case e_permission.server:
+                case e_permission.free:
                     {
-                        if (userid > 100)
-                        {
-                            trywrite(new error() { code = "flfbfblflblfgfbndhvhdc" });
-                            return;
-                        }
+                        if (question is q_login q_login)
+                            return await login(q_login);
+                        else
+                            return await getanswerf(question);
                     }
-                    break;
                 case e_permission.user:
                     {
                         if (userid == 0)
-                        {
-                            trywrite(new error() { code = "gkdjbjbkvmdmvbkvdkv" });
-                            return;
-                        }
-                    }
-                    break;
-            }
-            switch (question)
-            {
-                case q_setkey dv:
-                    {
-                        key32 = crypto.Decrypt(dv.key32, mainkey);
-                        iv16 = crypto.Decrypt(dv.iv16, mainkey);
-                        trywrite(new textanswer());
-                    }
-                    break;
-                case q_login dv:
-                    {
-                        answer rsv = null;
-                        if (mainserver.chromosome == e_chromosome.user)
-                            rsv = await getanswer(dv);
+                            return error.create("blfnkgmbknfkbmmbmfmb");
                         else
-                            rsv = await mainserver.q(dv);
-                        if (userid == 0 && rsv is q_login.done done)
                         {
-                            // set user id by server
-                            userid = done.user.id;
-                            if (dv.notifier)
-                                mainserver.add(this);
+                            question.z_user = userid;
+                            return await getanswerf.Invoke(question);
                         }
-                        trywrite(rsv);
                     }
-                    break;
+                case e_permission.server:
+                    {
+                        throw new Exception("gfkbkdkbmf");
+                    }
                 default:
                     {
-                        question.z_user = userid;
-                        var res = await getanswer(question);
-                        trywrite(res);
+                        throw new Exception("dkmrkkfmdmbmc");
                     }
-                    break;
             }
-            ThreadPool.QueueUserWorkItem(reading);
         }
-        private void close()
+
+        private async Task<answer> login(q_login question)
         {
-            mainserver.remove(this);
-            getanswer = null;
-            tcp?.Close();
-            tcp = null;
-        }
-        internal void removepulse()
-        {
-            try
+            if (mainserver.chromosome == e_chromosome.user)
             {
-                if (tcp.Available > 0)
+                var dv = await getanswerf(question);
+                if (dv is q_login.done done)
                 {
-                    byte[] buffer = new byte[tcp.Available];
-                    tcp.GetStream().Read(buffer, 0, buffer.Length);
+                    if (userid == 0)
+                    {
+                        userid = done.userid;
+                        if (question.notifier)
+                            mainserver.add(this);
+                    }
                 }
+                return dv;
             }
-            catch
+            else
             {
-                close();
-            }
-        }
-        internal async void trywrite(gene gene)
-        {
-            try
-            {
-                await write(gene);
-            }
-            catch
-            {
-                close();
+                if (userid != 0)
+                {
+                    Console.Beep();
+                    throw new Exception("lblflblgbkfmnmfnkfknkfkb");
+                }
+                var dv = await client.question(0, question);
+                if (dv is q_login.done done)
+                {
+                    userid = done.userid;
+                    if (question.notifier)
+                        mainserver.add(this);
+                }
+                return dv;
             }
         }
     }

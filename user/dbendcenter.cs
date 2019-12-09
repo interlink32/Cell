@@ -13,17 +13,17 @@ namespace user
     {
         internal long userid;
         synccenter<s_fulluser> dbuser;
-        synccenter<s_message> dbmessage;
+        //synccenter<s_message> dbmessage;
         public dbendcenter(long userid)
         {
             this.userid = userid;
             dbuser = new synccenter<s_fulluser>(userid);
-            dbmessage = new synccenter<s_message>(userid);
+            //dbmessage = new synccenter<s_message>(userid);
         }
         public void close()
         {
             dbuser?.close();
-            dbmessage?.close();
+           // dbmessage?.close();
         }
     }
 }

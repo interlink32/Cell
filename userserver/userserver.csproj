@@ -35,11 +35,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="core">
+      <HintPath>..\core\bin\Debug\netstandard2.0\core.dll</HintPath>
+    </Reference>
     <Reference Include="LiteDB">
       <HintPath>..\user\bin\Debug\LiteDB.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\user\bin\Debug\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="stemcell">
+      <HintPath>..\stemcell\bin\Debug\netstandard2.0\stemcell.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -128,10 +134,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Connection\Connection.csproj">
-      <Project>{2463C0C6-3D96-4D0C-9780-3D70BC5A54D8}</Project>
-      <Name>Connection</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dna\Dna.csproj">
       <Project>{FE1D99EB-3DB7-44D9-B3AF-A54975E57B93}</Project>
       <Name>Dna</Name>

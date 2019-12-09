@@ -1,4 +1,4 @@
-﻿using Connection;
+﻿using stemcell;
 using Dna;
 using Dna.common;
 using Dna.user;
@@ -28,7 +28,7 @@ namespace servercell
         {
             if (ds != null)
                 throw new Exception("lbkdkbmfkbjdnfdjbncjvndbjn");
-             ds = this;
+            ds = this;
             serverid = (long)chromosome;
             elementsF = elements;
             foreach (var i in elementsF)
@@ -86,7 +86,7 @@ namespace servercell
         {
             var all = await get(user);
             foreach (var i in all)
-                i.sendnotify();
+                i.notify(-1);
         }
         public static async Task<answer> q(question question)
         {

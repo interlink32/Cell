@@ -22,32 +22,24 @@ namespace core
             this.port = port;
             this.publickey = publickey;
         }
-        SemaphoreSlim locker = new SemaphoreSlim(1, 1);
         public async Task<byte[]> question(byte[] data)
         {
-            try
-            {
-                await locker.WaitAsync();
                 await ini();
                 var dvdata = crypto.Encrypt(data, key32, iv16);
                 await sendall(dvdata);
                 dvdata = await receiveall();
                 dvdata = crypto.Decrypt(dvdata, key32, iv16);
-                locker.Release();
                 return dvdata;
-            }
-            catch
-            {
-                Console.Beep();
-                tcp?.Close();
-                tcpf = null;
-                key32 = iv16 = null;
-                locker.Release();
-                return await question(data);
-            }
         }
-
-        internal static readonly byte[] answer = new byte[] { 24, 76, 18, 65, 32, 75 };
+        public async Task<int> getnotify()
+        {
+            var dv = await receiveall();
+            return BitConverter.ToInt32(dv, 0);
+        }
+        public void close()
+        {
+            tcpf?.Close();
+        }
         TcpClient tcpf = null;
         internal override TcpClient tcp
         {
@@ -63,11 +55,12 @@ namespace core
             tcpf = new TcpClient();
             await tcpf.ConnectAsync(iP, port);
             var dv = crypto.create_symmetrical_keys();
-            byte[] data = crypto.Encrypt(Combine(dv.key32, dv.iv16), publickey);
+            byte[] keys = Combine(dv.key32, dv.iv16);
+            byte[] data = crypto.Encrypt(keys, publickey);
             await sendall(data);
             data = await receiveall();
             data = crypto.Decrypt(data, dv.key32, dv.iv16);
-            if (!data.SequenceEqual(answer))
+            if (!data.SequenceEqual(keys))
                 throw new Exception("bkfknfkbfkmnmfknmkfkbmm");
             key32 = dv.key32;
             iv16 = dv.iv16;

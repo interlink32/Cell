@@ -1,4 +1,4 @@
-﻿using Connection;
+﻿using stemcell;
 using Dna;
 using Dna.user;
 using servercell;
@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using core;
 
 namespace userserver
 {
@@ -17,12 +18,12 @@ namespace userserver
         public q2getchromosome()
         {
             List<s_chromosome> list = new List<s_chromosome>();
-            list.Add(reference.userchromosome);
+            list.Add(basic.userchromosome);
             list.Add(new s_chromosome()
             {
                 chromosome = e_chromosome.userdata,
-                endpoint = reference.userchromosome.endpoint,
-                publickey = reference.userchromosome.publickey
+                endpoint = basic.userchromosome.endpoint,
+                publickey = basic.userchromosome.publickey
             });
             list.Add(new s_chromosome()
             {

@@ -5,7 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Connection\Connection.csproj" />
+    <ProjectReference Include="..\Dna\Dna.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="core">
+      <HintPath>..\core\bin\Debug\netstandard2.0\core.dll</HintPath>
+    </Reference>
+    <Reference Include="stemcell">
+      <HintPath>..\stemcell\bin\Debug\netstandard2.0\stemcell.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

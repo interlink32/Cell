@@ -12,7 +12,7 @@ namespace Dna.user
         public override e_permission z_permission => e_permission.free;
         public class done : answer
         {
-            public s_user user = default;
+            public long userid = default;
         }
         public class invalid : answer { }
     }

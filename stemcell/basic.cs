@@ -1,19 +1,21 @@
-﻿using Dna;
+﻿using core;
+using Dna;
 using Dna.user;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Connection
+namespace stemcell
 {
     public static class basic
     {
         public static Random random = new Random();
-        static questioner defaultitem = new questioner(0, e_chromosome.user.ToString());
-        static async Task<answer> q(question question)
+        static clientitem defaultitem = new clientitem(e_chromosome.user.ToString(), 0);
+        static async Task<answer> question(question question)
         {
             return await defaultitem.question(question);
         }
@@ -23,11 +25,11 @@ namespace Connection
             if (dv == null)
                 return;
             s.dbuserlogin.Delete(i => i.id == userid);
-            //client.close(userid);
+            client.close(userid);
         }
         public static async Task sendactivecode(string callerid)
         {
-            answer rsv = await q(new q_sendactivecode()
+            answer rsv = await question(new q_sendactivecode()
             {
                 callerid = callerid
             });
@@ -39,7 +41,7 @@ namespace Connection
             var userlogin = s.dbuserlogin.FindOne(i => i.callerid == callerid);
             if (userlogin != null)
                 return true;
-            var dv = await q(new q_getusertoken()
+            var dv = await question(new q_getusertoken()
             {
                 callerid = callerid,
                 activecode = activecode
@@ -57,7 +59,7 @@ namespace Connection
         }
         public static async Task<bool> serverlogin(e_chromosome chromosome, string password)
         {
-            var dv = await q(new q_getservertoken()
+            var dv = await question(new q_getservertoken()
             {
                 chromosome = chromosome,
                 password = password
@@ -72,10 +74,16 @@ namespace Connection
             });
             return true;
         }
+        public static s_chromosome userchromosome = new s_chromosome()
+        {
+            chromosome = e_chromosome.user,
+            endpoint = new IPEndPoint(reference.validip(), 10001).ToString(),
+            publickey = resource.user_public_key
+        };
         public static async Task<s_chromosome> getchromosome(string chromosome)
         {
             if (chromosome == e_chromosome.user.ToString())
-                return reference.userchromosome;
+                return userchromosome;
             return (await allchromosome()).First(i => i.chromosome.ToString() == chromosome);
         }
         static s_chromosome[] chromosomes = null;
@@ -84,7 +92,7 @@ namespace Connection
         {
             await getlock.WaitAsync();
             if (chromosomes == null)
-                chromosomes = (await q(new q_getchromosome()) as q_getchromosome.done).items;
+                chromosomes = (await question(new q_getchromosome()) as q_getchromosome.done).items;
             getlock.Release();
             return chromosomes;
         }

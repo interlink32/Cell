@@ -35,11 +35,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="core">
+      <HintPath>..\core\bin\Debug\netstandard2.0\core.dll</HintPath>
+    </Reference>
     <Reference Include="LiteDB, Version=4.1.4.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
       <HintPath>..\packages\LiteDB.4.1.4\lib\net40\LiteDB.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="stemcell">
+      <HintPath>..\stemcell\bin\Debug\netstandard2.0\stemcell.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -104,10 +110,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Connection\Connection.csproj">
-      <Project>{2463C0C6-3D96-4D0C-9780-3D70BC5A54D8}</Project>
-      <Name>Connection</Name>
-    </ProjectReference>
     <ProjectReference Include="..\controllibrary\controllibrary.csproj">
       <Project>{ABC1526D-E3DD-41B4-BBBA-4BB64619BC12}</Project>
       <Name>controllibrary</Name>

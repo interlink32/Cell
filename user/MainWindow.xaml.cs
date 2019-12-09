@@ -1,4 +1,4 @@
-﻿using Connection;
+﻿using stemcell;
 using Dna;
 using Dna.common;
 using Dna.userdata;
@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using core;
 
 namespace user
 {
@@ -30,12 +31,13 @@ namespace user
         userbody body;
         public MainWindow()
         {
-            InitializeComponent();
-            Title = "مرکزی";
-            SizeToContent = SizeToContent.WidthAndHeight;
             Directory.CreateDirectory(reference.root(""));
             Directory.CreateDirectory(reference.root("", "message"));
             Directory.CreateDirectory(reference.root("", "allapps"));
+            InitializeComponent();
+            Title = "مرکزی";
+            SizeToContent = SizeToContent.WidthAndHeight;
+            
             ini();
             allapps.start();
         }

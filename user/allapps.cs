@@ -1,4 +1,5 @@
-﻿using Connection;
+﻿using core;
+using stemcell;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,7 +24,7 @@ namespace user
                 return;
             root = root.Split(new string[] { @"interlink32/Cell" }, StringSplitOptions.RemoveEmptyEntries)[0];
 
-            copystandard("Connection", ".dll");
+            copystandard("stemcell", ".dll");
             copystandard("Dna", ".dll");
             copystandard("localdb", ".dll");
        

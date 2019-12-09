@@ -11,18 +11,44 @@ namespace core
     public abstract class corebase
     {
         public const int buffersize = 1450;
+        SemaphoreSlim locker = new SemaphoreSlim(1, 1);
         internal async Task sendall(byte[] data)
         {
+            await locker.WaitAsync();
             await sendpart(BitConverter.GetBytes(data.Length));
             int n = 0;
             int m = 0;
+            int counter = 0;
             while (n != data.Length)
             {
                 m = data.Length - n;
                 m = Math.Min(buffersize, m);
                 await sendpart(split(data, n, m));
                 n += m;
-                await Task.Delay(10);
+                if (counter != 0)
+                {
+                    if (counter % 5 == 0)
+                        await Task.Delay(500);
+                    else
+                        await Task.Delay(10);
+                }
+                counter++;
+            }
+            locker.Release();
+        }
+        public async void notify(int val)
+        {
+            try
+            {
+                if (val >= 0)
+                    throw new Exception("lbkbgkbkvmfkbkcmfdkbmc");
+                await locker.WaitAsync();
+                await sendpart(BitConverter.GetBytes(val));
+                locker.Release();
+            }
+            catch
+            {
+                tcp?.Close();
             }
         }
        internal abstract TcpClient tcp { get; }
@@ -36,6 +62,8 @@ namespace core
             var size = BitConverter.ToInt32(dv, 0);
             if (size == 0)
                 throw new Exception("lhfkkfknkfknkgjbjkfkbkd");
+            if (size < 0)
+                return dv;
             int n = 0;
             int m = 0;
             List<byte[]> l = new List<byte[]>();

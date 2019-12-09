@@ -20,6 +20,7 @@ namespace core
             runing();
         }
         internal override TcpClient tcp => tcpf;
+        protected abstract void close();
         async void runing()
         {
             try
@@ -32,6 +33,7 @@ namespace core
             catch
             {
                 tcp.Close();
+                close();
             }
         }
         async Task<byte[]> answer(byte[] data)
@@ -41,7 +43,7 @@ namespace core
                 data = crypto.Decrypt(data, privetkey);
                 key32 = split(data, 0, 32);
                 iv16 = split(data, 32, 16);
-                return crypto.Encrypt(tcpclient.answer, key32, iv16);
+                return crypto.Encrypt(Combine(key32, iv16), key32, iv16);
             }
             else
             {

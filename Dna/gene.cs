@@ -16,6 +16,7 @@ namespace Dna
             z_gene = dv.gene;
             z_chromosome = dv.chromosom;
         }
+        public string z_endchromosome => z_redirect == null ? z_chromosome : z_redirect;
         public static (string chromosom, string gene) get(Type type)
         {
             var full_name = type.FullName;

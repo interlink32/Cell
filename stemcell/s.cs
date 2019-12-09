@@ -1,4 +1,5 @@
-﻿using Dna.user;
+﻿using core;
+using Dna.user;
 using Dna.userdata;
 using LiteDB;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Connection
+namespace stemcell
 {
     class s
     {

@@ -1,4 +1,4 @@
-﻿using Connection;
+﻿using stemcell;
 using Dna.common;
 using Dna.userdata;
 using LiteDB;
@@ -11,6 +11,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using core;
 
 namespace userserver
 {
@@ -112,12 +113,13 @@ namespace userserver
                         break;
                 }
             }
-            return new q_loaddiff.done()
+            var rt = new q_loaddiff.done()
             {
                 currentindex = dv.LastOrDefault()?.index ?? index,
                 deleted = dv.Where(i => i.state == difftype.delete).Select(i => i.entity).ToArray(),
                 entites = JsonConvert.SerializeObject(list.ToArray())
             };
+            return rt;
         }
         internal static bool exists(Expression<Func<s2user, bool>> func)
         {
