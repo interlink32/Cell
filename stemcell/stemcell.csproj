@@ -12,6 +12,9 @@
     <Reference Include="core">
       <HintPath>..\core\bin\Debug\netstandard2.0\core.dll</HintPath>
     </Reference>
+    <Reference Include="Dna">
+      <HintPath>..\Dna\bin\Debug\netstandard2.0\Dna.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
