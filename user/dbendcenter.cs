@@ -1,6 +1,7 @@
 ﻿using Dna.message;
 using Dna.userdata;
 using localdb;
+using stemcell;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,7 @@ namespace user
         }
         public void close()
         {
-            dbuser?.close();
-            dbmessage?.close();
+            notifier.remove(userid);
         }
     }
 }

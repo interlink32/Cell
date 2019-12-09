@@ -84,7 +84,7 @@ namespace stemcell
                 return await this.question(question);
             }
         }
-        const int notify = -1;
+        const int notifyconst = -1;
         public async Task<int> getnotify()
         {
             try
@@ -93,7 +93,7 @@ namespace stemcell
                 if (await login())
                 {
                     locker.Release();
-                    return notify;
+                    return notifyconst;
                 }
                 var dv = await tcpclient.getnotify();
                 locker.Release();
@@ -110,6 +110,25 @@ namespace stemcell
                 return await getnotify();
             }
         }
+        public async void sendpulse()
+        {
+            try
+            {
+                await locker.WaitAsync();
+                await login();
+                tcpclient.sendpulse();
+                locker.Release();
+            }
+            catch (Exception e)
+            {
+                var dv = e.Message;
+                dv = null;
+                Console.Beep();
+                locker.Release();
+                sendpulse();
+            }
+        }
+        public virtual void close() { }
         public async Task<answer> question_(question question)
         {
             var data = converter.change(question);

@@ -86,7 +86,7 @@ namespace servercell
         {
             var all = await get(user);
             foreach (var i in all)
-                i.notify(-1);
+                i.sendpulse();
         }
         public static async Task<answer> q(question question)
         {

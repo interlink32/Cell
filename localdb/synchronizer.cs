@@ -21,13 +21,9 @@ namespace localdb
             this.server = gene.get(typeof(entity)).chromosom;
             this.userid = userid;
             client = new client(userid);
-            notifier.notifyadd(gene.get(server), userid, sync);
+            notifier.add(gene.get(server), userid, sync);
         }
-        public void close()
-        {
-            notifier.notifyremove(sync);
-        }
-        protected virtual async void sync(long obj)
+        protected virtual async void sync()
         {
             long index = dbindex.get(indexid);
             var rsv = await client.question(userid, new q_loaddiff(server) { index = index }) as q_loaddiff.done;

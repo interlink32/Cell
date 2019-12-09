@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace core
@@ -21,24 +22,48 @@ namespace core
         }
         internal override TcpClient tcp => tcpf;
         protected abstract void close();
+        SemaphoreSlim locker = new SemaphoreSlim(1, 1);
+        public bool notifier;
+
         async void runing()
         {
             try
             {
+                await locker.WaitAsync();
                 var dv = await receiveall();
-                dv = await answer(dv);
-                await sendall(dv);
+                if (!notifier)
+                {
+                    dv = await process(dv);
+                    await sendall(dv);
+                }
+                locker.Release();
                 runing();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                var dv = e.Message;
-                dv = null;
+                _ = e.Message;
                 tcp.Close();
                 close();
+                locker.Release();
             }
         }
-        async Task<byte[]> answer(byte[] data)
+        public async override void sendpulse()
+        {
+            try
+            {
+                await locker.WaitAsync();
+                base.sendpulse();
+                locker.Release();
+            }
+            catch (Exception e)
+            {
+                _ = e.Message;
+                tcp.Close();
+                close();
+                locker.Release();
+            }
+        }
+        async Task<byte[]> process(byte[] data)
         {
             if (key32 == null)
             {

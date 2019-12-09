@@ -76,7 +76,10 @@ namespace servercell
                     {
                         userid = done.userid;
                         if (question.notifier)
+                        {
+                            notifier = true;
                             mainserver.add(this);
+                        }
                     }
                 }
                 return dv;

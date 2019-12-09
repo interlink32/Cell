@@ -36,20 +36,11 @@ namespace core
             }
             locker.Release();
         }
-        public async void notify(int val)
+        public virtual async void sendpulse()
         {
-            try
-            {
-                if (val >= 0)
-                    throw new Exception("lbkbgkbkvmfkbkcmfdkbmc");
-                await locker.WaitAsync();
-                await sendpart(BitConverter.GetBytes(val));
-                locker.Release();
-            }
-            catch
-            {
-                tcp?.Close();
-            }
+            await locker.WaitAsync();
+            await sendpart(BitConverter.GetBytes(-1));
+            locker.Release();
         }
        internal abstract TcpClient tcp { get; }
         async Task sendpart(byte[] data)
