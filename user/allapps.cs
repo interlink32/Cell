@@ -27,7 +27,8 @@ namespace user
             copystandard("stemcell", ".dll");
             copystandard("Dna", ".dll");
             copystandard("localdb", ".dll");
-       
+            copystandard("core", ".dll");
+
             copynet("controllibrary", ".dll");
             copynet("message", ".exe");
             copynet("profile", ".exe");

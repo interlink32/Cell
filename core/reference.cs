@@ -11,7 +11,7 @@ namespace core
 {
     public class reference
     {
-        static bool local = true;
+        static bool local = false;
         public readonly static string serverip = "94.182.191.71";
         public static IPAddress validip()
         {
