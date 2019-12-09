@@ -30,8 +30,10 @@ namespace core
                 await sendall(dv);
                 runing();
             }
-            catch
+            catch(Exception e)
             {
+                var dv = e.Message;
+                dv = null;
                 tcp.Close();
                 close();
             }

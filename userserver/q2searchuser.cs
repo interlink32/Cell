@@ -13,7 +13,7 @@ namespace userserver
         public async override Task<answer> getanswer(q_searchuser question)
         {
             await Task.CompletedTask;
-            var dv = db.find(i => i.general && i.active).Select(i => i.clone());
+            var dv = db.find(i => i.general && i.active);
             if (question.nationalcode != null)
                 dv = dv.Where(i => i.nationalcode.Contains(question.nationalcode));
             if (question.fullname != null)
@@ -26,7 +26,8 @@ namespace userserver
                 dv = dv.Where(i => i.nature == question.nature);
             if (question.tell != null)
                 dv = dv.Where(i => i.tell.Contains(question.tell));
-            return new q_searchuser.done() { users = dv.ToArray() };
+            var rt = dv.ToArray();
+            return new q_searchuser.done() { users = rt.Select(i => i.clone()).ToArray() };
         }
     }
 }

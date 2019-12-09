@@ -26,7 +26,10 @@ namespace servercell
         protected override async Task<byte[]> getanswer(byte[] data)
         {
             var gene = converter.change(data) as question;
+            gene.z_normalize();
             answer answer = await answer2(gene);
+            if (answer == null)
+                answer = new voidanswer();
             data = converter.change(answer);
             return data;
         }
