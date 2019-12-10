@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace core
+namespace stemcell
 {
-    public abstract class tcpserver : corebase
+    public abstract class tcpserver : tcpbase
     {
         private readonly TcpClient tcpf;
         private readonly byte[] privetkey;
@@ -20,7 +20,7 @@ namespace core
             tcp.SendBufferSize = tcp.ReceiveBufferSize = buffersize;
             runing();
         }
-        internal override TcpClient tcp => tcpf;
+        protected override TcpClient tcp => tcpf;
         protected abstract void close();
         SemaphoreSlim locker = new SemaphoreSlim(1, 1);
         public bool notifier;
@@ -47,30 +47,14 @@ namespace core
                 locker.Release();
             }
         }
-        public async override void sendpulse()
-        {
-            try
-            {
-                await locker.WaitAsync();
-                base.sendpulse();
-                locker.Release();
-            }
-            catch (Exception e)
-            {
-                _ = e.Message;
-                tcp.Close();
-                close();
-                locker.Release();
-            }
-        }
         async Task<byte[]> process(byte[] data)
         {
             if (key32 == null)
             {
                 data = crypto.Decrypt(data, privetkey);
-                key32 = split(data, 0, 32);
-                iv16 = split(data, 32, 16);
-                return crypto.Encrypt(Combine(key32, iv16), key32, iv16);
+                key32 = crypto.split(data, 0, 32);
+                iv16 = crypto.split(data, 32, 16);
+                return crypto.Encrypt(crypto.Combine(key32, iv16), key32, iv16);
             }
             else
             {

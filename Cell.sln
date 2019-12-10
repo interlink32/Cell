@@ -25,9 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "message", "message\message.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "servercell", "servercell\servercell.csproj", "{1AE8A055-B69F-4C86-BE3D-852BAA64F79E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "core", "core\core.csproj", "{E0EEC6B9-34F6-4799-8729-9ABEF12A6ACF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "stemcell", "stemcell\stemcell.csproj", "{47CD0B31-BAD9-49C8-B922-13F7D39E2851}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "stemcell", "stemcell\stemcell.csproj", "{47CD0B31-BAD9-49C8-B922-13F7D39E2851}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,10 +77,6 @@ Global
 		{1AE8A055-B69F-4C86-BE3D-852BAA64F79E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AE8A055-B69F-4C86-BE3D-852BAA64F79E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AE8A055-B69F-4C86-BE3D-852BAA64F79E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0EEC6B9-34F6-4799-8729-9ABEF12A6ACF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0EEC6B9-34F6-4799-8729-9ABEF12A6ACF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0EEC6B9-34F6-4799-8729-9ABEF12A6ACF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0EEC6B9-34F6-4799-8729-9ABEF12A6ACF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{47CD0B31-BAD9-49C8-B922-13F7D39E2851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{47CD0B31-BAD9-49C8-B922-13F7D39E2851}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47CD0B31-BAD9-49C8-B922-13F7D39E2851}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using core;
+using stemcell;
 using Dna;
 using Dna.common;
 using Dna.user;
-using stemcell;
 
 namespace servercell
 {
@@ -19,21 +18,17 @@ namespace servercell
             this.mainserver = mainserver;
             this.getanswerf = getanswer;
         }
-        protected override void close()
-        {
-            mainserver.remove(this);
-        }
         protected override async Task<byte[]> getanswer(byte[] data)
         {
             var gene = converter.change(data) as question;
             gene.z_normalize();
-            answer answer = await answer2(gene);
+            answer answer = await answer_(gene);
             if (answer == null)
                 answer = new voidanswer();
             data = converter.change(answer);
             return data;
         }
-        async Task<answer> answer2(question question)
+        async Task<answer> answer_(question question)
         {
             switch (question.z_permission)
             {
@@ -64,24 +59,13 @@ namespace servercell
                     }
             }
         }
-
         private async Task<answer> login(q_login question)
         {
             if (mainserver.chromosome == e_chromosome.user)
             {
                 var dv = await getanswerf(question);
-                if (dv is q_login.done done)
-                {
-                    if (userid == 0)
-                    {
-                        userid = done.userid;
-                        if (question.notifier)
-                        {
-                            notifier = true;
-                            mainserver.add(this);
-                        }
-                    }
-                }
+                if (dv is q_login.done done && userid == 0)
+                    userid = done.userid;
                 return dv;
             }
             else
@@ -91,13 +75,9 @@ namespace servercell
                     Console.Beep();
                     throw new Exception("lblflblgbkfmnmfnkfknkfkb");
                 }
-                var dv = await client.question(0, question);
+                var dv = await mainserver.question(question);
                 if (dv is q_login.done done)
-                {
                     userid = done.userid;
-                    if (question.notifier)
-                        mainserver.add(this);
-                }
                 return dv;
             }
         }

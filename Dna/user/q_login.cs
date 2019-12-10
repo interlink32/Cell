@@ -7,13 +7,12 @@ namespace Dna.user
 {
     public class q_login : question
     {
-        public string token = default;
-        public bool notifier = default;
+        public long token = default;
         public override e_permission z_permission => e_permission.free;
         public class done : answer
         {
+            public bool error_invalid = false;
             public long userid = default;
         }
-        public class invalid : answer { }
     }
 }

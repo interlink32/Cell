@@ -47,10 +47,28 @@ namespace servercell
         async void listen()
         {
             var tcp = await listener.AcceptTcpClientAsync();
-            responder dv = new responder(this, tcp, privatekey, getanswer);
+            var type = tcp.GetStream().ReadByte();
+            switch (type)
+            {
+                case netid.notifier:
+                    {
+                        responder dv = new responder(this, tcp, privatekey, getanswer);
+                    }
+                    break;
+                case netid.questioner:
+                    {
+                        servernotifier dv = new servernotifier(this, tcp, privatekey);
+                    }
+                    break;
+                default:
+                    {
+                        tcp.Close();
+                    }
+                    break;
+            }
             listen();
         }
-        internal async void remove(responder val)
+        internal async void remove(servernotifier val)
         {
             await locker.WaitAsync();
             list.Remove(val);
@@ -64,9 +82,9 @@ namespace servercell
             var dv2 = await dv.z_get_answer(request);
             return dv2;
         }
-        static List<responder> list = new List<responder>();
+        static List<servernotifier> list = new List<servernotifier>();
         static SemaphoreSlim locker = new SemaphoreSlim(1, 1);
-        internal async void add(responder dv)
+        internal async void add(servernotifier dv)
         {
             await locker.WaitAsync();
             if (!list.Contains(dv))
@@ -75,7 +93,7 @@ namespace servercell
             }
             locker.Release();
         }
-        static async Task<responder[]> get(long user)
+        static async Task<servernotifier[]> get(long user)
         {
             await locker.WaitAsync();
             var dv = list.Where(i => i.userid == user).ToArray();
@@ -86,9 +104,9 @@ namespace servercell
         {
             var all = await get(user);
             foreach (var i in all)
-                i.sendpulse();
+                i.notify();
         }
-        public static async Task<answer> q(question question)
+        public static async Task<answer> question(question question)
         {
             return await client.question(serverid, question);
         }

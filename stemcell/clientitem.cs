@@ -1,4 +1,4 @@
-﻿using core;
+﻿using stemcell;
 using Dna;
 using Dna.user;
 using System;
@@ -16,7 +16,6 @@ namespace stemcell
         internal bool inp = default;
         public readonly string chromosome;
         public readonly long userid;
-        internal bool isnotifier;
         public clientitem(string chromosome, long userid)
         {
             this.chromosome = chromosome;
@@ -29,15 +28,14 @@ namespace stemcell
             if (tcpclient != null)
                 return false;
             var info = await basic.getchromosome(chromosome);
-            var ipend = reference.getendpoint(info.endpoint);
+            var ipend = info.getendpoint;
             tcpclient = new tcpclient(ipend.Address, ipend.Port, info.publickey);
             if (userid != 0)
             {
-                userlogin dv = await getlogin();
+                long token = await s.gettoken(userid);
                 var rsv = await question_(new q_login()
                 {
-                    token = dv.token,
-                    notifier = isnotifier
+                    token = token
                 });
                 if (!(rsv is q_login.done))
                 {
@@ -47,21 +45,6 @@ namespace stemcell
                 return true;
             }
             return false;
-        }
-        async Task<userlogin> getlogin()
-        {
-            userlogin userlogin = null;
-            userlogin = s.dbuserlogin.FindOne(i => i.id == userid);
-            while (userlogin == null)
-            {
-                userlogin = s.dbuserlogin.FindOne(i => i.id == userid);
-                if (userlogin == null)
-                {
-                    var dv = s.dbuserlogin.FindAll().ToArray();
-                }
-                await Task.Delay(200);
-            }
-            return userlogin;
         }
         public async Task<answer> question(question question)
         {
@@ -84,7 +67,6 @@ namespace stemcell
                 return await this.question(question);
             }
         }
-        const int notifyconst = -1;
         public async Task<int> getnotify()
         {
             try
@@ -93,7 +75,7 @@ namespace stemcell
                 if (await login())
                 {
                     locker.Release();
-                    return notifyconst;
+                    return -1;
                 }
                 var dv = await tcpclient.getnotify();
                 locker.Release();
@@ -108,24 +90,6 @@ namespace stemcell
                 tcpclient = null;
                 locker.Release();
                 return await getnotify();
-            }
-        }
-        public async void sendpulse()
-        {
-            try
-            {
-                await locker.WaitAsync();
-                await login();
-                tcpclient.sendpulse();
-                locker.Release();
-            }
-            catch (Exception e)
-            {
-                var dv = e.Message;
-                dv = null;
-                Console.Beep();
-                locker.Release();
-                sendpulse();
             }
         }
         public virtual void close() { }

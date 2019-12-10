@@ -21,7 +21,7 @@ namespace localdb
             this.server = gene.get(typeof(entity)).chromosom;
             this.userid = userid;
             client = new client(userid);
-            notifier.add(gene.get(server), userid, sync);
+            clientnotifier.add(gene.get(server), userid, sync);
         }
         protected virtual async void sync()
         {

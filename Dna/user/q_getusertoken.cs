@@ -11,7 +11,7 @@ namespace Dna.user
         public override e_permission z_permission => e_permission.free;
         public class done : answer
         {
-            public string token = default;
+            public long token = default;
             public long user = default;
         }
         public class invalidactivecode : answer { }

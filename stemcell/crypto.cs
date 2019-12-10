@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace core
+namespace stemcell
 {
     public class crypto
     {
@@ -69,6 +70,23 @@ namespace core
             cryptoStream.Write(data, 0, data.Length);
             cryptoStream.Close();
             return memoryStream.ToArray();
+        }
+        public static byte[] Combine(params byte[][] arrays)
+        {
+            byte[] rv = new byte[arrays.Sum(a => a.Length)];
+            int offset = 0;
+            foreach (byte[] array in arrays)
+            {
+                Buffer.BlockCopy(array, 0, rv, offset, array.Length);
+                offset += array.Length;
+            }
+            return rv;
+        }
+        public static byte[] split(byte[] val, int offset, int length)
+        {
+            byte[] dv = new byte[length];
+            Buffer.BlockCopy(val, offset, dv, 0, length);
+            return dv;
         }
     }
 }

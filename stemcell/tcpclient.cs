@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Net.Sockets;
 
-namespace core
+namespace stemcell
 {
-    public class tcpclient : corebase
+    public class tcpclient : tcpbase
     {
         private readonly IPAddress iP;
         private readonly int port;
@@ -24,12 +24,12 @@ namespace core
         }
         public async Task<byte[]> question(byte[] data)
         {
-                await ini();
-                var dvdata = crypto.Encrypt(data, key32, iv16);
-                await sendall(dvdata);
-                dvdata = await receiveall();
-                dvdata = crypto.Decrypt(dvdata, key32, iv16);
-                return dvdata;
+            await keylogin();
+            var dvdata = crypto.Encrypt(data, key32, iv16);
+            await sendall(dvdata);
+            dvdata = await receiveall();
+            dvdata = crypto.Decrypt(dvdata, key32, iv16);
+            return dvdata;
         }
         public async Task<int> getnotify()
         {
@@ -41,21 +41,21 @@ namespace core
             tcpf?.Close();
         }
         TcpClient tcpf = null;
-        internal override TcpClient tcp
+        protected override TcpClient tcp
         {
             get
             {
                 return tcpf;
             }
         }
-        async Task ini()
+        async Task keylogin()
         {
             if (tcpf != null && tcpf.Connected)
                 return;
             tcpf = new TcpClient();
             await tcpf.ConnectAsync(iP, port);
             var dv = crypto.create_symmetrical_keys();
-            byte[] keys = Combine(dv.key32, dv.iv16);
+            byte[] keys = crypto.Combine(dv.key32, dv.iv16);
             byte[] data = crypto.Encrypt(keys, publickey);
             await sendall(data);
             data = await receiveall();

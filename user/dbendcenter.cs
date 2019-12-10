@@ -23,7 +23,7 @@ namespace user
         }
         public void close()
         {
-            notifier.remove(userid);
+            clientnotifier.remove(userid);
         }
     }
 }
