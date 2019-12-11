@@ -47,15 +47,21 @@ namespace servercell
         async void listen()
         {
             var tcp = await listener.AcceptTcpClientAsync();
-            var type = tcp.GetStream().ReadByte();
-            switch (type)
+            add(tcp);
+            listen();
+        }
+        async void add(TcpClient tcp)
+        {
+            byte[] data = new byte[1];
+            await tcp.GetStream().ReadAsync(data, 0, data.Length);
+            switch (data[0])
             {
-                case netid.notifier:
+                case netid.questioner:
                     {
                         responder dv = new responder(this, tcp, privatekey, getanswer);
                     }
                     break;
-                case netid.questioner:
+                case netid.notifier:
                     {
                         servernotifier dv = new servernotifier(this, tcp, privatekey);
                     }
@@ -66,7 +72,6 @@ namespace servercell
                     }
                     break;
             }
-            listen();
         }
         internal async void remove(servernotifier val)
         {
@@ -87,10 +92,7 @@ namespace servercell
         internal async void add(servernotifier dv)
         {
             await locker.WaitAsync();
-            if (!list.Contains(dv))
-            {
-                list.Add(dv);
-            }
+            list.Add(dv);
             locker.Release();
         }
         static async Task<servernotifier[]> get(long user)

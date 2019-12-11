@@ -36,7 +36,6 @@ namespace user
             InitializeComponent();
             Title = "مرکزی";
             SizeToContent = SizeToContent.WidthAndHeight;
-            
             ini();
             allapps.start();
         }

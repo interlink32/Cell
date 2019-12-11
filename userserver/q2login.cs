@@ -16,7 +16,7 @@ namespace userserver
             await Task.CompletedTask;
             var dv = db.findone(i => i.token == request.token);
             if (dv == null)
-                return new q_login.invalid();
+                return new q_login.done() { error_invalid = true };
             else
                 return new q_login.done() { userid = dv.id };
         }

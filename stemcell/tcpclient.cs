@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Net.Sockets;
+using Dna;
 
 namespace stemcell
 {
@@ -54,6 +55,7 @@ namespace stemcell
                 return;
             tcpf = new TcpClient();
             await tcpf.ConnectAsync(iP, port);
+            tcpf.GetStream().WriteByte(netid.questioner);
             var dv = crypto.create_symmetrical_keys();
             byte[] keys = crypto.Combine(dv.key32, dv.iv16);
             byte[] data = crypto.Encrypt(keys, publickey);

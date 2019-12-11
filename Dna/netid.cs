@@ -11,5 +11,6 @@ namespace Dna
         public const byte newnotify = 32;
         public const byte notifierlogin = 134;
         public const byte connectpulse = 56;
+        public const byte login = 98;
     }
 }

@@ -23,6 +23,7 @@ namespace stemcell
             this.userid = userid;
             runing();
         }
+        public const int timeuot = 1000 * 5; 
         async Task login()
         {
             if (connect)
@@ -32,16 +33,17 @@ namespace stemcell
             var info = await basic.getchromosome(chromosome);
             data = crypto.Encrypt(data, info.publickey);
             tcp = new TcpClient();
-            var endpoint = info.getendpoint;
+            var endpoint = info.Getgetendpoint();
             await tcp.ConnectAsync(endpoint.Address, endpoint.Port);
             tcp.GetStream().WriteByte(netid.notifier);
             await tcp.GetStream().WriteAsync(data, 0, data.Length);
             var dv = await receive();
-            if (dv != netid.connectpulse)
+            if (dv != netid.login)
             {
-                Console.Beep();
                 throw new Exception("kgjfjbjfjbjfnbjvnfnbjfnbnfjbjfn");
             }
+            connect = true;
+            newnotify(chromosome, userid);
         }
 
         long n = 1;
@@ -55,9 +57,12 @@ namespace stemcell
                 n++;
                 if (dv == netid.newnotify)
                     newnotify(chromosome, userid);
+                runing();
             }
-            catch
+            catch(Exception e)
             {
+                _ = e.Message;
+                Console.Beep();
                 await Task.Delay(500);
                 runing();
             }
@@ -65,7 +70,7 @@ namespace stemcell
         async void live()
         {
             var dv = n;
-            await Task.Delay(1000 * 5);
+            await Task.Delay(timeuot);
             if (dv == n)
             {
                 connect = false;

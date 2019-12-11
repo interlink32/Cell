@@ -82,7 +82,7 @@ namespace stemcell
         };
         public static async Task<s_chromosome> getchromosome(string chromosome)
         {
-            if (chromosome == e_chromosome.user.ToString())
+            if (chromosome == e_chromosome.user.ToString() || chromosome == e_chromosome.userdata.ToString())
                 return userchromosome;
             return (await allchromosome()).First(i => i.chromosome.ToString() == chromosome);
         }

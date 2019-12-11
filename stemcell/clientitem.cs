@@ -28,7 +28,7 @@ namespace stemcell
             if (tcpclient != null)
                 return false;
             var info = await basic.getchromosome(chromosome);
-            var ipend = info.getendpoint;
+            var ipend = info.Getgetendpoint();
             tcpclient = new tcpclient(ipend.Address, ipend.Port, info.publickey);
             if (userid != 0)
             {
@@ -67,32 +67,6 @@ namespace stemcell
                 return await this.question(question);
             }
         }
-        public async Task<int> getnotify()
-        {
-            try
-            {
-                await locker.WaitAsync();
-                if (await login())
-                {
-                    locker.Release();
-                    return -1;
-                }
-                var dv = await tcpclient.getnotify();
-                locker.Release();
-                return dv;
-            }
-            catch (Exception e)
-            {
-                var dv = e.Message;
-                dv = null;
-                Console.Beep();
-                tcpclient?.close();
-                tcpclient = null;
-                locker.Release();
-                return await getnotify();
-            }
-        }
-        public virtual void close() { }
         public async Task<answer> question_(question question)
         {
             var data = converter.change(question);

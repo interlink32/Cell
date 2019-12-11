@@ -38,9 +38,6 @@
     <Reference Include="controllibrary">
       <HintPath>..\controllibrary\bin\Debug\controllibrary.dll</HintPath>
     </Reference>
-    <Reference Include="core">
-      <HintPath>..\core\bin\Debug\netstandard2.0\core.dll</HintPath>
-    </Reference>
     <Reference Include="LiteDB">
       <HintPath>..\user\bin\Debug\LiteDB.dll</HintPath>
     </Reference>

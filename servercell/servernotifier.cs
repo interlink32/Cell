@@ -12,15 +12,16 @@ namespace servercell
     class servernotifier
     {
         public long userid { get; private set; }
+        private const int timeout = clientnotifier.timeuot / 2;
         private readonly mainserver mainserver;
         private readonly TcpClient tcp;
         private readonly byte[] privatekey;
         public servernotifier(mainserver mainserver, TcpClient tcp, byte[] privatekey)
         {
-            runing();
             this.mainserver = mainserver;
             this.tcp = tcp;
             this.privatekey = privatekey;
+            runing();
         }
         async void runing()
         {
@@ -38,13 +39,12 @@ namespace servercell
                         tcp.Close();
                         return;
                     }
-                    else
-                    {
-                        userid = dv.userid;
-                    }
+                    userid = dv.userid;
+                    mainserver.add(this);
+                    tcp.GetStream().WriteByte(netid.login);
                 }
-                tcp.GetStream().WriteByte(netid.connectpulse);
-                await Task.Delay(1000 * 4);
+                await Task.Delay(timeout);
+                notify(false);
                 runing();
             }
             catch
@@ -53,11 +53,14 @@ namespace servercell
                 mainserver.remove(this);
             }
         }
-        internal void notify()
+        internal void notify(bool newnotify = true)
         {
             try
             {
-                tcp.GetStream().WriteByte(netid.newnotify);
+                if (newnotify)
+                    tcp.GetStream().WriteByte(netid.newnotify);
+                else
+                    tcp.GetStream().WriteByte(netid.connectpulse);
             }
             catch
             {

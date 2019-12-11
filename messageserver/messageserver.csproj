@@ -124,10 +124,6 @@
       <Project>{ABC1526D-E3DD-41B4-BBBA-4BB64619BC12}</Project>
       <Name>controllibrary</Name>
     </ProjectReference>
-    <ProjectReference Include="..\core\core.csproj">
-      <Project>{E0EEC6B9-34F6-4799-8729-9ABEF12A6ACF}</Project>
-      <Name>core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dna\Dna.csproj">
       <Project>{FE1D99EB-3DB7-44D9-B3AF-A54975E57B93}</Project>
       <Name>Dna</Name>

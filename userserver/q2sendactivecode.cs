@@ -33,10 +33,10 @@ namespace userserver
         }
         internal static void changetoken(s2user user)
         {
-            string newtoken = null;
+            long newtoken = 0;
             do
             {
-                newtoken = "" + basic.random.Next() + basic.random.Next(1000, 9999);
+                newtoken = (long)((basic.random.NextDouble() * 2.0 - 1.0) * long.MaxValue);
             } while (db.exists(i => i.token == newtoken));
             user.token = newtoken;
         }

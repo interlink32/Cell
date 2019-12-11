@@ -15,7 +15,7 @@ namespace userserver
         public string activecode { get; set; }
         public bool general { get; set; }
         public bool active { get; set; }
-        public string token { get; set; }
+        public long token { get; set; }
         internal s_user clone()
         {
             return new s_user()
