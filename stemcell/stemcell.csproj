@@ -9,12 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Dna">
-      <HintPath>..\Dna\bin\Debug\netstandard2.0\Dna.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="resource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

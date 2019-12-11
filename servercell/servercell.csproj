@@ -9,9 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Dna">
-      <HintPath>..\Dna\bin\Debug\netstandard2.0\Dna.dll</HintPath>
-    </Reference>
     <Reference Include="stemcell">
       <HintPath>..\stemcell\bin\Debug\netstandard2.0\stemcell.dll</HintPath>
     </Reference>

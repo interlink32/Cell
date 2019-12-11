@@ -6,12 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dna\Dna.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="stemcell">
-      <HintPath>..\stemcell\bin\Debug\netstandard2.0\stemcell.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\stemcell\stemcell.csproj" />
   </ItemGroup>
 
 </Project>
