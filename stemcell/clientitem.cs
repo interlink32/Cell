@@ -56,10 +56,8 @@ namespace stemcell
                 locker.Release();
                 return answer;
             }
-            catch (Exception e)
+            catch
             {
-                var dv = e.Message;
-                dv = null;
                 Console.Beep();
                 tcpclient?.close();
                 tcpclient = null;
@@ -73,6 +71,10 @@ namespace stemcell
             data = await tcpclient.question(data);
             var answer = converter.change(data) as answer;
             return answer;
+        }
+        internal void close()
+        {
+            tcpclient?.close();
         }
     }
 }

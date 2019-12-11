@@ -63,14 +63,14 @@ namespace stemcell
             {
                 _ = e.Message;
                 Console.Beep();
-                await Task.Delay(500);
+                await Task.Delay(1000);
                 runing();
             }
         }
         async void live()
         {
             var dv = n;
-            await Task.Delay(timeuot);
+            await Task.Delay(timeuot * 2);
             if (dv == n)
             {
                 connect = false;

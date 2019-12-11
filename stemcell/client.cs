@@ -46,9 +46,15 @@ namespace stemcell
             dv.inp = false;
             return answer;
         }
-        public static void close(long id)
+        public static async void close(long id)
         {
-            throw new NotImplementedException();
+            await locker.WaitAsync();
+            foreach (var i in list.Where(i => i.userid == id).ToArray())
+            {
+                i.close();
+                list.Remove(i);
+            }
+            locker.Release();
         }
     }
 }
