@@ -52,25 +52,32 @@ namespace servercell
         }
         async void add(TcpClient tcp)
         {
-            byte[] data = new byte[1];
-            await tcp.GetStream().ReadAsync(data, 0, data.Length);
-            switch (data[0])
+            try
             {
-                case netid.questioner:
-                    {
-                        responder dv = new responder(this, tcp, privatekey, getanswer);
-                    }
-                    break;
-                case netid.notifier:
-                    {
-                        servernotifier dv = new servernotifier(this, tcp, privatekey);
-                    }
-                    break;
-                default:
-                    {
-                        tcp.Close();
-                    }
-                    break;
+                byte[] data = new byte[1];
+                await tcp.GetStream().ReadAsync(data, 0, data.Length);
+                switch (data[0])
+                {
+                    case netid.questioner:
+                        {
+                            responder dv = new responder(this, tcp, privatekey, getanswer);
+                        }
+                        break;
+                    case netid.notifier:
+                        {
+                            servernotifier dv = new servernotifier(this, tcp, privatekey);
+                        }
+                        break;
+                    default:
+                        {
+                            tcp.Close();
+                        }
+                        break;
+                }
+            }
+            catch
+            {
+                tcp?.Close();
             }
         }
         internal async void remove(servernotifier val)
