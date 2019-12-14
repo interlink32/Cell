@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 
 namespace user
 {
@@ -28,8 +29,19 @@ namespace user
     public partial class MainWindow : Window
     {
         userbody body;
+        Mutex mutex = new Mutex(false, "caaa");
+        
         public MainWindow()
         {
+            if (!mutex.WaitOne(0))
+            {
+                mutex.ReleaseMutex();
+                MessageBox.Show("نرم افزار مرکزی باز است.");
+                Close();
+                return;
+            }
+            mutex.WaitOne();
+            Closing += MainWindow_Closing;
             Directory.CreateDirectory(reference.root(""));
             Directory.CreateDirectory(reference.root("", "message"));
             Directory.CreateDirectory(reference.root("", "allapps"));
@@ -39,6 +51,12 @@ namespace user
             ini();
             allapps.start();
         }
+
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            mutex.ReleaseMutex();
+        }
+
         async void ini()
         {
             alluser.addremove_e += Alluser_addremove_e;

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Threading;
 
 namespace controllibrary
 {
@@ -16,8 +17,15 @@ namespace controllibrary
         userselector userselector;
         loadbox loadbox = new loadbox();
         public override FrameworkElement element => stack;
+
+        Mutex mutex = new Mutex(false, "caaa");
         public panel(string text)
         {
+            while (mutex.WaitOne(0))
+            {
+                mutex.ReleaseMutex();
+                MessageBox.Show("لطفا نرم افزار مرکزی را باز کنید.");
+            }
             userselector = new userselector(text, userselect);
             alluser.addremove_e += Alluser_remove_e;
             stack.Children.Add(userselector.element);
