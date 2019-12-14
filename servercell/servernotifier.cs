@@ -36,6 +36,8 @@ namespace servercell
                     var dv = await mainserver.question(new q_login() { token = token }) as q_login.done;
                     if (dv.error_invalid)
                     {
+                        tcp.GetStream().WriteByte(netid.invalidtoken);
+                        await Task.Delay(100);
                         tcp.Close();
                         return;
                     }

@@ -23,10 +23,10 @@ namespace stemcell
         }
         tcpclient tcpclient;
         SemaphoreSlim locker = new SemaphoreSlim(1, 1);
-        async Task<bool> login()
+        async Task login()
         {
             if (tcpclient != null)
-                return false;
+                return;
             var info = await basic.getchromosome(chromosome);
             var ipend = info.Getgetendpoint();
             tcpclient = new tcpclient(ipend.Address, ipend.Port, info.publickey);
@@ -42,9 +42,7 @@ namespace stemcell
                     Console.Beep(1000, 500);
                     throw new Exception("bkdkbmfbcmfmbmmbm");
                 }
-                return true;
             }
-            return false;
         }
         public async Task<answer> question(question question)
         {
