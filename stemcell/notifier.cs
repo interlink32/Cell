@@ -41,6 +41,8 @@ namespace stemcell
             }
             catch (Exception e)
             {
+                connect = false;
+                tcp?.Close();
                 _ = e.Message;
                 Console.Beep();
                 await Task.Delay(1000);

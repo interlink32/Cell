@@ -35,6 +35,8 @@ namespace stemcell
             {
                 _ = e.Message;
                 Console.Beep();
+                connect = false;
+                tcp?.Close();
                 runing();
             }
         }
