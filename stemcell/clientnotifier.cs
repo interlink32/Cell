@@ -23,7 +23,7 @@ namespace stemcell
             this.userid = userid;
             runing();
         }
-        public const int timeuot = 1000 * 5; 
+        public const int timeuot = 200; 
         async Task login()
         {
             if (connect)
@@ -70,7 +70,7 @@ namespace stemcell
         async void live()
         {
             var dv = n;
-            await Task.Delay(timeuot * 2);
+            await Task.Delay(timeuot * 4);
             if (dv == n)
             {
                 connect = false;
