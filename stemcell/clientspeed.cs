@@ -10,7 +10,7 @@ namespace stemcell
         timeout outer;
         public clientspeed(string chromosome, long userid) : base(chromosome, userid, false)
         {
-            outer = new timeout(200, expired);
+            outer = new timeout(1000, expired);
             runing();
         }
         private void expired()
@@ -23,7 +23,7 @@ namespace stemcell
             try
             {
                 await login();
-                await writebyte(netid.connectpulse);
+                writebyte(netid.connectpulse);
                 outer.start();
                 var dv = await receivebyte();
                 outer.end();

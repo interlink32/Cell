@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace servercell
 {
@@ -16,7 +17,9 @@ namespace servercell
             try
             {
                 var dv = await receivebyte();
-                await writebyte(netid.connectpulse);
+                if (dv != netid.connectpulse)
+                    throw new Exception("lflbkfbjkfjgkjbkfnbfnbj");
+                writebyte(netid.connectpulse);
                 start();
             }
             catch

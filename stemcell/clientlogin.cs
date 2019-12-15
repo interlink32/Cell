@@ -28,7 +28,7 @@ namespace stemcell
             tcp = new TcpClient();
             var endpoint = info.Getgetendpoint();
             await tcp.ConnectAsync(endpoint.Address, endpoint.Port);
-            await writebyte(clienttype);
+            writebyte(clienttype);
             await tcp.GetStream().WriteAsync(data, 0, data.Length);
             var dv = await receivebyte();
             if (dv != netid.login)
@@ -48,10 +48,9 @@ namespace stemcell
             await tcp.GetStream().ReadAsync(data, 0, data.Length);
             return data[0];
         }
-        protected async Task writebyte(byte data)
+        protected void writebyte(byte data)
         {
-            var dv = new byte[] { data };
-            await tcp.GetStream().WriteAsync(dv, 0, dv.Length);
+            tcp.GetStream().WriteByte(data);
         }
         async Task<byte[]> getlogindata()
         {

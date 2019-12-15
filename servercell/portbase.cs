@@ -40,7 +40,7 @@ namespace servercell
                 var dv = await mainserver.question(new q_login() { token = token }) as q_login.done;
                 if (dv.error_invalid)
                 {
-                    await writebyte(netid.invalidtoken);
+                    writebyte(netid.invalidtoken);
                     await Task.Delay(100);
                     tcp.Close();
                     return;
@@ -61,10 +61,9 @@ namespace servercell
             await tcp.GetStream().ReadAsync(data, 0, data.Length);
             return data[0];
         }
-        protected async Task writebyte(byte data)
+        protected void writebyte(byte data)
         {
-            var dv = new byte[] { data };
-            await tcp.GetStream().WriteAsync(dv, 0, dv.Length);
+            tcp.GetStream().WriteByte(data);
         }
     }
 }
