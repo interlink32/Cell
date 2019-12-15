@@ -71,7 +71,7 @@ namespace stemcell
             cryptoStream.Close();
             return memoryStream.ToArray();
         }
-        public static byte[] Combine(params byte[][] arrays)
+        public static byte[] combine(params byte[][] arrays)
         {
             byte[] rv = new byte[arrays.Sum(a => a.Length)];
             int offset = 0;

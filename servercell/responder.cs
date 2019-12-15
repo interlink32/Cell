@@ -72,7 +72,6 @@ namespace servercell
             {
                 if (userid != 0)
                 {
-                    Console.Beep();
                     throw new Exception("lblflblgbkfmnmfnkfknkfkb");
                 }
                 var dv = await mainserver.question(question);

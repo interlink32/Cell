@@ -30,7 +30,6 @@ namespace user
     {
         userbody body;
         Mutex mutex = new Mutex(false, "caaa");
-        
         public MainWindow()
         {
             if (!mutex.WaitOne(0))

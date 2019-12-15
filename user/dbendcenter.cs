@@ -1,4 +1,5 @@
-﻿using Dna.message;
+﻿using Dna;
+using Dna.message;
 using Dna.userdata;
 using localdb;
 using stemcell;
@@ -14,16 +15,18 @@ namespace user
     {
         internal long userid;
         synccenter<s_fulluser> dbuser;
+        clientspeed usercpeed;
         synccenter<s_message> dbmessage;
         public dbendcenter(long userid)
         {
             this.userid = userid;
+            usercpeed = new clientspeed(e_chromosome.user.ToString(), userid);
             dbuser = new synccenter<s_fulluser>(userid);
             dbmessage = new synccenter<s_message>(userid);
         }
         public void close()
         {
-            clientnotifier.remove(userid);
+            notifier.remove(userid);
         }
     }
 }

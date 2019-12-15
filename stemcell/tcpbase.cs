@@ -57,7 +57,7 @@ namespace stemcell
                 l.Add(rsv);
                 n += m;
             }
-            return crypto.Combine(l.ToArray());
+            return crypto.combine(l.ToArray());
         }
         async Task<byte[]> receivepart(int size)
         {

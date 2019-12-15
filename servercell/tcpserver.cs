@@ -55,7 +55,7 @@ namespace servercell
                 data = crypto.Decrypt(data, privetkey);
                 key32 = crypto.split(data, 0, 32);
                 iv16 = crypto.split(data, 32, 16);
-                return crypto.Encrypt(crypto.Combine(key32, iv16), key32, iv16);
+                return crypto.Encrypt(crypto.combine(key32, iv16), key32, iv16);
             }
             else
             {

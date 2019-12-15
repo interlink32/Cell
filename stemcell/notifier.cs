@@ -11,55 +11,35 @@ using System.Threading.Tasks;
 
 namespace stemcell
 {
-    public class clientnotifier
+    public class notifier : clientlogin
     {
-        private readonly string chromosome;
-        internal readonly long userid;
-        TcpClient tcp = default;
         Action sync;
-        public clientnotifier(string chromosome, long userid)
+        timeout outer;
+        public const int timeuot = 2000;
+        public notifier(string chromosome, long userid) : base(chromosome, userid, false)
         {
-            this.chromosome = chromosome;
-            this.userid = userid;
+            outer = new timeout(timeuot * 3, expired);
             runing();
         }
-        public const int timeuot = 200; 
-        async Task login()
+        private void expired()
         {
-            if (connect)
-                return;
-            var token = await s.gettoken(userid);
-            var data = BitConverter.GetBytes(token);
-            var info = await basic.getchromosome(chromosome);
-            data = crypto.Encrypt(data, info.publickey);
-            tcp = new TcpClient();
-            var endpoint = info.Getgetendpoint();
-            await tcp.ConnectAsync(endpoint.Address, endpoint.Port);
-            tcp.GetStream().WriteByte(netid.notifier);
-            await tcp.GetStream().WriteAsync(data, 0, data.Length);
-            var dv = await receive();
-            if (dv != netid.login)
-            {
-                throw new Exception("kgjfjbjfjbjfnbjvnfnbjfnbnfjbjfn");
-            }
-            connect = true;
-            newnotify(chromosome, userid);
+            connect = false;
+            tcp?.Close();
         }
-
-        long n = 1;
         async void runing()
         {
             try
             {
-                await login();
-                live();
+                if (await login())
+                    newnotify(chromosome, userid);
+                outer.start();
                 var dv = await receive();
-                n++;
+                outer.end();
                 if (dv == netid.newnotify)
                     newnotify(chromosome, userid);
                 runing();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _ = e.Message;
                 Console.Beep();
@@ -67,17 +47,6 @@ namespace stemcell
                 runing();
             }
         }
-        async void live()
-        {
-            var dv = n;
-            await Task.Delay(timeuot * 4);
-            if (dv == n)
-            {
-                connect = false;
-                tcp?.Close();
-            }
-        }
-        bool connect = default;
         async Task<byte> receive()
         {
             byte[] rt = new byte[1];
@@ -102,20 +71,23 @@ namespace stemcell
             locker.Release();
         }
 
-        static List<clientnotifier> list = new List<clientnotifier>();
+        static List<notifier> list = new List<notifier>();
         static SemaphoreSlim locker = new SemaphoreSlim(1, 1);
+
+        public override byte clienttype => netid.notifier;
+
         public static async void add(e_chromosome chromosome, long userid, Action sync)
         {
-            clientnotifier dv = await get(chromosome.ToString(), userid);
+            notifier dv = await get(chromosome.ToString(), userid);
             dv.sync += sync;
         }
-        private static async Task<clientnotifier> get(string chromosome, long userid)
+        private static async Task<notifier> get(string chromosome, long userid)
         {
             await locker.WaitAsync();
             var dv = list.FirstOrDefault(i => i.chromosome == chromosome && i.userid == userid);
             if (dv == null)
             {
-                dv = new clientnotifier(chromosome, userid);
+                dv = new notifier(chromosome, userid);
                 list.Add(dv);
             }
             locker.Release();

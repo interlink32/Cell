@@ -39,7 +39,6 @@ namespace stemcell
                 });
                 if (!(rsv is q_login.done))
                 {
-                    Console.Beep(1000, 500);
                     throw new Exception("bkdkbmfbcmfmbmmbm");
                 }
             }

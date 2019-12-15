@@ -8,6 +8,7 @@ namespace Dna
     {
         public const byte questioner = 83;
         public const byte notifier = 145;
+        public const byte clientspeed = 201;
         public const byte newnotify = 32;
         public const byte notifierlogin = 134;
         public const byte connectpulse = 56;

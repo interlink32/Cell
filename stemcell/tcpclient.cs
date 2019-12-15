@@ -57,7 +57,7 @@ namespace stemcell
             await tcpf.ConnectAsync(iP, port);
             tcpf.GetStream().WriteByte(netid.questioner);
             var dv = crypto.create_symmetrical_keys();
-            byte[] keys = crypto.Combine(dv.key32, dv.iv16);
+            byte[] keys = crypto.combine(dv.key32, dv.iv16);
             byte[] data = crypto.Encrypt(keys, publickey);
             await sendall(data);
             data = await receiveall();

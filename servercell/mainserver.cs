@@ -65,7 +65,12 @@ namespace servercell
                         break;
                     case netid.notifier:
                         {
-                            servernotifier dv = new servernotifier(this, tcp, privatekey);
+                            notifyport dv = new notifyport(this, tcp, privatekey);
+                        }
+                        break;
+                    case netid.clientspeed:
+                        {
+                            serverspeed dv = new serverspeed(tcp, privatekey);
                         }
                         break;
                     default:
@@ -80,7 +85,7 @@ namespace servercell
                 tcp?.Close();
             }
         }
-        internal async void remove(servernotifier val)
+        internal async void remove(notifyport val)
         {
             await locker.WaitAsync();
             list.Remove(val);
@@ -94,15 +99,15 @@ namespace servercell
             var dv2 = await dv.z_get_answer(request);
             return dv2;
         }
-        static List<servernotifier> list = new List<servernotifier>();
+        static List<notifyport> list = new List<notifyport>();
         static SemaphoreSlim locker = new SemaphoreSlim(1, 1);
-        internal async void add(servernotifier dv)
+        internal async void add(notifyport dv)
         {
             await locker.WaitAsync();
             list.Add(dv);
             locker.Release();
         }
-        static async Task<servernotifier[]> get(long user)
+        static async Task<notifyport[]> get(long user)
         {
             await locker.WaitAsync();
             var dv = list.Where(i => i.userid == user).ToArray();
