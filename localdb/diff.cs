@@ -20,7 +20,8 @@ namespace localdb
             if (state == difftype.delete)
                 collection.Delete(i => i.entity == entity);
             else
-                collection.Delete(i => i.entity == entity && i.state == state);
+                collection.Delete(i => i.entity == entity && (i.state == state || i.state == difftype.delete));
+            
             collection.Insert(new diff()
             {
                 entity = entity,

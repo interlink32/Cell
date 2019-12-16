@@ -29,7 +29,7 @@ namespace stemcell
                 outer.end();
                 if (dv != netid.connectpulse)
                     throw new Exception("khjudughhfhvjhcbjfnbjcbfjhbhfbvhbdndf");
-                Console.Beep(4000, 100);
+                //Console.Beep(4000, 100);
                 runing();
             }
             catch (Exception e)
