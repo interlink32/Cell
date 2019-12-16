@@ -15,11 +15,13 @@ namespace servercell
         protected readonly TcpClient tcp;
         private readonly byte[] privatekey;
         private readonly bool decrypt;
-        public portbase(TcpClient tcp, byte[] privatekey, bool decrypt)
+        private readonly bool loginrequired;
+        public portbase(TcpClient tcp, byte[] privatekey, bool decrypt, bool loginrequired = true)
         {
             this.tcp = tcp;
             this.privatekey = privatekey;
             this.decrypt = decrypt;
+            this.loginrequired = loginrequired;
             login();
         }
         protected byte[] key32 { get; private set; }
@@ -37,16 +39,25 @@ namespace servercell
                     key32 = crypto.split(data, 4, 32);
                     iv16 = crypto.split(data, 36, 16);
                 }
-                var dv = await mainserver.question(new q_login() { token = token }) as q_login.done;
-                if (dv.error_invalid)
+                if (token == 0)
                 {
-                    writebyte(netid.invalidtoken);
-                    await Task.Delay(100);
-                    tcp.Close();
-                    return;
+                    if (loginrequired)
+                        throw new Exception("fkdbfkbkfmbkgjbjfnjbnvjbmm");
+                    writebyte(netid.login);
                 }
-                userid = dv.userid;
-                tcp.GetStream().WriteByte(netid.login);
+                else
+                {
+                    var dv = await mainserver.question(new q_login() { token = token }) as q_login.done;
+                    if (dv.error_invalid)
+                    {
+                        writebyte(netid.invalidtoken);
+                        await Task.Delay(100);
+                        tcp.Close();
+                        return;
+                    }
+                    userid = dv.userid;
+                }
+                writebyte(netid.login);
                 start();
             }
             catch

@@ -8,7 +8,7 @@ namespace stemcell
     public class clientspeed : clientlogin
     {
         timeout outer;
-        public clientspeed(string chromosome, long userid) : base(chromosome, userid, false)
+        public clientspeed(e_chromosome chromosome) : base(chromosome.ToString(), 0, false)
         {
             outer = new timeout(1000, expired);
             runing();

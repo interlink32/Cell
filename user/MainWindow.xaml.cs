@@ -30,6 +30,7 @@ namespace user
     {
         userbody body;
         Mutex mutex = new Mutex(false, "caaa");
+        clientspeed clientspeed = new clientspeed(e_chromosome.user);
         public MainWindow()
         {
             if (!mutex.WaitOne(0))

@@ -9,7 +9,7 @@ namespace servercell
 {
     class serverspeed : portbase
     {
-        public serverspeed(TcpClient tcp, byte[] privatekey) : base(tcp, privatekey, false)
+        public serverspeed(TcpClient tcp, byte[] privatekey) : base(tcp, privatekey, false, false)
         {
         }
         protected async override void start()
