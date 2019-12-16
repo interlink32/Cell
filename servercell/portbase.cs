@@ -43,7 +43,6 @@ namespace servercell
                 {
                     if (loginrequired)
                         throw new Exception("fkdbfkbkfmbkgjbjfnjbnvjbmm");
-                    writebyte(netid.login);
                 }
                 else
                 {

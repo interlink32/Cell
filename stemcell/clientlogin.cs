@@ -54,7 +54,7 @@ namespace stemcell
         }
         async Task<byte[]> getlogindata()
         {
-            var token = await s.gettoken(userid);
+            var token = userid == 0 ? 0 : await s.gettoken(userid);
             var data = BitConverter.GetBytes(token);
             if (encrypt)
             {
