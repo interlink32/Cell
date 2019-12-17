@@ -8,10 +8,15 @@ using System.Threading.Tasks;
 
 namespace stemcell
 {
-    public abstract class tcpbase
+    public class tcpbase
     {
-        public const int buffersize = 1450;
-        protected async Task sendall(byte[] data)
+        const int buffersize = 1450;
+        readonly Func<TcpClient> gettcp = default;
+        public tcpbase(Func<TcpClient> gettcp)
+        {
+            this.gettcp = gettcp;
+        }
+        public async Task sendall(byte[] data)
         {
             await sendpart(BitConverter.GetBytes(data.Length));
             int n = 0;
@@ -33,12 +38,11 @@ namespace stemcell
                 counter++;
             }
         }
-        protected abstract TcpClient tcp { get; }
         async Task sendpart(byte[] data)
         {
-            await tcp.GetStream().WriteAsync(data, 0, data.Length);
+            await gettcp().GetStream().WriteAsync(data, 0, data.Length);
         }
-        protected async Task<byte[]> receiveall()
+        public async Task<byte[]> receiveall()
         {
             var dv = await receivepart(4);
             var size = BitConverter.ToInt32(dv, 0);
@@ -62,7 +66,7 @@ namespace stemcell
         async Task<byte[]> receivepart(int size)
         {
             byte[] data = new byte[size];
-            await tcp.GetStream().ReadAsync(data, 0, size);
+            await gettcp().GetStream().ReadAsync(data, 0, size);
             return data;
         }
     }

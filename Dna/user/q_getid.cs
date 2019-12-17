@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Dna.user
 {
-    public class q_login : question
+    public class q_getid : question
     {
         public long token = default;
         public override e_permission z_permission => e_permission.free;

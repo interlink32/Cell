@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace stemcell
 {
-    public abstract class clientlogin
+    public class clientlogin
     {
+        private readonly netid clienttype;
         internal readonly string chromosome;
         internal readonly long userid;
         private readonly bool encrypt;
         internal bool connect;
-        public clientlogin(string chromosome, long userid, bool encrypt)
+        public clientlogin(netid clienttype, string chromosome, long userid, bool encrypt)
         {
+            this.clienttype = clienttype;
             this.chromosome = chromosome;
             this.userid = userid;
             this.encrypt = encrypt;
@@ -27,11 +29,15 @@ namespace stemcell
             var data = crypto.Encrypt(await getlogindata(), info.publickey);
             tcp = new TcpClient();
             var endpoint = info.Getgetendpoint();
+            if (userid == 1)
+            {
+
+            }
             await tcp.ConnectAsync(endpoint.Address, endpoint.Port);
-            writebyte(clienttype);
+            writebyte((byte)clienttype);
             await tcp.GetStream().WriteAsync(data, 0, data.Length);
             var dv = await receivebyte();
-            if (dv != netid.login)
+            if (dv != (byte)netid.login)
             {
                 throw new Exception("kgjfjbjfjbjfnbjvnfnbjfnbnfjbjfn");
             }
@@ -39,7 +45,6 @@ namespace stemcell
             return true;
         }
         public TcpClient tcp { get; private set; }
-        public abstract byte clienttype { get; }
         protected byte[] Key32 { get; private set; }
         protected byte[] Iv16 { get; private set; }
         protected async Task<byte> receivebyte()

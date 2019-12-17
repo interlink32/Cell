@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace stemcell
 {
     public class clientspeed : clientlogin
     {
         timeout outer;
-        public clientspeed(e_chromosome chromosome) : base(chromosome.ToString(), 0, false)
+        public clientspeed(e_chromosome chromosome) : base(netid.clientspeed, chromosome.ToString(), 0, false)
         {
             outer = new timeout(1000, expired);
             runing();
@@ -18,18 +19,20 @@ namespace stemcell
             connect = false;
             tcp?.Close();
         }
+        public static int n { get; private set; }
         async void runing()
         {
             try
             {
                 await login();
-                writebyte(netid.connectpulse);
+                writebyte((byte)netid.connectpulse);
                 outer.start();
                 var dv = await receivebyte();
                 outer.end();
-                if (dv != netid.connectpulse)
+                if (dv != (byte)netid.connectpulse)
                     throw new Exception("khjudughhfhvjhcbjfnbjcbfjhbhfbvhbdndf");
-                //Console.Beep(4000, 100);
+                n++;
+                await Task.Delay(10);
                 runing();
             }
             catch (Exception e)
@@ -41,6 +44,5 @@ namespace stemcell
                 runing();
             }
         }
-        public override byte clienttype => netid.clientspeed;
     }
 }

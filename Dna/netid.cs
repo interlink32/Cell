@@ -4,15 +4,15 @@ using System.Text;
 
 namespace Dna
 {
-    public class netid
+    public enum netid
     {
-        public const byte questioner = 83;
-        public const byte notifier = 145;
-        public const byte clientspeed = 201;
-        public const byte newnotify = 32;
-        public const byte notifierlogin = 134;
-        public const byte connectpulse = 56;
-        public const byte login = 98;
-        public const byte invalidtoken = 132;
+        questioner = 83,
+        notifier = 145,
+        clientspeed = 201,
+        newnotify = 32,
+        notifierlogin = 134,
+        connectpulse = 56,
+        login = 98,
+        invalidtoken = 132
     }
 }

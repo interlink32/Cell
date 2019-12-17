@@ -56,11 +56,11 @@ namespace servercell
             {
                 byte[] data = new byte[1];
                 await tcp.GetStream().ReadAsync(data, 0, data.Length);
-                switch (data[0])
+                switch ((netid)data[0])
                 {
                     case netid.questioner:
                         {
-                            responder dv = new responder(this, tcp, privatekey, getanswer);
+                            responder dv = new responder(this, tcp, privatekey);
                         }
                         break;
                     case netid.notifier:
@@ -70,7 +70,7 @@ namespace servercell
                         break;
                     case netid.clientspeed:
                         {
-                            serverspeed dv = new serverspeed(tcp, privatekey);
+                            serverspeed dv = new serverspeed(this, tcp, privatekey);
                         }
                         break;
                     default:
@@ -91,7 +91,7 @@ namespace servercell
             list.Remove(val);
             locker.Release();
         }
-        async Task<answer> getanswer(question request)
+        internal async Task<answer> getanswer(question request)
         {
             var dv = elementsF.FirstOrDefault(i => i.z_gene == request.z_gene);
             if (dv == null)

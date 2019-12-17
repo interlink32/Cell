@@ -9,15 +9,17 @@ using System.Threading.Tasks;
 
 namespace servercell
 {
-    abstract class portbase
+    abstract class clientport
     {
         public long userid { get; private set; }
+        internal readonly mainserver mainserver;
         protected readonly TcpClient tcp;
         private readonly byte[] privatekey;
         private readonly bool decrypt;
         private readonly bool loginrequired;
-        public portbase(TcpClient tcp, byte[] privatekey, bool decrypt, bool loginrequired = true)
+        public clientport(mainserver mainserver, TcpClient tcp, byte[] privatekey, bool decrypt, bool loginrequired = true)
         {
+            this.mainserver = mainserver;
             this.tcp = tcp;
             this.privatekey = privatekey;
             this.decrypt = decrypt;
@@ -36,8 +38,8 @@ namespace servercell
                 var token = BitConverter.ToInt64(data, 0);
                 if (decrypt)
                 {
-                    key32 = crypto.split(data, 4, 32);
-                    iv16 = crypto.split(data, 36, 16);
+                    key32 = crypto.split(data, 8, 32);
+                    iv16 = crypto.split(data, 40, 16);
                 }
                 if (token == 0)
                 {
@@ -46,17 +48,22 @@ namespace servercell
                 }
                 else
                 {
-                    var dv = await mainserver.question(new q_login() { token = token }) as q_login.done;
+                    Func<question, Task<answer>> func = null;
+                    if (mainserver.chromosome == e_chromosome.user)
+                        func = mainserver.getanswer;
+                    else
+                        func = mainserver.question;
+                    var dv = await func.Invoke(new q_getid() { token = token }) as q_getid.done;
                     if (dv.error_invalid)
                     {
-                        writebyte(netid.invalidtoken);
+                        writebyte((byte)netid.invalidtoken);
                         await Task.Delay(100);
                         tcp.Close();
                         return;
                     }
                     userid = dv.userid;
                 }
-                writebyte(netid.login);
+                writebyte((byte)netid.login);
                 start();
             }
             catch

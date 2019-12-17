@@ -16,10 +16,7 @@ namespace userserver
             await Task.CompletedTask;
             var dv = dbserverinfo.FindOne(i => i.id == (int)question.chromosome && i.password == question.password);
             if (dv == null)
-            {
-                Console.Beep(1000, 1000);
-                return null;
-            }
+                throw new Exception("lkfkbmfkbjfjbjgvkkbg");
             else
             {
                 var user = new s2user()

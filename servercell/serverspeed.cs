@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace servercell
 {
-    class serverspeed : portbase
+    class serverspeed : clientport
     {
-        public serverspeed(TcpClient tcp, byte[] privatekey) : base(tcp, privatekey, false, false)
+        public serverspeed(mainserver mainserver, TcpClient tcp, byte[] privatekey) : base(mainserver, tcp, privatekey, false, false)
         {
         }
         protected async override void start()
@@ -17,9 +17,9 @@ namespace servercell
             try
             {
                 var dv = await receivebyte();
-                if (dv != netid.connectpulse)
+                if (dv != (byte)netid.connectpulse)
                     throw new Exception("lflbkfbjkfjgkjbkfnbfnbj");
-                writebyte(netid.connectpulse);
+                writebyte((byte)netid.connectpulse);
                 start();
             }
             catch

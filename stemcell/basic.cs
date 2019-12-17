@@ -14,7 +14,7 @@ namespace stemcell
     public static class basic
     {
         public static Random random = new Random();
-        static clientitem defaultitem = new clientitem(e_chromosome.user.ToString(), 0);
+        static questioner defaultitem = new questioner(e_chromosome.user.ToString(), 0);
         static async Task<answer> question(question question)
         {
             return await defaultitem.question(question);

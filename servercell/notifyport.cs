@@ -9,13 +9,12 @@ using System.Threading.Tasks;
 
 namespace servercell
 {
-    class notifyport : portbase
+    class notifyport : clientport
     {
         private const int timeout = notifier.timeuot;
-        private readonly mainserver mainserver;
-        public notifyport(mainserver mainserver, TcpClient tcp, byte[] privatekey) : base(tcp, privatekey, false)
+        public notifyport(mainserver mainserver, TcpClient tcp, byte[] privatekey) : base(mainserver, tcp, privatekey, false)
         {
-            this.mainserver = mainserver;
+            
         }
         protected override void start()
         {
@@ -41,9 +40,9 @@ namespace servercell
             try
             {
                 if (newnotify)
-                    tcp.GetStream().WriteByte(netid.newnotify);
+                    tcp.GetStream().WriteByte((byte)netid.newnotify);
                 else
-                    tcp.GetStream().WriteByte(netid.connectpulse);
+                    tcp.GetStream().WriteByte((byte)netid.connectpulse);
             }
             catch
             {

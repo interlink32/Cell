@@ -1,32 +1,45 @@
-﻿using System;
-using System.Net.Sockets;
-using System.Threading.Tasks;
-using stemcell;
-using Dna;
+﻿using Dna;
 using Dna.common;
-using Dna.user;
+using stemcell;
+using System;
+using System.Collections.Generic;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace servercell
 {
-    internal class responder : tcpserver
+    class responder : clientport
     {
-        private mainserver mainserver;
-        private Func<question, Task<answer>> getanswerf;
-        public long userid { get; private set; }
-        public responder(mainserver mainserver, TcpClient tcp, byte[] privatekey, Func<question, Task<answer>> getanswer) : base(tcp, privatekey)
+        tcpbase tcpbase;
+        public responder(mainserver mainserver, TcpClient tcp, byte[] privatekey) : base(mainserver, tcp, privatekey, true, false)
         {
-            this.mainserver = mainserver;
-            this.getanswerf = getanswer;
+            tcpbase = new tcpbase(() => base.tcp);
         }
-        protected override async Task<byte[]> getanswer(byte[] data)
+        protected async override void start()
         {
-            var gene = converter.change(data) as question;
-            gene.z_normalize();
-            answer answer = await answer_(gene);
-            if (answer == null)
-                answer = new voidanswer();
-            data = converter.change(answer);
-            return data;
+            question gene;
+            byte[] data;
+            try
+            {
+                data = await tcpbase.receiveall();
+                data = crypto.Decrypt(data, key32, iv16);
+                gene = converter.change(data) as question;
+                gene.z_normalize();
+                answer answer = await answer_(gene);
+                if (answer == null)
+                    answer = new voidanswer();
+                data = converter.change(answer);
+                data = crypto.Encrypt(data, key32, iv16);
+                await tcpbase.sendall(data);
+                start();
+            }
+            catch (Exception e)
+            {
+                _ = e.Message;
+                Console.Beep();
+                tcp.Close();
+            }
         }
         async Task<answer> answer_(question question)
         {
@@ -34,10 +47,7 @@ namespace servercell
             {
                 case e_permission.free:
                     {
-                        if (question is q_login q_login)
-                            return await login(q_login);
-                        else
-                            return await getanswerf(question);
+                        return await mainserver.getanswer(question);
                     }
                 case e_permission.user:
                     {
@@ -46,38 +56,13 @@ namespace servercell
                         else
                         {
                             question.z_user = userid;
-                            return await getanswerf.Invoke(question);
+                            return await mainserver.getanswer(question);
                         }
-                    }
-                case e_permission.server:
-                    {
-                        throw new Exception("gfkbkdkbmf");
                     }
                 default:
                     {
                         throw new Exception("dkmrkkfmdmbmc");
                     }
-            }
-        }
-        private async Task<answer> login(q_login question)
-        {
-            if (mainserver.chromosome == e_chromosome.user)
-            {
-                var dv = await getanswerf(question);
-                if (dv is q_login.done done && userid == 0)
-                    userid = done.userid;
-                return dv;
-            }
-            else
-            {
-                if (userid != 0)
-                {
-                    throw new Exception("lblflblgbkfmnmfnkfknkfkb");
-                }
-                var dv = await mainserver.question(question);
-                if (dv is q_login.done done)
-                    userid = done.userid;
-                return dv;
             }
         }
     }

@@ -16,7 +16,7 @@ namespace stemcell
         Action sync;
         timeout outer;
         public const int timeuot = 2000;
-        public notifier(string chromosome, long userid) : base(chromosome, userid, false)
+        public notifier(string chromosome, long userid) : base(netid.notifier, chromosome, userid, false)
         {
             outer = new timeout(timeuot * 3, expired);
             runing();
@@ -35,7 +35,7 @@ namespace stemcell
                 outer.start();
                 var dv = await receive();
                 outer.end();
-                if (dv == netid.newnotify)
+                if (dv == (byte)netid.newnotify)
                     newnotify(chromosome, userid);
                 runing();
             }
@@ -75,9 +75,6 @@ namespace stemcell
 
         static List<notifier> list = new List<notifier>();
         static SemaphoreSlim locker = new SemaphoreSlim(1, 1);
-
-        public override byte clienttype => netid.notifier;
-
         public static async void add(e_chromosome chromosome, long userid, Action sync)
         {
             notifier dv = await get(chromosome.ToString(), userid);

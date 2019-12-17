@@ -20,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
+using controllibrary;
 
 namespace user
 {
@@ -50,6 +51,14 @@ namespace user
             SizeToContent = SizeToContent.WidthAndHeight;
             ini();
             allapps.start();
+            //uibase.run(runing);
+        }
+
+        async void runing()
+        {
+            Title = "پالس" + " " + clientspeed.n + " " + "مرکزی";
+            await Task.Delay(500);
+            uibase.run(runing);
         }
 
         private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
