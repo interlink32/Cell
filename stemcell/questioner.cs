@@ -40,6 +40,8 @@ namespace stemcell
             {
                 _ = e.Message;
                 Console.Beep();
+                tcp?.Close();
+                connect = false;
                 locker.Release();
                 return await this.question(question);
             }
