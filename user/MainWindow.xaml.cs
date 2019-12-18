@@ -51,7 +51,7 @@ namespace user
             SizeToContent = SizeToContent.WidthAndHeight;
             ini();
             allapps.start();
-            //uibase.run(runing);
+            uibase.run(runing);
         }
 
         async void runing()
