@@ -17,9 +17,9 @@ namespace servercell
             try
             {
                 var dv = await receivebyte();
-                if (dv != (byte)netid.connectpulse)
+                if (dv != (byte)byteid.connectpulse)
                     throw new Exception("lflbkfbjkfjgkjbkfnbfnbj");
-                writebyte((byte)netid.connectpulse);
+                writebyte((byte)byteid.connectpulse);
                 start();
             }
             catch

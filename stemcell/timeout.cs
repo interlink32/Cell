@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace stemcell
 {
-    class timeout
+    public class timeout
     {
         private readonly int time;
         private readonly Action expired;

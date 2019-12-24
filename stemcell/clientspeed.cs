@@ -9,7 +9,7 @@ namespace stemcell
     public class clientspeed : clientlogin
     {
         timeout outer;
-        public clientspeed(e_chromosome chromosome) : base(netid.clientspeed, chromosome.ToString(), 0, false)
+        public clientspeed(e_chromosome chromosome) : base(byteid.clientspeed, chromosome.ToString(), 0, false)
         {
             outer = new timeout(1000, expired);
             runing();
@@ -25,11 +25,11 @@ namespace stemcell
             try
             {
                 await login();
-                writebyte((byte)netid.connectpulse);
+                writebyte((byte)byteid.connectpulse);
                 outer.start();
                 var dv = await receivebyte();
                 outer.end();
-                if (dv != (byte)netid.connectpulse)
+                if (dv != (byte)byteid.connectpulse)
                     throw new Exception("khjudughhfhvjhcbjfnbjcbfjhbhfbvhbdndf");
                 n++;
                 await Task.Delay(10);

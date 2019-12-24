@@ -16,7 +16,7 @@ namespace stemcell
         Action sync;
         timeout outer;
         public const int timeuot = 2000;
-        public notifier(string chromosome, long userid) : base(netid.notifier, chromosome, userid, false)
+        public notifier(string chromosome, long userid) : base(byteid.notifier, chromosome, userid, false)
         {
             outer = new timeout(timeuot * 3, expired);
             runing();
@@ -35,7 +35,7 @@ namespace stemcell
                 outer.start();
                 var dv = await receive();
                 outer.end();
-                if (dv == (byte)netid.newnotify)
+                if (dv == (byte)byteid.newnotify)
                     newnotify(chromosome, userid);
                 runing();
             }

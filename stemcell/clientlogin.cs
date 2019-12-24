@@ -9,12 +9,12 @@ namespace stemcell
 {
     public class clientlogin
     {
-        private readonly netid clienttype;
+        private readonly byteid clienttype;
         internal readonly string chromosome;
         internal readonly long userid;
         private readonly bool encrypt;
         internal bool connect;
-        public clientlogin(netid clienttype, string chromosome, long userid, bool encrypt)
+        public clientlogin(byteid clienttype, string chromosome, long userid, bool encrypt)
         {
             this.clienttype = clienttype;
             this.chromosome = chromosome;
@@ -37,7 +37,7 @@ namespace stemcell
             writebyte((byte)clienttype);
             await tcp.GetStream().WriteAsync(data, 0, data.Length);
             var dv = await receivebyte();
-            if (dv != (byte)netid.login)
+            if (dv != (byte)byteid.login)
             {
                 throw new Exception("kgjfjbjfjbjfnbjvnfnbjfnbnfjbjfn");
             }

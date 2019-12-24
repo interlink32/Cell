@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dna
 {
-    public enum netid
+    public enum byteid
     {
         questioner = 83,
         notifier = 145,
@@ -13,6 +13,6 @@ namespace Dna
         notifierlogin = 134,
         connectpulse = 56,
         login = 98,
-        invalidtoken = 132
+        invalid = 132
     }
 }

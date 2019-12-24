@@ -56,14 +56,14 @@ namespace servercell
                     var dv = await func.Invoke(new q_getid() { token = token }) as q_getid.done;
                     if (dv.error_invalid)
                     {
-                        writebyte((byte)netid.invalidtoken);
+                        writebyte((byte)byteid.invalid);
                         await Task.Delay(100);
                         tcp.Close();
                         return;
                     }
                     userid = dv.userid;
                 }
-                writebyte((byte)netid.login);
+                writebyte((byte)byteid.login);
                 start();
             }
             catch

@@ -12,7 +12,7 @@ namespace stemcell
     {
         tcpbase tcpbase;
         internal bool inp;
-        public questioner(string chromosome, long userid) : base(netid.questioner, chromosome, userid, true)
+        public questioner(string chromosome, long userid) : base(byteid.questioner, chromosome, userid, true)
         {
             tcpbase = new tcpbase(gettcp);
         }

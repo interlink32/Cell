@@ -56,19 +56,19 @@ namespace servercell
             {
                 byte[] data = new byte[1];
                 await tcp.GetStream().ReadAsync(data, 0, data.Length);
-                switch ((netid)data[0])
+                switch ((byteid)data[0])
                 {
-                    case netid.questioner:
+                    case byteid.questioner:
                         {
                             responder dv = new responder(this, tcp, privatekey);
                         }
                         break;
-                    case netid.notifier:
+                    case byteid.notifier:
                         {
                             notifyport dv = new notifyport(this, tcp, privatekey);
                         }
                         break;
-                    case netid.clientspeed:
+                    case byteid.clientspeed:
                         {
                             serverspeed dv = new serverspeed(this, tcp, privatekey);
                         }

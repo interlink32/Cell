@@ -40,9 +40,9 @@ namespace servercell
             try
             {
                 if (newnotify)
-                    tcp.GetStream().WriteByte((byte)netid.newnotify);
+                    tcp.GetStream().WriteByte((byte)byteid.newnotify);
                 else
-                    tcp.GetStream().WriteByte((byte)netid.connectpulse);
+                    tcp.GetStream().WriteByte((byte)byteid.connectpulse);
             }
             catch
             {
